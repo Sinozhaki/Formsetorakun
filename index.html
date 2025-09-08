@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent Linkedin By Zen</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Apply Inter font ke seluruh halaman */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Fallback jika Tailwind lambat */
+        }
+
+        /* Preloader untuk memberikan feedback saat memuat */
+        #preloader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            background: #111827;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+        .spinner {
+            border: 4px solid rgba(34, 211, 238, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #22d3ee; /* cyan-400 */
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Animasi Pulsing Glow */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px rgba(34, 211, 238, 0.2); }
+            50% { box-shadow: 0 0 35px rgba(34, 211, 238, 0.5); }
+            100% { box-shadow: 0 0 15px rgba(34, 211, 238, 0.2); }
+        }
+        .pulsing-glow-card {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        /* Animasi Melayang */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* Animasi Tombol Ditekan */
+        button {
+            transition: transform 0.1s ease-out;
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+
+        /* Animasi Transisi Tampilan */
+        [id^="step-"] > * {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .fade-out-up {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    </style>
+</head>
+<!-- PERUBAHAN DI SINI: Menghapus flex, items-center, justify-center, dan overflow-hidden. Menambahkan padding vertikal. -->
+<body class="bg-gray-900 text-gray-300 min-h-screen py-12 px-4 sm:px-6">
+
+    <!-- Preloader Element -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Konten Utama (awalnya disembunyikan) -->
+    <div id="main-content" class="w-full max-w-lg mx-auto float-animation" style="visibility: hidden;">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-cyan-400 tracking-wide">Rent Linkedin By Zen</h1>
+        </header>
+
+        <!-- Step 1: Details & Explanation -->
+        <div id="step-1">
+            <main class="bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 pulsing-glow-card">
+                 <div class="mb-8">
+                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 pb-2 border-b-2 border-gray-600 text-white">Detail</h2>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex items-center justify-between"><span><strong class="font-bold text-white">Restric</strong></span><span class="font-mono font-semibold text-red-500">0$</span></li>
+                        <li class="flex items-center justify-between"><span><strong class="font-bold text-white">Unrestric</strong></span><span class="font-mono font-semibold text-yellow-400">5$</span></li>
+                        <li class="flex items-center justify-between"><span><strong class="font-bold text-white">Save</strong></span><span class="font-mono font-semibold text-green-500">10$</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 pb-2 border-b-2 border-gray-600 text-white">Penjelasan</h2>
+                    <ul class="space-y-4 text-gray-300 leading-relaxed">
+                        <li><strong class="font-bold text-white">Restric</strong>: Akun terblokir dan tidak bisa diakses kembali sebelum <strong class="font-bold text-white">Rabu Malam</strong>.</li>
+                        <li><strong class="font-bold text-white">Unrestric</strong>: Akun sempat terblokir, namun berhasil diaktifkan lagi sebelum <strong class="font-bold text-white">Rabu Malam</strong>.</li>
+                        <li><strong class="font-bold text-white">Save</strong>: Akun berjalan normal tanpa kendala hingga <strong class="font-bold text-white">Rabu Malam</strong>.</li>
+                    </ul>
+                </div>
+                <button id="continue-btn" class="w-full flex justify-center mt-8 py-3 px-4 border border-transparent rounded-md shadow-lg text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Lanjutkan</button>
+            </main>
+        </div>
+
+        <!-- Step 2: Form Choice (Initially Hidden) -->
+        <div id="step-2-choice" class="hidden">
+            <div class="bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 pulsing-glow-card">
+                <h2 class="text-2xl font-bold text-center mb-6 text-white">Pilih Jenis Formulir</h2>
+                <div class="space-y-4">
+                     <button id="new-account-btn" class="w-full flex justify-center py-3 px-4 border border-cyan-500 rounded-md shadow-sm text-sm font-medium text-cyan-400 bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Form New Account</button>
+                     <button id="unrestrict-account-btn" class="w-full flex justify-center py-3 px-4 border border-cyan-500 rounded-md shadow-sm text-sm font-medium text-cyan-400 bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Form Unrestrict Account</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3a: Form New Account (Initially Hidden) -->
+        <div id="step-3-new" class="hidden">
+            <section class="bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 pulsing-glow-card">
+                <h2 class="text-2xl font-bold text-center mb-6 text-white">Form Rent New Account</h2>
+                <form id="rent-form-new" class="space-y-4">
+                    <div><label for="email-new" class="block text-sm font-medium text-gray-400">Email</label><input type="email" id="email-new" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
+                    <div><label for="password-new" class="block text-sm font-medium text-gray-400">Password</label><input type="password" id="password-new" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
+                    <div><label for="koneksi" class="block text-sm font-medium text-gray-400">Connections</label><input type="number" id="koneksi" placeholder="Example: 500" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
+                    <div><label for="akun-bulan" class="block text-sm font-medium text-gray-400">Age</label><input type="month" id="akun-bulan" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
+                    <div><label for="code-patem-new" class="block text-sm font-medium text-gray-400">Patem Code</label><input type="text" id="code-patem-new" value="7005" readonly class="mt-1 block w-full px-3 py-2 bg-gray-600 border border-gray-500 text-gray-300 rounded-md shadow-sm cursor-not-allowed"></div>
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Ajukan Sewa</button>
+                </form>
+                <button class="back-btn mt-4 w-full text-center text-sm text-cyan-400 hover:text-cyan-300">Kembali</button>
+            </section>
+        </div>
+
+        <!-- Step 3b: Form Unrestrict Account (Initially Hidden) -->
+        <div id="step-3-unrestrict" class="hidden">
+            <section class="bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 pulsing-glow-card">
+                <h2 class="text-2xl font-bold text-center mb-6 text-white">Form Unrestrict Account</h2>
+                <form id="rent-form-unrestrict" class="space-y-4">
+                    <div><label for="email-unrestrict" class="block text-sm font-medium text-gray-400">Email</label><input type="email" id="email-unrestrict" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
+                    <div><label for="password-unrestrict" class="block text-sm font-medium text-gray-400">Password</label><input type="password" id="password-unrestrict" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
+                    <div><label for="code-patem-unrestrict" class="block text-sm font-medium text-gray-400">Patem Code</label><input type="text" id="code-patem-unrestrict" value="7005" readonly class="mt-1 block w-full px-3 py-2 bg-gray-600 border border-gray-500 text-gray-300 rounded-md shadow-sm cursor-not-allowed"></div>
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Ajukan Unrestrict</button>
+                </form>
+                <button class="back-btn mt-4 w-full text-center text-sm text-cyan-400 hover:text-cyan-300">Kembali</button>
+            </section>
+        </div>
+        
+    </div>
+    
+    <script>
+        // Logika untuk menampilkan konten setelah halaman siap
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+            
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                mainContent.style.visibility = 'visible';
+            }, 500);
+        });
+
+        // Logika Audio yang dioptimalkan
+        let audioContext;
+        function playClickSound() {
+            if (!audioContext) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.error("Web Audio API is not supported in this browser.");
+                    return;
+                }
+            }
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start(audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.1);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        // DOM Elements
+        const step1 = document.getElementById('step-1');
+        const step2Choice = document.getElementById('step-2-choice');
+        const step3New = document.getElementById('step-3-new');
+        const step3Unrestrict = document.getElementById('step-3-unrestrict');
+
+        // Event Listeners
+        document.getElementById('continue-btn').addEventListener('click', () => switchView(step1, step2Choice));
+        document.getElementById('new-account-btn').addEventListener('click', () => switchView(step2Choice, step3New));
+        document.getElementById('unrestrict-account-btn').addEventListener('click', () => switchView(step2Choice, step3Unrestrict));
+        document.querySelectorAll('.back-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const currentStep = btn.closest('[id^="step-3"]');
+                if (currentStep) switchView(currentStep, step2Choice);
+            });
+        });
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', playClickSound);
+        });
+
+        // Fungsi Ganti Tampilan
+        function switchView(fromElement, toElement) {
+            const fromCard = fromElement.querySelector('.pulsing-glow-card');
+            if (fromCard) fromCard.classList.add('fade-out-up');
+
+            setTimeout(() => {
+                fromElement.classList.add('hidden');
+                if (fromCard) fromCard.classList.remove('fade-out-up');
+
+                toElement.classList.remove('hidden');
+                const toCard = toElement.querySelector('.pulsing-glow-card');
+                if (toCard) {
+                    toCard.classList.add('fade-out-up');
+                    requestAnimationFrame(() => toCard.classList.remove('fade-out-up'));
+                }
+                
+                // Peningkatan Aksesibilitas: fokus ke elemen pertama
+                const firstFocusable = toElement.querySelector('button, input');
+                if (firstFocusable) firstFocusable.focus();
+
+            }, 300);
+        }
+        
+        // Logika WhatsApp
+        const phoneNumber = '12133299206';
+        document.getElementById('rent-form-new').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const rawDateValue = document.getElementById('akun-bulan').value;
+            const dateObject = new Date(rawDateValue + "-02");
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const year = dateObject.getFullYear();
+            const monthName = monthNames[dateObject.getMonth()];
+            const formattedAge = `${year} ${monthName}`;
+            const message = `*I want to send a new account*
+
+
+*Email*: ${document.getElementById('email-new').value}
+*Password*: ${document.getElementById('password-new').value}
+*Connections*: ${document.getElementById('koneksi').value}
+*Age*: ${formattedAge}
+*Code*: ${document.getElementById('code-patem-new').value}
+`;
+            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        });
+        document.getElementById('rent-form-unrestrict').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const message = `*I want to send an unrestric account*
+
+
+*Email*: ${document.getElementById('email-unrestrict').value}
+*Password*: ${document.getElementById('password-unrestrict').value}
+*Code*: ${document.getElementById('code-patem-unrestrict').value}
+`;
+            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        });
+    </script>
+
+</body>
+</html>
+
