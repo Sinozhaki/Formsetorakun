@@ -3,281 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rent Linkedin By Zen</title>
-    <!-- Tailwind CSS -->
+    <title>Web Setor Akun By Zen</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Apply Inter font ke seluruh halaman */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Fallback jika Tailwind lambat */
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Preloader untuk memberikan feedback saat memuat */
-        #preloader {
+        /* --- Animasi Latar Belakang & Efek --- */
+        .pixel-grid {
             position: fixed;
-            left: 0;
             top: 0;
-            z-index: 999;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: visible;
-            background: #111827;
+            z-index: -2;
+            background-image: linear-gradient(to right, #242442 1px, transparent 1px), linear-gradient(to bottom, #242442 1px, transparent 1px);
+            background-size: 25px 25px;
+            animation: moveGrid 10s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            from { background-position: 0 0; }
+            to { background-position: 25px 25px; }
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.1) 0%,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+        }
+
+        /* --- Animasi Teks & Tombol --- */
+        .text-neon {
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+            animation: pulsateNeon 1.5s infinite ease-in-out alternate;
+        }
+        
+        @keyframes pulsateNeon {
+            from {
+                text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+            }
+            to {
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff;
+            }
+        }
+        
+        .btn-retro {
+            background-color: #4CAF50;
+            color: white;
+            border: 2px solid #388E3C;
+            text-shadow: 2px 2px #1c4b1d;
+            box-shadow: 4px 4px 0px 0px #388E3C;
+            transition: all 0.1s ease-in-out;
+            animation: pulsateButton 2s infinite ease-in-out alternate;
+        }
+
+        .btn-retro:hover {
+            transform: translate(1px, 1px);
+            box-shadow: 3px 3px 0px 0px #388E3C;
+        }
+
+        .btn-retro:active {
+            transform: translate(3px, 3px);
+            box-shadow: 1px 1px 0px 0px #388E3C;
+        }
+        
+        @keyframes pulsateButton {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.02);
+            }
+        }
+
+        /* --- Animasi Teks Berjalan --- */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
             display: flex;
             justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease;
-        }
-        .spinner {
-            border: 4px solid rgba(34, 211, 238, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid #22d3ee; /* cyan-400 */
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Animasi Pulsing Glow */
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px rgba(34, 211, 238, 0.2); }
-            50% { box-shadow: 0 0 35px rgba(34, 211, 238, 0.5); }
-            100% { box-shadow: 0 0 15px rgba(34, 211, 238, 0.2); }
-        }
-        .pulsing-glow-card {
-            animation: pulseGlow 3s infinite ease-in-out;
         }
 
-        /* Animasi Melayang */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
-        }
-        .float-animation {
-            animation: float 5s ease-in-out infinite;
+        .marquee-text {
+            display: inline-block;
+            animation: marquee 10s linear infinite;
         }
 
-        /* Animasi Tombol Ditekan */
-        button {
-            transition: transform 0.1s ease-out;
-        }
-        button:active {
-            transform: scale(0.97);
+        @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
         }
 
-        /* Animasi Transisi Tampilan */
-        [id^="step-"] > * {
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        /* --- Animasi Bintang Jatuh --- */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -4;
+            pointer-events: none;
         }
-        .fade-out-up {
+
+        .star {
+            position: absolute;
+            background-color: #ffffff;
             opacity: 0;
-            transform: translateY(-20px);
+            animation: starFall 5s linear infinite;
         }
+
+        @keyframes starFall {
+            0% { transform: translateY(-100vh) scale(0); opacity: 0; }
+            5% { transform: translateY(-95vh) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) scale(0); opacity: 0; }
+        }
+
+        /* --- Animasi Partikel Berkedip --- */
+        .sparkle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .sparkle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #00ffff;
+            opacity: 0;
+            border-radius: 50%;
+            animation: sparkle-blink 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes sparkle-blink {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
     </style>
 </head>
-<!-- PERUBAHAN DI SINI: Menghapus flex, items-center, justify-center, dan overflow-hidden. Menambahkan padding vertikal. -->
-<body class="bg-gray-900 text-gray-300 min-h-screen py-12 px-4 sm:px-6">
+<body>
+    <div class="pixel-grid"></div>
 
-    <!-- Preloader Element -->
-    <div id="preloader">
-        <div class="spinner"></div>
-    </div>
+    <!-- Container Bintang Jatuh -->
+    <div class="stars" id="stars-container"></div>
 
-    <!-- Konten Utama (awalnya disembunyikan) -->
-    <div id="main-content" class="w-full max-w-lg mx-auto float-animation" style="visibility: hidden;">
-        
-        <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-cyan-400 tracking-wide">Rent Linkedin By Zen</h1>
-        </header>
+    <!-- Container Partikel Berkedip -->
+    <div class="sparkle-container" id="sparkle-container"></div>
+    
+    <div class="text-center w-full max-w-2xl relative z-10 mx-auto">
+        <h1 id="main-title" class="text-3xl md:text-4xl font-bold mb-2 text-white text-neon">
+            WEB SETOR AKUN BY ZEN
+        </h1>
 
-        <!-- Step 1: Details & Explanation -->
-        <div id="step-1">
-            <main class="bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 pulsing-glow-card">
-                 <div class="mb-8">
-                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 pb-2 border-b-2 border-gray-600 text-white">Detail</h2>
-                    <ul class="space-y-3 text-lg">
-                        <li class="flex items-center justify-between"><span><strong class="font-bold text-white">Restric</strong></span><span class="font-mono font-semibold text-red-500">0$</span></li>
-                        <li class="flex items-center justify-between"><span><strong class="font-bold text-white">Unrestric</strong></span><span class="font-mono font-semibold text-yellow-400">5$</span></li>
-                        <li class="flex items-center justify-between"><span><strong class="font-bold text-white">Save</strong></span><span class="font-mono font-semibold text-green-500">10$</span></li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 pb-2 border-b-2 border-gray-600 text-white">Penjelasan</h2>
-                    <ul class="space-y-4 text-gray-300 leading-relaxed">
-                        <li><strong class="font-bold text-white">Restric</strong>: Akun terblokir dan tidak bisa diakses kembali sebelum <strong class="font-bold text-white">Rabu Malam</strong>.</li>
-                        <li><strong class="font-bold text-white">Unrestric</strong>: Akun sempat terblokir, namun berhasil diaktifkan lagi sebelum <strong class="font-bold text-white">Rabu Malam</strong>.</li>
-                        <li><strong class="font-bold text-white">Save</strong>: Akun berjalan normal tanpa kendala hingga <strong class="font-bold text-white">Rabu Malam</strong>.</li>
-                    </ul>
-                </div>
-                <button id="continue-btn" class="w-full flex justify-center mt-8 py-3 px-4 border border-transparent rounded-md shadow-lg text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Lanjutkan</button>
-            </main>
+        <!-- Peringatan Berjalan -->
+        <div class="marquee-container mb-8">
+            <p class="marquee-text text-red-400 text-sm font-bold">
+                ⚠️ Hanya untuk akun yang sudah memenuhi kriteria yaitu usia 1 tahun dan 20 koneksi ⚠️
+            </p>
         </div>
 
-        <!-- Step 2: Form Choice (Initially Hidden) -->
-        <div id="step-2-choice" class="hidden">
-            <div class="bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 pulsing-glow-card">
-                <h2 class="text-2xl font-bold text-center mb-6 text-white">Pilih Jenis Formulir</h2>
-                <div class="space-y-4">
-                     <button id="new-account-btn" class="w-full flex justify-center py-3 px-4 border border-cyan-500 rounded-md shadow-sm text-sm font-medium text-cyan-400 bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Form New Account</button>
-                     <button id="unrestrict-account-btn" class="w-full flex justify-center py-3 px-4 border border-cyan-500 rounded-md shadow-sm text-sm font-medium text-cyan-400 bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Form Unrestrict Account</button>
-                </div>
+        <!-- Menu Pilihan (Awalnya terlihat) -->
+        <div id="main-menu">
+            <h2 class="text-xl md:text-2xl font-bold mb-4">PILIH MENU</h2>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="btn-retro px-6 py-3 w-full md:w-auto text-lg" onclick="showForm('new-acc-form')">
+                    FORM NEW ACC
+                </button>
+                <button class="btn-retro px-6 py-3 w-full md:w-auto text-lg" onclick="showForm('unrestrict-acc-form')">
+                    FORM UNRESTRICT ACC
+                </button>
+            </div>
+            <div class="mt-8 text-left max-w-sm mx-auto p-4 bg-[#242442] rounded-md border border-gray-500">
+                <p class="text-base mb-2">
+                    <span class="font-bold">Form New Acc:</span> Khusus akun baru yang ingin disetorkan.
+                </p>
+                <p class="text-base">
+                    <span class="font-bold">Form Unrestrict Acc:</span> Khusus akun yang sudah terbuka dari restric.
+                </p>
             </div>
         </div>
 
-        <!-- Step 3a: Form New Account (Initially Hidden) -->
-        <div id="step-3-new" class="hidden">
-            <section class="bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 pulsing-glow-card">
-                <h2 class="text-2xl font-bold text-center mb-6 text-white">Form Rent New Account</h2>
-                <form id="rent-form-new" class="space-y-4">
-                    <div><label for="email-new" class="block text-sm font-medium text-gray-400">Email</label><input type="email" id="email-new" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
-                    <div><label for="password-new" class="block text-sm font-medium text-gray-400">Password</label><input type="password" id="password-new" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
-                    <div><label for="koneksi" class="block text-sm font-medium text-gray-400">Connections</label><input type="number" id="koneksi" placeholder="Example: 500" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
-                    <div><label for="akun-bulan" class="block text-sm font-medium text-gray-400">Age</label><input type="month" id="akun-bulan" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
-                    <div><label for="code-patem-new" class="block text-sm font-medium text-gray-400">Patem Code</label><input type="text" id="code-patem-new" value="7005" readonly class="mt-1 block w-full px-3 py-2 bg-gray-600 border border-gray-500 text-gray-300 rounded-md shadow-sm cursor-not-allowed"></div>
-                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Ajukan Sewa</button>
-                </form>
-                <button class="back-btn mt-4 w-full text-center text-sm text-cyan-400 hover:text-cyan-300">Kembali</button>
-            </section>
+        <!-- Form New Acc (Awalnya tersembunyi) -->
+        <div id="new-acc-form" style="display: none;">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-neon">FORM NEW ACC</h2>
+            <form id="form-new-acc" class="flex flex-col gap-4 max-w-sm mx-auto">
+                <input type="email" id="new-email" class="p-3 bg-[#242442] border border-gray-500 rounded-md focus:outline-none focus:border-cyan-400" placeholder="Email" required>
+                <input type="password" id="new-password" class="p-3 bg-[#242442] border border-gray-500 rounded-md focus:outline-none focus:border-cyan-400" placeholder="Password" required>
+                <input type="number" id="new-connection" class="p-3 bg-[#242442] border border-gray-500 rounded-md focus:outline-none focus:border-cyan-400" placeholder="Connection" required>
+                <input type="text" id="new-age" class="p-3 bg-[#242442] border border-gray-500 rounded-md focus:outline-none focus:border-cyan-400" placeholder="Age" required>
+                <input type="text" id="new-code" class="p-3 bg-[#242442] border border-gray-500 rounded-md focus:outline-none cursor-not-allowed" value="7777" readonly>
+                <button type="button" onclick="sendNewAccForm()" class="btn-retro px-6 py-3 mt-4 text-lg">
+                    KIRIM FORM
+                </button>
+                <button type="button" onclick="showForm('main-menu')" class="mt-4 text-sm text-gray-400 hover:text-white">
+                    &larr; Kembali ke Menu
+                </button>
+            </form>
         </div>
 
-        <!-- Step 3b: Form Unrestrict Account (Initially Hidden) -->
-        <div id="step-3-unrestrict" class="hidden">
-            <section class="bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 pulsing-glow-card">
-                <h2 class="text-2xl font-bold text-center mb-6 text-white">Form Unrestrict Account</h2>
-                <form id="rent-form-unrestrict" class="space-y-4">
-                    <div><label for="email-unrestrict" class="block text-sm font-medium text-gray-400">Email</label><input type="email" id="email-unrestrict" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
-                    <div><label for="password-unrestrict" class="block text-sm font-medium text-gray-400">Password</label><input type="password" id="password-unrestrict" required class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"></div>
-                    <div><label for="code-patem-unrestrict" class="block text-sm font-medium text-gray-400">Patem Code</label><input type="text" id="code-patem-unrestrict" value="7005" readonly class="mt-1 block w-full px-3 py-2 bg-gray-600 border border-gray-500 text-gray-300 rounded-md shadow-sm cursor-not-allowed"></div>
-                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">Ajukan Unrestrict</button>
-                </form>
-                <button class="back-btn mt-4 w-full text-center text-sm text-cyan-400 hover:text-cyan-300">Kembali</button>
-            </section>
+        <!-- Form Unrestrict Acc (Awalnya tersembunyi) -->
+        <div id="unrestrict-acc-form" style="display: none;">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-neon">FORM UNRESTRICT ACC</h2>
+            <form id="form-unrestrict-acc" class="flex flex-col gap-4 max-w-sm mx-auto">
+                <input type="email" id="unrestrict-email" class="p-3 bg-[#242442] border border-gray-500 rounded-md focus:outline-none focus:border-cyan-400" placeholder="Email" required>
+                <input type="password" id="unrestrict-password" class="p-3 bg-[#242442] border border-gray-500 rounded-md focus:outline-none focus:border-cyan-400" placeholder="Password" required>
+                <input type="text" id="unrestrict-code" class="p-3 bg-[#242442] border border-gray-500 rounded-md focus:outline-none cursor-not-allowed" value="7777" readonly>
+                <button type="button" onclick="sendUnrestrictAccForm()" class="btn-retro px-6 py-3 mt-4 text-lg">
+                    KIRIM FORM
+                </button>
+                <button type="button" onclick="showForm('main-menu')" class="mt-4 text-sm text-gray-400 hover:text-white">
+                    &larr; Kembali ke Menu
+                </button>
+            </form>
         </div>
-        
     </div>
-    
+
     <script>
-        // Logika untuk menampilkan konten setelah halaman siap
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            const mainContent = document.getElementById('main-content');
-            
-            preloader.style.opacity = '0';
-            setTimeout(() => {
-                preloader.style.display = 'none';
-                mainContent.style.visibility = 'visible';
-            }, 500);
-        });
+        const whatsappNumber = '16465389232';
 
-        // Logika Audio yang dioptimalkan
-        let audioContext;
-        function playClickSound() {
-            if (!audioContext) {
-                try {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                } catch (e) {
-                    console.error("Web Audio API is not supported in this browser.");
-                    return;
-                }
-            }
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            oscillator.type = 'triangle';
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            oscillator.start(audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.1);
-            oscillator.stop(audioContext.currentTime + 0.1);
-        }
-
-        // DOM Elements
-        const step1 = document.getElementById('step-1');
-        const step2Choice = document.getElementById('step-2-choice');
-        const step3New = document.getElementById('step-3-new');
-        const step3Unrestrict = document.getElementById('step-3-unrestrict');
-
-        // Event Listeners
-        document.getElementById('continue-btn').addEventListener('click', () => switchView(step1, step2Choice));
-        document.getElementById('new-account-btn').addEventListener('click', () => switchView(step2Choice, step3New));
-        document.getElementById('unrestrict-account-btn').addEventListener('click', () => switchView(step2Choice, step3Unrestrict));
-        document.querySelectorAll('.back-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const currentStep = btn.closest('[id^="step-3"]');
-                if (currentStep) switchView(currentStep, step2Choice);
+        function showForm(formId) {
+            const forms = ['main-menu', 'new-acc-form', 'unrestrict-acc-form'];
+            forms.forEach(id => {
+                document.getElementById(id).style.display = 'none';
             });
-        });
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', playClickSound);
-        });
+            document.getElementById(formId).style.display = 'block';
+        }
 
-        // Fungsi Ganti Tampilan
-        function switchView(fromElement, toElement) {
-            const fromCard = fromElement.querySelector('.pulsing-glow-card');
-            if (fromCard) fromCard.classList.add('fade-out-up');
+        function sendNewAccForm() {
+            const email = document.getElementById('new-email').value;
+            const password = document.getElementById('new-password').value;
+            const connection = document.getElementById('new-connection').value;
+            const age = document.getElementById('new-age').value;
+            const code = document.getElementById('new-code').value;
+
+            if (!email || !password || !connection || !age) {
+                alert('Silakan lengkapi semua data!');
+                return;
+            }
+
+            const message = `
+ *I want to send account*
+
+ *Email*: ${email}
+ *Password*: ${password}
+ *Connections*: ${connection}
+ *Age*: ${age}
+ *Code*: ${code}
+            `.trim();
+
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function sendUnrestrictAccForm() {
+            const email = document.getElementById('unrestrict-email').value;
+            const password = document.getElementById('unrestrict-password').value;
+            const code = document.getElementById('unrestrict-code').value;
+
+            if (!email || !password) {
+                alert('Silakan lengkapi semua data!');
+                return;
+            }
+
+            const message = `
+ *I want to send an Unrestrict account*
+
+ *Email*: ${email}
+ *Password*: ${password}
+ *Code*: ${code}
+            `.trim();
+
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // --- Logika Animasi Background Tambahan ---
+        function createStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = `${Math.random() * 2 + 1}px`;
+            star.style.height = star.style.width;
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            document.getElementById('stars-container').appendChild(star);
 
             setTimeout(() => {
-                fromElement.classList.add('hidden');
-                if (fromCard) fromCard.classList.remove('fade-out-up');
-
-                toElement.classList.remove('hidden');
-                const toCard = toElement.querySelector('.pulsing-glow-card');
-                if (toCard) {
-                    toCard.classList.add('fade-out-up');
-                    requestAnimationFrame(() => toCard.classList.remove('fade-out-up'));
-                }
-                
-                // Peningkatan Aksesibilitas: fokus ke elemen pertama
-                const firstFocusable = toElement.querySelector('button, input');
-                if (firstFocusable) firstFocusable.focus();
-
-            }, 300);
+                star.remove();
+            }, 5000);
         }
-        
-        // Logika WhatsApp
-        const phoneNumber = '12133299206';
-        document.getElementById('rent-form-new').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const rawDateValue = document.getElementById('akun-bulan').value;
-            const dateObject = new Date(rawDateValue + "-02");
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            const year = dateObject.getFullYear();
-            const monthName = monthNames[dateObject.getMonth()];
-            const formattedAge = `${year} ${monthName}`;
-            const message = `*I want to send a new account*
 
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = `${Math.random() * 100}vw`;
+            sparkle.style.top = `${Math.random() * 100}vh`;
+            sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+            document.getElementById('sparkle-container').appendChild(sparkle);
 
-*Email*: ${document.getElementById('email-new').value}
-*Password*: ${document.getElementById('password-new').value}
-*Connections*: ${document.getElementById('koneksi').value}
-*Age*: ${formattedAge}
-*Code*: ${document.getElementById('code-patem-new').value}
-`;
-            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-        });
-        document.getElementById('rent-form-unrestrict').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const message = `*I want to send an unrestric account*
+            setTimeout(() => {
+                sparkle.remove();
+            }, 3000);
+        }
 
+        setInterval(createStar, 200);
+        setInterval(createSparkle, 50);
 
-*Email*: ${document.getElementById('email-unrestrict').value}
-*Password*: ${document.getElementById('password-unrestrict').value}
-*Code*: ${document.getElementById('code-patem-unrestrict').value}
-`;
-            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-        });
     </script>
-
 </body>
 </html>
-
