@@ -3,1445 +3,600 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linkedin Zen - Passive Income</title>
+    <title>Collect Account - Zen</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- CSS Reset & Global Styles --- */
+        /* --- CSS Global --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-main: #050a14;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --accent-blue: #3b82f6;
-            --glow-blue: rgba(59, 130, 246, 0.5);
-            --card-bg: rgba(30, 41, 59, 0.5);
-            --input-bg: #1e293b;
-            /* Tambahan warna untuk status card */
-            --accent-green: #22c55e;
-            --accent-yellow: #eab308;
-        }
-
         body {
-            font-family: 'Nunito', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, var(--bg-main) 60%);
-            position: relative; /* Diperlukan untuk z-index pseudo-element */
-        }
-
-        /* --- Animasi Debu Berterbangan --- */
-        body::before {
-            content: '';
-            position: fixed; 
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1; 
-            pointer-events: none; 
-
-            background-image: radial-gradient(1px 1px, rgba(148, 163, 184, 0.15) 1px, transparent 0),
-                              radial-gradient(2px 2px, rgba(148, 163, 184, 0.1) 2px, transparent 0);
-            
-            background-size: 150px 150px, 300px 300px;
-            background-position: 0 0, 50px 50px;
-
-            animation: moveDust 90s linear infinite;
-        }
-
-        @keyframes moveDust {
-            from {
-                background-position: 0 0, 50px 50px;
-            }
-            to {
-                background-position: -1000px 1000px, -500px 500px; 
-            }
-        }
-        /* --- AKHIR CSS DEBU --- */
-
-
-        .material-symbols-outlined {
-          font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24
-        }
-
-        /* --- Header --- */
-        header {
+            font-family: 'Nunito', Arial, sans-serif;
+            min-height: 100vh; 
+            background-color: #0a0a1a; 
+            background-image: linear-gradient(145deg, 
+                #050510, 
+                #1a1a3a, 
+                #0d0d1f 
+            );
+            background-attachment: fixed; 
+            color: #e0e0e0;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 10;
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .highlight-blue {
-            color: var(--accent-blue);
-            text-shadow: 0 0 15px var(--glow-blue);
-        }
-
-        /* --- Main Container --- */
-        main {
-            padding-top: 120px;
-            padding-bottom: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            padding: 0 20px;
+            flex-direction: column; 
+            align-items: center;   
             text-align: center;
+            overflow-x: hidden; 
         }
 
-        /* --- Section Styling --- */
-        .info-section, .hero-section {
+        .content-wrapper {
+            max-width: 700px;
             width: 100%;
-            margin-bottom: 60px;
-            position: relative;
+            margin-top: 5vh; 
+            padding: 0 20px; 
+            position: relative; 
         }
 
-        /* ### BARU: Animasi Scroll Fade-in ### */
-        .js-scroll-fade-in {
-            opacity: 0;
-            /* Mulai 20px di bawah posisi aslinya */
-            transform: translateY(20px); 
-            
-            /* Durasi dan tipe transisi */
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .js-scroll-fade-in.is-visible {
-            opacity: 1;
-            transform: translateY(0); /* Kembali ke posisi asli */
-        }
-        /* ### AKHIR CSS BARU ### */
-
-        h1.main-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.1;
+        /* --- Konten Teks --- */
+        h1 {
+            font-size: 3rem; 
+            font-weight: 700;
+            color: #00aaff; 
+            text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
             margin-bottom: 15px;
-            background: linear-gradient(to right, #ffffff, #bfdbfe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        h2.section-title {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: var(--text-primary);
         }
 
         p.subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-            max-width: 600px;
-            margin: 0 auto 30px auto;
-        }
-
-        p.section-desc {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 650px;
-            margin: 0 auto 30px auto;
-            line-height: 1.5;
-        }
-        
-        /* --- Glow Effect --- */
-        .glow-effect {
-            position: absolute;
-            width: 250px;
-            height: 250px;
-            background: var(--accent-blue);
-            filter: blur(160px);
-            opacity: 0.15;
-            z-index: -1;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* --- Feature Grids --- */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 60px;
-            text-align: left;
-        }
-        .feature-item {
-            background: var(--card-bg);
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            color: #e2e8f0;
-            transition: transform 0.2s ease;
-        }
-        .feature-item:hover { transform: translateY(-3px); border-color: var(--accent-blue); }
-        .check-icon { color: var(--accent-blue); font-size: 1.2rem; }
-
-        .security-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: left;
-        }
-        .security-item {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 12px 15px;
-            border-radius: 8px;
-            color: #cbd5e1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .shield-icon { color: var(--accent-blue); }
-
-        /* --- Promo Box (Member Get Member) --- */
-        .promo-box {
-            background-color: var(--card-bg);
-            border: 2px solid var(--accent-blue);
-            border-radius: 12px;
-            padding: 20px 25px;
-            color: var(--text-primary);
-            font-weight: 600;
+            font-size: 1rem; 
+            font-weight: 400;
+            color: #c0c0c0; 
             line-height: 1.6;
-            font-size: 1.1rem;
-            box-shadow: 0 0 25px var(--glow-blue);
-            max-width: 650px;
-            margin: 30px auto 0 auto;
-            text-align: center;
-        }
-        .promo-box strong { color: var(--accent-blue); font-weight: 800; }
-
-        /* --- CSS AESTHETIC FORM --- */
-        
-        .cta-button {
-            padding: 15px;
-            background-color: var(--accent-blue);
-            color: var(--text-primary);
-            border: none;
-            border-radius: 8px;
-            font-family: 'Nunito', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s, opacity 0.3s;
-        }
-        .cta-button:hover {
-            background-color: #2563eb;
-            box-shadow: 0 0 20px var(--glow-blue);
-        }
-        
-        .cta-button:disabled {
-            background-color: #334155;
-            opacity: 0.6;
-            cursor: not-allowed;
-            box-shadow: none;
+            margin-bottom: 30px; 
         }
 
-        .form-toggle-container {
+        /* --- Tombol Kapsul (Menu Utama) --- */
+        .button-container {
+            margin-top: 30px; 
             display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            transition: all 0.3s ease-out;
-        }
-        
-        .switch-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        #switchLabel {
-            font-weight: 700;
-            color: var(--text-secondary);
-            transition: color 0.4s;
-        }
-        .toggle-switch-checkbox {
-            display: none;
-        }
-        .toggle-switch-slider {
-            cursor: pointer;
-            width: 50px;
-            height: 26px;
-            background-color: #334155;
-            border-radius: 34px;
-            position: relative;
-            transition: background-color 0.4s, opacity 0.3s, cursor 0.3s;
-        }
-        .toggle-switch-slider::before {
-            content: "";
-            position: absolute;
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            border-radius: 50%;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .toggle-switch-checkbox:checked + .toggle-switch-slider {
-            background-color: var(--accent-blue);
-            box-shadow: 0 0 10px var(--glow-blue);
-        }
-        .toggle-switch-checkbox:checked + .toggle-switch-slider::before {
-            transform: translateX(24px);
+            flex-direction: column; 
+            align-items: center; 
+            gap: 15px; 
         }
 
-        #showFormBtn {
-            width: auto;
-            padding-left: 40px;
-            padding-right: 40px;
-        }
-        
-        #formWrapper {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transform: translateY(-20px); 
-            transition: 
-                max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                opacity 0.4s ease-out 0.1s,
-                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s;
-            max-width: 650px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 0 30px; 
-            border-radius: 16px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            text-align: left;
-        }
-        #formWrapper.visible {
-            max-height: 1000px;
-            opacity: 1;
-            transform: translateY(0);
-            margin-top: 40px; 
-            padding-top: 30px;
-            padding-bottom: 30px;
-            box-shadow: 0 0 30px var(--glow-blue); 
-        }
-
-        #formWrapper h2.section-title {
-            margin-top: 0; 
-            margin-bottom: 20px;
-        }
-        
-        #sewaForm {
-            max-width: 650px;
-            margin: 0 auto;
-            text-align: left;
-        }
-        .form-group {
-            position: relative;
-            margin-bottom: 25px;
-        }
-        .form-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.4rem;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-            pointer-events: none;
-        }
-        .form-input {
-            width: 100%;
-            padding: 14px 15px 14px 50px;
-            border: 1px solid #334155;
-            background-color: var(--input-bg);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-family: 'Nunito', sans-serif;
+        .capsule-btn {
+            background-color: transparent; 
+            border: 2px solid #00aaff;
+            color: #ffffff; 
+            border-radius: 999px; 
+            padding: 12px 30px;
             font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .form-input::placeholder {
-            color: transparent;
-        }
-        .form-label {
-            position: absolute;
-            top: 15px;
-            left: 50px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-        .form-input:focus,
-        .form-input:not(:placeholder-shown) {
-            outline: none;
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 15px var(--glow-blue);
-        }
-        .form-input:focus + .form-label,
-        .form-input:not(:placeholder-shown) + .form-label {
-            top: -10px;
-            left: 45px;
-            font-size: 0.8rem;
-            color: var(--accent-blue);
-            background: var(--bg-main);
-            padding: 0 5px;
-        }
-        .form-input:focus ~ .form-icon {
-            color: var(--accent-blue);
-        }
-
-        .form-label-static {
-            display: block;
             font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text-secondary);
-            text-align: left;
-        }
-        .radio-group-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .radio-group-container input[type="radio"] {
-            display: none;
-        }
-        .radio-label {
-            padding: 10px 18px;
-            background-color: var(--input-bg);
-            border: 1px solid #334155;
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-weight: 700;
+            font-family: 'Nunito', sans-serif; 
             cursor: pointer;
             transition: all 0.3s ease;
-        }
-        .radio-label:hover {
-            border-color: var(--text-secondary);
-        }
-        .radio-group-container input[type="radio"]:checked + .radio-label {
-            background-color: var(--accent-blue);
-            border-color: var(--accent-blue);
-            color: var(--text-primary);
-            box-shadow: 0 0 15px var(--glow-blue);
-        }
-        .form-note {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-align: left;
-            margin-top: 10px;
-        }
-        
-        #submitFormBtn {
-            width: 100%;
-            box-shadow: 0 0 15px var(--glow-blue);
-        }
-        #submitFormBtn:hover {
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
+            min-width: 250px; 
         }
 
-        .close-button {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 20px;
-            text-decoration: underline;
-            font-family: 'Nunito', sans-serif;
-            font-size: 0.9rem;
-            width: 100%;
-            text-align: center;
+        #btn-show-form-20:hover {
+            background-color: #ffa500;
+            border-color: #ffa500;
+            color: #000;
+            transform: scale(1.05); 
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.6); 
         }
-        .close-button:hover {
-            color: var(--text-primary);
+        #btn-show-form-30:hover {
+            background-color: #32ff32;
+            border-color: #32ff32;
+            color: #000;
+            transform: scale(1.05); 
+            box-shadow: 0 0 15px rgba(50, 255, 50, 0.6); 
         }
 
-        /* --- CSS Total Akun --- */
-        #accountTotalContainer {
-            text-align: left;
-            margin-bottom: 20px;
-            background: var(--card-bg);
-            border: 1px solid rgba(59, 130, 246, 0.1);
-            padding: 15px 20px;
-            border-radius: 12px;
+        /* --- STYLING CARD DATA --- */
+        .card-container {
+            margin-top: 40px; 
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .total-label {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-        }
-        .total-count {
-            font-size: 1.5rem; 
-            font-weight: 800;
-            color: var(--accent-blue);
-            text-shadow: 0 0 10px var(--glow-blue);
+            flex-direction: column; 
+            gap: 20px; 
         }
 
-        /* --- CSS DATA AKUN (CARD) --- */
-        #accountListContainer {
-            width: 100%;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-        }
-
-        .account-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(59, 130, 246, 0.1);
+        .data-card {
+            background-color: rgba(10, 10, 30, 0.4);
+            border: 1px solid rgba(0, 170, 255, 0.3); 
             border-radius: 12px;
             padding: 20px;
-            text-align: left;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            word-break: break-all; 
-        }
-        
-        .account-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px var(--glow-blue);
-            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 119, 204, 0.2); 
+            text-align: left; 
+            transition: box-shadow 0.3s ease; 
         }
 
-        .card-email {
+        .data-card h3 {
+            color: #00aaff; 
+            font-weight: 800;
+            font-size: 1.5rem;
+            text-align: center; 
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 170, 255, 0.2);
+            transition: color 0.3s ease;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            padding: 10px 5px; 
+            font-size: 1rem;
+        }
+        
+        .data-row:not(:last-child) {
+             border-bottom: 1px solid rgba(0, 170, 255, 0.1);
+        }
+
+        .data-row span { color: #c0c0c0; }
+        .data-row strong { color: #ffffff; font-weight: 700; font-size: 1.1rem; }
+
+        /* --- Animasi --- */
+        @keyframes greenPulse {
+            0% { box-shadow: 0 0 15px rgba(50, 255, 50, 0.3), 0 0 0px rgba(50, 255, 50, 0); }
+            50% { box-shadow: 0 0 25px rgba(50, 255, 50, 0.6), 0 0 20px rgba(50, 255, 50, 0.4); }
+            100% { box-shadow: 0 0 15px rgba(50, 255, 50, 0.3), 0 0 0px rgba(50, 255, 50, 0); }
+        }
+        @keyframes orangePulse {
+            0% { box-shadow: 0 0 15px rgba(255, 165, 0, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(255, 165, 0, 0.6); }
+            100% { box-shadow: 0 0 15px rgba(255, 165, 0, 0.3); }
+        }
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .data-card.koneksi-30 {
+            animation: 
+                greenPulse 2s infinite alternate,
+                floatAnimation 3s infinite ease-in-out; 
+        }
+        .data-card.koneksi-30 h3 { color: #32ff32; } 
+
+        .data-card.koneksi-20 {
+             animation: orangePulse 2s infinite alternate;
+        }
+        .data-card.koneksi-20 h3 { color: #ffa500; } 
+
+
+        /* --- STYLING FORM --- */
+        
+        #collect-form {
+            background-color: rgba(10, 10, 30, 0.4);
+            border: 1px solid rgba(0, 170, 255, 0.3); 
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0, 119, 204, 0.2); 
+            display: flex;
+            flex-direction: column;
+            gap: 15px; 
+            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        #collect-form h3 {
+            color: #00aaff; 
+            font-weight: 800;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 10px;
+            transition: color 0.4s ease;
+        }
+
+        #form-section.mode-20 #collect-form {
+            border-color: rgba(255, 165, 0, 0.5);
+            box-shadow: 0 0 25px rgba(255, 165, 0, 0.5);
+        }
+        #form-section.mode-20 #collect-form h3 {
+            color: #ffa500;
+        }
+
+        #form-section.mode-30 #collect-form {
+            border-color: rgba(50, 255, 50, 0.5);
+            box-shadow: 0 0 25px rgba(50, 255, 50, 0.5);
+        }
+        #form-section.mode-30 #collect-form h3 {
+            color: #32ff32;
+        }
+
+        .form-group { width: 100%; }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            font-family: 'Nunito', sans-serif;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.3); 
+            border: 1px solid rgba(0, 170, 255, 0.4);
+            border-radius: 8px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00aaff;
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+        }
+
+        .form-input::placeholder { color: #888; }
+
+        .submit-btn {
+            background-color: #00aaff; 
+            border: 2px solid #00aaff; 
+            color: #050510; 
+            border-radius: 999px; 
+            padding: 12px 30px;
             font-size: 1rem;
             font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 15px;
+            font-family: 'Nunito', sans-serif; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px; 
         }
 
-        .card-status {
-            display: inline-block; 
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 5px 12px;
-            border-radius: 20px; 
-            
-            background-color: var(--input-bg);
-            border: 1px solid #334155;
-            color: var(--text-secondary);
+        .submit-btn:hover {
+            transform: scale(1.05); 
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.6); 
         }
         
-        .status-old {
-            background-color: rgba(59, 130, 246, 0.1); 
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
+        .back-btn {
+            background-color: transparent;
+            border: 2px solid #555; 
+            color: #aaa;
+            border-radius: 999px;
+            padding: 10px 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
         }
-        .status-new {
-            background-color: rgba(34, 197, 94, 0.1); 
-            border-color: var(--accent-green);
-            color: var(--accent-green);
+        .back-btn:hover {
+            background-color: #555;
+            color: #fff;
         }
-        .status-unrestrict {
-            background-color: rgba(234, 179, 8, 0.1); 
-            border-color: var(--accent-yellow);
-            color: var(--accent-yellow);
-        }
-        /* --- AKHIR CSS CARD AKUN --- */
-
-
-        /* --- CSS JAM MODERN DIGITAL TANPA CARD BOX --- */
-        .modern-clock-card {
-            margin-top: 40px;
-            margin-bottom: -20px;
-            padding: 0px 0px; 
+        
+        /* --- CSS UNTUK TRANSISI (0.5s) --- */
+        
+        #home-section,
+        #form-section {
             width: 100%;
-            max-width: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center; 
-            gap: 20px;
-            position: relative;
-            overflow: hidden;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0s 0.5s; 
         }
-        .modern-clock-card::before {
-            display: none; 
+        
+        #form-section {
+             margin-top: 30px;
         }
 
-        .date-info {
-            z-index: 1;
-            text-align: right; 
-            flex-shrink: 0;
-        }
-        .date-info .day-of-week {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-            text-shadow: 0 0 8px rgba(59, 130, 246, 0.3); 
-        }
-        .date-info .full-date {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); 
-        }
-
-        .time-display {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
-        .time-display .time-text {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            z-index: 2;
-            text-shadow: 0 0 15px var(--glow-blue); 
-        }
-        .time-display svg {
+        #home-section.page-hidden {
+            opacity: 0;
+            transform: translateY(-20px); 
+            visibility: hidden;
+            pointer-events: none;
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            transform: rotate(-90deg); 
-            z-index: 1;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0s; 
         }
-        .time-display circle {
-            fill: none;
-            stroke-width: 8; 
-        }
-        .time-display .circle-bg {
-            stroke: rgba(45, 56, 76, 0.5); 
-        }
-        .time-display .circle-progress {
-            stroke: var(--accent-blue); 
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.5s linear;
-            filter: drop-shadow(0 0 5px var(--glow-blue)); 
-        }
-        
-        .time-display .second-dot {
+
+        #form-section.page-hidden {
+            opacity: 0;
+            transform: translateY(-50px); 
+            visibility: hidden;
+            pointer-events: none;
             position: absolute;
-            top: 0;   
-            left: 0;  
-            width: 12px; 
-            height: 12px;
-            background-color: var(--text-primary);
-            border-radius: 50%;
-            z-index: 3;
-            box-shadow: 0 0 10px var(--glow-blue);
-        }
-
-        @media (max-width: 550px) {
-            .modern-clock-card {
-                flex-direction: column;
-                padding: 0px; 
-                gap: 15px;
-            }
-            .date-info {
-                text-align: center;
-            }
-            .time-display {
-                width: 120px;
-                height: 120px;
-            }
-            .time-display .time-text {
-                font-size: 2.2rem;
-            }
-            .time-display circle {
-                stroke-width: 6;
-            }
-            .time-display .second-dot {
-                width: 10px;
-                height: 10px;
-            }
-        }
-        /* --- AKHIR CSS JAM MODERN DIGITAL --- */
-
-        
-        /* --- CSS Payment Grid --- */
-        .payment-grid {
-            width: 100%;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 15px;
-            margin-top: 40px; 
-        }
-
-        .payment-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(59, 130, 246, 0.1);
-            border-radius: 12px;
-            padding: 15px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-
-        .payment-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px var(--glow-blue);
-            border-color: var(--accent-blue);
-        }
-
-        .payment-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        .payment-name {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-align: center; 
-        }
-        /* --- AKHIR CSS PAYMENT GRID --- */
-
-        
-        /* ### BARU: CSS MOCKUP LINKEDIN ### */
-        .mockup-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 kolom di desktop */
-            gap: 20px;
-            text-align: left;
-        }
-
-        .mockup-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(59, 130, 246, 0.1);
-            border-radius: 12px;
-            overflow: hidden; /* Penting untuk banner */
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            top: 0;
+            left: 0;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0s 0.5s;
         }
         
-        .mockup-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px var(--glow-blue);
-            border-color: var(--accent-blue);
+        #form-section.page-visible {
+            opacity: 1;
+            transform: translateY(0); 
+            visibility: visible;
+            pointer-events: auto;
+            position: relative; 
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0s;
         }
-
-        /* Card 1: Profil */
-        .mockup-profile-banner {
-            height: 80px;
-            background: linear-gradient(45deg, var(--accent-blue), #1e293b);
+        
+        /* --- CSS UNTUK PESAN DISABLED --- */
+        #disabled-message {
+            padding: 20px;
+            background-color: rgba(255, 100, 0, 0.1);
+            border: 1px solid #ffa500;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
-        .mockup-profile-pic {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 4px solid var(--card-bg);
-            margin-top: -35px; /* Tarik ke atas banner */
-            margin-left: 20px;
-            background-color: var(--input-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        #disabled-message .msg-title {
+            color: #ffa500;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
-        .mockup-profile-pic .material-symbols-outlined {
-            font-size: 2.5rem;
-            color: var(--text-secondary);
-        }
-        .mockup-profile-info {
-            padding: 10px 20px 20px 20px;
-        }
-        .mockup-profile-info h3 {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-        .mockup-profile-info p {
+        #disabled-message .msg-text {
+            color: #ccc;
             font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
-        .mockup-profile-info .location {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
             margin-top: 5px;
         }
-        .mockup-profile-info .location .material-symbols-outlined {
-            font-size: 1rem; /* Kecilkan ikon lokasi */
+        
+        /* --- CSS UNTUK FIELDSET (PEMBUNGKUS FORM) --- */
+        #form-fieldset {
+            border: none; 
+            padding: 0;
+            margin: 0;
+            transition: opacity 0.3s ease-out;
+        }
+        
+        #form-fieldset:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none; 
+        }
+        
+        #form-fieldset:disabled .form-input,
+        #form-fieldset:disabled .submit-btn {
+            cursor: not-allowed;
         }
 
-        /* Card 2: Postingan */
-        .mockup-post-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px;
-        }
-        .mockup-post-pic {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--input-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .mockup-post-pic .material-symbols-outlined {
-            color: var(--text-secondary);
-        }
-        .mockup-post-author h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        .mockup-post-author span {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        .mockup-post-content {
-            padding: 0 15px 15px 15px;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        .mockup-post-social {
-            display: flex;
-            justify-content: space-around;
-            border-top: 1px solid var(--input-bg);
-            padding: 15px 10px;
-        }
-        .social-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--text-secondary);
-            font-weight: 600;
+        /* --- Footer --- */
+        footer {
+            width: 100%;
+            margin-top: auto; 
+            padding: 40px 20px 20px 20px; 
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4); 
             font-size: 0.9rem;
         }
-        .social-btn .material-symbols-outlined {
-            font-size: 1.2rem;
+        
+        footer p {
+            color: rgba(255, 255, 255, 0.4); 
         }
 
-        /* Responsive untuk Mockup */
-        @media (max-width: 650px) {
-            .mockup-grid {
-                grid-template-columns: 1fr; /* 1 kolom di HP */
-            }
-        }
-        /* --- AKHIR CSS MOCKUP LINKEDIN --- */
-
-
-        /* --- Responsive Form Toggle Container --- */
-        @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            h1.main-title { font-size: 2.5rem; }
-            p.subtitle { font-size: 1rem; }
-            h2.section-title { font-size: 1.6rem; }
-            .feature-grid { grid-template-columns: 1fr; }
-            .promo-box { font-size: 1rem; }
-            #sewaForm { padding: 0; }
-            #formWrapper, #formWrapper.visible { padding: 30px 20px; }
-            .radio-label { padding: 8px 15px; font-size: 0.9rem; }
-            .form-toggle-container { flex-direction: column; gap: 15px; }
+        /* --- Responsif --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            p.subtitle { font-size: 0.9rem; }
+            .content-wrapper { margin-top: 3vh; padding: 0 15px;}
+            .capsule-btn { min-width: 200px; padding: 10px 25px; }
+            #collect-form { padding: 20px; }
+            .form-input { padding: 12px 15px; font-size: 0.95rem; }
+            .data-card { padding: 15px; }
+            .data-card h3 { font-size: 1.3rem; }
+            .data-row { font-size: 0.95rem; }
+            .data-row strong { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            Linkedin <span class="highlight-blue">Zen</span>
-        </div>
-        </header>
-
-    <main>
-        <div class="container">
+    <div class="content-wrapper">
+        <h1>Collect Account</h1>
+        <p class="subtitle">Web Official Zen untuk start sewa. isi data data dengan baik dan benar</p>
+        
+        <div id="home-section" class="page-visible">
+            <div class="button-container">
+                <button class="capsule-btn" id="btn-show-form-20">Minimum 20 Koneksi</button>
+                <button class="capsule-btn" id="btn-show-form-30">Minimum 30 Koneksi</button>
+            </div>
             
-            <section class="hero-section">
-                <div class="glow-effect"></div>
-                <h1 class="main-title">Passive Income<br>Weekly</h1>
-                <p class="subtitle">
-                    Sewakan akunmu di agent Zen dan Peroleh Passive Income $10 Weekly
-                </p>
-                <div class="feature-grid js-scroll-fade-in"> 
-                    <div class="feature-item"><span class="check-icon">✔</span> 100% Dibayar sesuai rules</div>
-                    <div class="feature-item"><span class="check-icon">✔</span> Bisa semua jenis Bank & E-Wallet</div>
-                    <div class="feature-item"><span class="check-icon">✔</span> DP $1 Setelah Agent Log in</div>
-                    <div class="feature-item"><span class="check-icon">✔</span> Admin Responsif</div>
-                </div>
-            </section>
-
-            <section class="info-section js-scroll-fade-in"> 
-                <h2 class="section-title">Buat apa akunya?</h2>
-                <p class="section-desc">
-                    Akun digunakan untuk Promosi Produk digital dan Menaikan Engagement Di Negara Agent
-                </p>
-                <div class="security-list">
-                    <div class="security-item"><span class="shield-icon">🛡️</span> Akun aman Tidak Take data utama</div>
-                    <div class="security-item"><span class="shield-icon">🌍</span> Akun disesuaikan Profilnya ke negara Agent</div>
-                    <div class="security-item"><span class="shield-icon">🔒</span> Akun tidak akan digunakan untuk tindak kriminal</div>
-                </div>
-            </section>
-
-            <section class="info-section js-scroll-fade-in"> 
-                <h2 class="section-title">Member Get Member</h2>
-                <div class="promo-box">
-                    Undang Teman untuk menyewakan akun linkedinya kesini, per undangan yang berhasil sewa maka kamu akan mendapat <strong>$2</strong> terlepas akun temanmu Restric Atau Tidak nya
-                </div>
-            </section>
-
-            <section class="info-section js-scroll-fade-in"> 
+            <div class="card-container">
                 
-                <div class="form-toggle-container">
-                    <div class="switch-container">
-                        <input type="checkbox" id="formToggleSwitch" class="toggle-switch-checkbox" disabled>
-                        <label for="formToggleSwitch" class="toggle-switch-slider"></label>
-                        <span id="switchLabel">Loading...</span>
+                <div class="data-card koneksi-30"> 
+                    <h3>Koneksi 30</h3>
+                    <div class="data-row">
+                        <span>Rate Normal</span>
+                        <strong>192k</strong>
                     </div>
-                    <button id="showFormBtn" class="cta-button" disabled>Mulai Sewa</button>
-                </div>
-
-                <div class="modern-clock-card" id="modernClockCard">
-                    <div class="date-info">
-                        <div class="day-of-week" id="dayOfWeek"></div>
-                        <div class="full-date" id="fullDate"></div>
+                    <div class="data-row">
+                        <span>Rate Restric</span>
+                        <strong>192k</strong>
                     </div>
-                    <div class="time-display">
-                        <div class="time-text" id="timeText"></div>
-                        <svg viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="45" class="circle-bg"></circle>
-                            <circle cx="50" cy="50" r="45" class="circle-progress" id="circleProgress"></circle>
-                        </svg>
-                        <div class="second-dot" id="secondDot"></div>
+                    <div class="data-row">
+                        <span>Rate Unrestrict</span>
+                        <strong>+80k</strong>
                     </div>
                 </div>
 
-                <div id="formWrapper">
-                    <h2 class="section-title">Formulir Sewa</h2>
-                    <form id="sewaForm">
-                        <div class="form-group">
-                            <input type="email" id="email" class="form-input" placeholder=" " required> 
-                            <label for="email" class="form-label">Email Linkedin</label>
-                            <span class="form-icon material-symbols-outlined">mail</span>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" id="password" class="form-input" placeholder=" " required>
-                            <label for="password" class="form-label">Password Linkedin</label>
-                            <span class="form-icon material-symbols-outlined">lock</span>
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="koneksi" class="form-input" placeholder=" " required>
-                            <label for="koneksi" class="form-label">Koneksi Linkedin</label>
-                            <span class="form-icon material-symbols-outlined">groups</span>
-                        </div>
-                        <div class="form-group">
-                            <input type="number" id="tahun" class="form-input" placeholder=" " required>
-                            <label for="tahun" class="form-label">Tahun Pembuatan Akun</label>
-                            <span class="form-icon material-symbols-outlined">calendar_month</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label-static">Kategori Akun</label>
-                            <div class="radio-group-container">
-                                <input type="radio" id="kat_new" name="kategori" value="New Acc" checked required>
-                                <label for="kat_new" class="radio-label">New Acc</label>
-                                <input type="radio" id="kat_old" name="kategori" value="Old Acc (Re active)">
-                                <label for="kat_old" class="radio-label">Old Acc (Re active)</label>
-                                <input type="radio" id="kat_unrestrict" name="kategori" value="Unrestrict">
-                                <label for="kat_unrestrict" class="radio-label">Unrestrict</label>
-                            </div>
-                            <p class="form-note">Note: Yang baru mulai sewa wajib pilih New Acc!!!</p>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="kode" class="form-input" value="7777" placeholder=" " readonly>
-                            <label for="kode" class="form-label">Kode Agent</label>
-                            <span class="form-icon material-symbols-outlined">tag</span>
-                        </div>
-                        <button type="submit" id="submitFormBtn" class="cta-button">Kirim Ke Agent</button>
-                        <button type="button" id="closeFormBtn" class="close-button">Tutup Form</button>
-                    </form>
-                </div>
-            </section>
-            
-            <section class="info-section js-scroll-fade-in"> 
-                <h2 class="section-title">Metode Pembayaran</h2>
-                <div class="payment-grid">
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #3b82f6;">D</div>
-                        <span class="payment-name">Dana</span>
+                <div class="data-card koneksi-20">
+                    <h3>Koneksi 20</h3>
+                    <div class="data-row">
+                        <span>Rate Normal</span>
+                        <strong>160k</strong>
                     </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #6d28d9;">O</div>
-                        <span class="payment-name">Ovo</span>
+                    <div class="data-row">
+                        <span>Rate Restric</span>
+                        <strong>16k</strong>
                     </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #22c55e;">G</div>
-                        <span class="payment-name">Gopay</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #f97316;">S</div>
-                        <span class="payment-name">ShopeePay</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #f59e0b;">S</div>
-                        <span class="payment-name">Seabank</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #2563eb;">B</div>
-                        <span class="payment-name">BRI</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #eab308;">M</div>
-                        <span class="payment-name">Mandiri</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #0ea5e9;">B</div>
-                        <span class="payment-name">BCA Blu</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #facc15; color: #1e293b;">J</div>
-                        <span class="payment-name">Jago</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #f59e0b;">B</div>
-                        <span class="payment-name">BNI</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #ef4444;">P</div>
-                        <span class="payment-name">Permata</span>
-                    </div>
-                    <div class="payment-card">
-                        <div class="payment-icon" style="background-color: #fde047; color: #1e293b;">T</div>
-                        <span class="payment-name">TMRW</span>
+                    <div class="data-row">
+                        <span>Rate Unrestrict</span>
+                        <strong>0</strong>
                     </div>
                 </div>
-            </section>
-            
-            <section class="info-section js-scroll-fade-in">
-                <h2 class="section-title">Contoh Penggunaan Akun</h2>
                 
-                <div class="mockup-grid">
-                    
-                    <div class="mockup-card">
-                        <div class="mockup-profile-banner"></div>
-                        <div class="mockup-profile-pic">
-                            <span class="material-symbols-outlined">person</span>
-                        </div>
-                        <div class="mockup-profile-info">
-                            <h3>Alex Jordan</h3>
-                            <p>Digital Health Advocate | Promoting Wellness Tech</p>
-                            <div class="location">
-                                <span class="material-symbols-outlined">location_on</span>
-                                Berlin, Germany
-                            </div>
-                        </div>
+            </div>
+            </div>
+
+        <div id="form-section" class="page-hidden">
+            
+            <div id="disabled-message" style="display: none;">
+                <p class="msg-title">Form Ditutup</p>
+                <p class="msg-text">Form hanya bisa diisi pada jam 21:00 malam sampai 05:00 pagi.</p>
+            </div>
+            
+            <form id="collect-form">
+                <h3>Form Collect Account</h3>
+                
+                <fieldset id="form-fieldset">
+                    <div class="form-group">
+                        <input type="email" id="email" class="form-input" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" class="form-input" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="koneksi" class="form-input" placeholder="Koneksi" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="tahun" class="form-input" placeholder="Tahun Akun" required>
                     </div>
                     
-                    <div class="mockup-card">
-                        <div class="mockup-post-header">
-                            <div class="mockup-post-pic">
-                                <span class="material-symbols-outlined">person</span>
-                            </div>
-                            <div class="mockup-post-author">
-                                <h4>Alex Jordan</h4>
-                                <span>Promoted</span>
-                            </div>
-                        </div>
-                        <div class="mockup-post-content">
-                            <p>Excited to share this new digital wellness app! It's changing how we track our health. #DigitalHealth #Wellness #Tech</p>
-                        </div>
-                        <div class="mockup-post-social">
-                            <span class="social-btn">
-                                <span class="material-symbols-outlined">thumb_up</span> Like
-                            </span>
-                            <span class="social-btn">
-                                <span class="material-symbols-outlined">chat_bubble</span> Comment
-                            </span>
-                            <span class="social-btn">
-                                <span class="material-symbols-outlined">repeat</span> Repost
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-
-            <section class="info-section js-scroll-fade-in"> 
-                <h2 class="section-title">Data Akun</h2>
-                
-                <div id="accountTotalContainer">
-                    <span class="total-label">Total Email Running:</span>
-                    <span class="total-count" id="accountTotalCount">...</span>
-                </div>
-
-                <div id="accountListContainer">
-                    <p id="accountListLoading">Memuat data akun...</p>
-                </div>
-            </section>
-
+                    <input type="hidden" id="kode" value=""> 
+                    <input type="hidden" id="phone-target" value="">
+                    
+                    <button type="submit" class="submit-btn">Mulai sewa</button>
+                </fieldset>
+            </form>
+            
+            <button id="btn-back-to-home" class="back-btn">Kembali ke Menu</button>
         </div>
-    </main>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Zen Official. All Rights Reserved.</p>
+    </footer>
 
     <script>
-        // --- Konfigurasi JSONBin ---
-        const BIN_ID_TOGGLE = '68ef0955ae596e708f143dc8';
-        const API_KEY_TOGGLE = '$2a$10$CyEgkHrw6xtwHt.RE3ZqEulgvcK5yzSmlYJmn.aRA23csA9a8u/.2'; 
-        const BIN_URL_TOGGLE = `https://api.jsonbin.io/v3/b/${BIN_ID_TOGGLE}`;
-
-        const BIN_ID_TABLE = '6905803fae596e708f3baa25';
-        const API_KEY_TABLE = '$2a$10$ziNrwiYaAO5/AfgfNP218OKOtjLxTV6c7Zau9vLmygY35FQ36jlci'; 
-        const BIN_URL_TABLE = `https://api.jsonbin.io/v3/b/${BIN_ID_TABLE}`;
-
-        // --- Elemen Global ---
-        const toggleSwitch = document.getElementById('formToggleSwitch'); 
-        const switchSliderLabel = document.querySelector('label[for="formToggleSwitch"]'); 
-        const switchLabel = document.getElementById('switchLabel'); 
-        const showFormBtn = document.getElementById('showFormBtn');
-        const formWrapper = document.getElementById('formWrapper');
-        const formToggleContainer = document.querySelector('.form-toggle-container');
-        const closeFormBtn = document.getElementById('closeFormBtn'); 
-        const accountListContainer = document.getElementById('accountListContainer'); 
+        // --- 1. PENGALIHAN HALAMAN (VIEW) ---
         
-        // --- Elemen Jam Modern Digital ---
-        const modernClockCard = document.getElementById('modernClockCard');
-        const timeTextEl = document.getElementById('timeText');
-        const dayOfWeekEl = document.getElementById('dayOfWeek');
-        const fullDateEl = document.getElementById('fullDate');
-        const circleProgress = document.getElementById('circleProgress');
-        const secondDot = document.getElementById('secondDot');
-
-        // --- Elemen Total Akun ---
-        const accountTotalCountEl = document.getElementById('accountTotalCount');
+        const homeSection = document.getElementById('home-section');
+        const formSection = document.getElementById('form-section');
+        const btnShowForm20 = document.getElementById('btn-show-form-20');
+        const btnShowForm30 = document.getElementById('btn-show-form-30');
+        const btnBackToHome = document.getElementById('btn-back-to-home');
         
-        const radius = 45; 
-        const circumference = 2 * Math.PI * radius;
-        circleProgress.style.strokeDasharray = `${circumference} ${circumference}`;
-        circleProgress.style.strokeDashoffset = circumference;
+        const kodeInput = document.getElementById('kode');
+        const phoneTargetInput = document.getElementById('phone-target'); 
 
+        const formFieldset = document.getElementById('form-fieldset');
+        const disabledMessage = document.getElementById('disabled-message');
 
-        // --- State ---
-        let isAdminAuthenticated = false; 
-        let isSaving = false; 
-
-        // --- FUNGSI JAM (SUDAH DIPERBAIKI) ---
-        function padZero(num) {
-            return num < 10 ? "0" + num : num;
+        function showForm() {
+            homeSection.classList.remove('page-visible');
+            homeSection.classList.add('page-hidden');
+            
+            setTimeout(() => {
+                formSection.classList.remove('page-hidden');
+                formSection.classList.add('page-visible');
+            }, 10); 
+            
+            window.scrollTo(0, 0); 
+        }
+        
+        function showHome() {
+            formSection.classList.remove('page-visible');
+            formSection.classList.add('page-hidden');
+            
+            formSection.classList.remove('mode-20');
+            formSection.classList.remove('mode-30');
+            
+            setTimeout(() => {
+                homeSection.classList.remove('page-hidden');
+                homeSection.classList.add('page-visible');
+            }, 10); 
         }
 
-        function updateModernClock() {
+        function handleFormOpen(event) {
+            // 1. Cek Waktu
             const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-
-            timeTextEl.textContent = `${padZero(hours)}:${padZero(minutes)}`;
-
-            const optionsDay = { weekday: 'long' };
-            const optionsDate = { month: 'long', day: 'numeric' };
-            dayOfWeekEl.textContent = now.toLocaleDateString('en-US', optionsDay); 
-            fullDateEl.textContent = now.toLocaleDateString('en-US', optionsDate); 
-
-            const secondsForOffset = (seconds + 1) % 60; 
-            const offset = circumference - (secondsForOffset / 60) * circumference;
-            circleProgress.style.strokeDashoffset = offset;
-
-            const angle = (seconds / 60) * 360; 
-            const centerX = 50;
-            const centerY = 50;
+            const currentHour = now.getHours(); // 0-23
             
-            const x = centerX + radius * Math.cos((angle - 90) * Math.PI / 180); 
-            const y = centerY + radius * Math.sin((angle - 90) * Math.PI / 180);
+            const isTimeAllowed = (currentHour >= 21) || (currentHour < 5);
 
-            const timeDisplaySize = parseFloat(getComputedStyle(timeTextEl.parentElement).width);
-            const dotSize = parseFloat(getComputedStyle(secondDot).width);
+            // 2. Tentukan data visual
+            const buttonId = event.currentTarget.id; 
             
-            const scaledX = (x / 100) * timeDisplaySize;
-            const scaledY = (y / 100) * timeDisplaySize;
+            if (buttonId === 'btn-show-form-20') {
+                kodeInput.value = '7777';
+                phoneTargetInput.value = '13123717165'; 
+                formSection.classList.add('mode-20'); 
+                formSection.classList.remove('mode-30');
+            } else if (buttonId === 'btn-show-form-30') {
+                kodeInput.value = 'Zen';
+                phoneTargetInput.value = '12158209365'; 
+                formSection.classList.add('mode-30'); 
+                formSection.classList.remove('mode-20');
+            }
 
-            secondDot.style.transform = `translate(${scaledX - (dotSize / 2)}px, ${scaledY - (dotSize / 2)}px)`;
-        }
-        // --- AKHIR FUNGSI JAM ---
-
-
-        /**
-         * Memperbarui UI (Tombol/Label) berdasarkan status form
-         */
-        function updateUI(isFormOpen) {
-            if (isFormOpen) {
-                switchLabel.textContent = 'Form Buka';
-                showFormBtn.disabled = false;
-                toggleSwitch.checked = true;
-                switchLabel.style.color = 'var(--text-primary)';
+            // 3. Atur status form
+            if (isTimeAllowed) {
+                formFieldset.disabled = false;
+                disabledMessage.style.display = 'none';
             } else {
-                switchLabel.textContent = 'Form Tutup';
-                showFormBtn.disabled = true;
-                toggleSwitch.checked = false;
-                switchLabel.style.color = 'var(--text-secondary)';
+                formFieldset.disabled = true;
+                disabledMessage.style.display = 'block';
             }
-        }
-
-        /**
-         * Mengambil status form (Toggle) dari JSONBin
-         */
-        async function fetchFormState() {
-            try {
-                const response = await fetch(`${BIN_URL_TOGGLE}/latest`, {
-                    method: 'GET',
-                    headers: { 'X-Master-Key': API_KEY_TOGGLE }
-                });
-                if (!response.ok) throw new Error(`Gagal mengambil data toggle: ${response.statusText}`);
-                const data = await response.json();
-                if (data.record && typeof data.record.isFormOpen !== 'undefined') {
-                    updateUI(data.record.isFormOpen);
-                } else {
-                    updateUI(false); 
-                    console.warn('Format data di JSONBin toggle salah.');
-                }
-            } catch (error) {
-                console.error('Error fetching toggle state:', error);
-                switchLabel.textContent = 'Error';
-                updateUI(false);
-            }
-        }
-
-        /**
-         * Menyimpan status form (Toggle) baru ke JSONBin
-         */
-        async function updateFormState(newState) {
-            if (isSaving) return;
-            isSaving = true;
-            switchLabel.textContent = 'Menyimpan...';
-            switchSliderLabel.style.cursor = 'wait';
-            switchSliderLabel.style.opacity = '0.5';
-
-            try {
-                const response = await fetch(BIN_URL_TOGGLE, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': API_KEY_TOGGLE 
-                    },
-                    body: JSON.stringify({ isFormOpen: newState })
-                });
-                if (!response.ok) throw new Error(`Gagal menyimpan data toggle: ${response.statusText}`);
-                const data = await response.json();
-                updateUI(data.record.isFormOpen);
-            } catch (error) {
-                console.error('Error updating state:', error);
-                switchLabel.textContent = 'Gagal Simpan';
-                updateUI(!newState);
-            } finally {
-                isSaving = false;
-                switchSliderLabel.style.cursor = 'pointer';
-                switchSliderLabel.style.opacity = '1';
-            }
-        }
-
-        /**
-         * Mengambil dan membangun KARTU Akun & TOTAL
-         */
-        async function fetchAccountTableData() {
-            try {
-                const response = await fetch(`${BIN_URL_TABLE}/latest`, {
-                    method: 'GET',
-                    headers: { 'X-Master-Key': API_KEY_TABLE } 
-                });
-                if (!response.ok) throw new Error(`Gagal mengambil data tabel: ${response.statusText}`);
-
-                const data = await response.json();
-                const accounts = data.record.users; 
-
-                if (Array.isArray(accounts) && accounts.length > 0) {
-                    
-                    // Update Total Akun
-                    accountTotalCountEl.textContent = accounts.length;
-
-                    accountListContainer.innerHTML = ''; // Kosongkan "Loading..."
-                    
-                    accounts.forEach(account => {
-                        if(account && typeof account === 'object') {
-                            
-                            // Buat Card
-                            const card = document.createElement('div');
-                            card.className = 'account-card';
-
-                            // Buat info Email
-                            const emailEl = document.createElement('div');
-                            emailEl.className = 'card-email';
-                            emailEl.textContent = account.email || '-';
-                            
-                            // Buat info Status
-                            const statusEl = document.createElement('div');
-                            statusEl.className = 'card-status'; 
-                            const statusText = (account.status || 'N/A').toLowerCase();
-                            statusEl.textContent = account.status || 'N/A';
-                            
-                            // Tambah kelas warna-warni berdasarkan status
-                            if (statusText.includes('old') || statusText.includes('re active')) {
-                                statusEl.classList.add('status-old');
-                            } else if (statusText.includes('new')) {
-                                statusEl.classList.add('status-new');
-                            } else if (statusText.includes('unrestrict')) {
-                                statusEl.classList.add('status-unrestrict');
-                            }
-
-                            card.appendChild(emailEl);
-                            card.appendChild(statusEl);
-                            accountListContainer.appendChild(card);
-                        }
-                    });
-                    
-                } else {
-                    accountListContainer.innerHTML = '<p>Belum ada data akun.</p>';
-                    accountTotalCountEl.textContent = '0';
-                }
-            } catch (error) {
-                console.error('Error fetching table data:', error);
-                accountListContainer.innerHTML = '<p style="color: #ff5555;">Gagal memuat data akun. Periksa struktur Bin.</p>';
-                accountTotalCountEl.textContent = '0';
-            }
-        }
-        // --- AKHIR FUNGSI KARTU ---
-
-
-        // --- EVENT LISTENERS ---
-
-        // 1. Ambil status saat halaman pertama kali dimuat
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchFormState(); 
-            fetchAccountTableData(); 
             
-            updateModernClock(); 
-            setInterval(updateModernClock, 1000); 
+            // 4. Tampilkan form
+            showForm();
+        }
 
-            // ### BARU: Logika Intersection Observer untuk Animasi Scroll ###
-            const sectionsToAnimate = document.querySelectorAll('.js-scroll-fade-in');
+        btnShowForm20.addEventListener('click', handleFormOpen);
+        btnShowForm30.addEventListener('click', handleFormOpen);
 
-            if (sectionsToAnimate.length > 0) {
-                const observerOptions = {
-                    root: null, // default: viewport
-                    rootMargin: '0px',
-                    threshold: 0.1 // 10% dari elemen harus terlihat
-                };
+        btnBackToHome.addEventListener('click', showHome);
 
-                const observerCallback = (entries, observer) => {
-                    entries.forEach(entry => {
-                        // Jika elemen masuk ke viewport
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                            // Berhenti mengamati elemen ini setelah animasi berjalan
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                };
-
-                const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-                // Amati setiap section
-                sectionsToAnimate.forEach(section => {
-                    observer.observe(section);
-                });
-            }
-            // ### AKHIR LOGIKA ANIMASI SCROLL ###
-        });
-
-        // 2. Logika Sandi saat Slider Label diklik
-        switchSliderLabel.addEventListener('click', async () => {
-            if (isSaving) return; 
-            if (isAdminAuthenticated) {
-                await updateFormState(!toggleSwitch.checked);
-            } else {
-                const pass = prompt('Masukkan Sandi Admin:');
-                if (pass === '2003') {
-                    isAdminAuthenticated = true;
-                    alert('Sandi Benar. Anda sekarang bisa mengubah status form.');
-                    await updateFormState(!toggleSwitch.checked);
-
-                } else if (pass !== null) { 
-                    alert('Sandi Salah.');
-                }
-            }
-        });
         
-        // 3. Tampilkan form saat tombol "Mulai Sewa" diklik
-        showFormBtn.addEventListener('click', function() {
-            formWrapper.classList.add('visible');
-            formToggleContainer.style.display = 'none'; 
-            modernClockCard.style.display = 'none'; 
-        });
-
-        // 4. Tutup form saat tombol "Tutup Form" diklik
-        closeFormBtn.addEventListener('click', function() {
-            formWrapper.classList.remove('visible');
-            formToggleContainer.style.display = ''; 
-            modernClockCard.style.display = ''; 
-        });
-
-        // 5. Kirim form sewa ke WhatsApp
-        document.getElementById('sewaForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const koneksi = document.getElementById('koneksi').value;
-            const tahun = document.getElementById('tahun').value;
-            const kode = document.getElementById('kode').value;
-            const kategori = document.querySelector('input[name="kategori"]:checked').value;
+        // --- 2. FUNGSI KIRIM WHATSAPP ---
+        
+        document.getElementById('collect-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
             
-            const messageTitle = `*ACCOUNT SUBMISSION - ${kategori}*`;
-            const phone = '13123717165';
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            let koneksi = document.getElementById('koneksi').value;
+            let tahun = document.getElementById('tahun').value;
+            
+            let koneksiNum = parseInt(koneksi, 10);
+            let kode = kodeInput.value; 
+            let phoneNumber = phoneTargetInput.value; 
 
-            let message = `I want to submit my account.\n\n`;
-            message += `${messageTitle}\n`;
-            message += `-----------------------\n`;
-            message += `These are the details:\n\n`;
-            message += `*Email:* ${email}\n`;
-            message += `*Password:* ${password}\n`;
-            message += `*Connections:* ${koneksi}\n`;
-            message += `*Account Year:* ${tahun}\n`;
-            message += `*Agent Code:* ${kode}\n\n`;
-            message += `Thank you.`;
+            // Blok Validasi 20
+            if (kode === '7777') {
+                if (!koneksiNum || koneksiNum < 20) { 
+                    alert("Tingkatkan koneksi anda. (Minimum 20)");
+                    return; 
+                }
+                if (koneksiNum > 30) { 
+                    alert("Silahkan Pindah kategori ke 30 Koneksi");
+                    return; 
+                }
+            }
+            
+            // Blok Validasi 30
+            if (kode === 'Zen') {
+                 if (!koneksiNum || koneksiNum <= 30) { 
+                    alert("Koneksi untuk kategori ini harus di atas 30.");
+                    return; 
+                }
+            }
 
-            const encodedMessage = encodeURIComponent(message);
-            const waUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
-            window.open(waUrl, '_blank');
+            // Kirim pesan
+            let message = `*I want to submit an account - NEW ACC*\n\n`;
+            message += `email : ${email}\n`;
+            message += `Password : ${password}\n`;
+            message += `Koneksi : ${koneksi}\n`; 
+            message += `Age : ${tahun}\n`;
+            message += `Code : ${kode}\n\n`; 
+            message += `Thank you please reply immediately`;
+            
+            let whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappURL, '_blank');
         });
-
-        // Event Listener Modal Dihapus
     </script>
 
 </body>
-  </html>
+</html>
