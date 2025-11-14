@@ -82,14 +82,7 @@
             transition: all 0.3s ease;
             min-width: 250px; 
         }
-
-        #btn-show-form-20:hover {
-            background-color: #ffa500;
-            border-color: #ffa500;
-            color: #000;
-            transform: scale(1.05); 
-            box-shadow: 0 0 15px rgba(255, 165, 0, 0.6); 
-        }
+        
         #btn-show-form-30:hover {
             background-color: #32ff32;
             border-color: #32ff32;
@@ -127,32 +120,13 @@
             transition: color 0.3s ease;
         }
 
-        .data-row {
-            display: flex;
-            justify-content: space-between; 
-            align-items: center;
-            padding: 10px 5px; 
-            font-size: 1rem;
-        }
-        
-        .data-row:not(:last-child) {
-             border-bottom: 1px solid rgba(0, 170, 255, 0.1);
-        }
-
-        .data-row span { color: #c0c0c0; }
-        .data-row strong { color: #ffffff; font-weight: 700; font-size: 1.1rem; }
-
         /* --- Animasi --- */
         @keyframes greenPulse {
             0% { box-shadow: 0 0 15px rgba(50, 255, 50, 0.3), 0 0 0px rgba(50, 255, 50, 0); }
             50% { box-shadow: 0 0 25px rgba(50, 255, 50, 0.6), 0 0 20px rgba(50, 255, 50, 0.4); }
             100% { box-shadow: 0 0 15px rgba(50, 255, 50, 0.3), 0 0 0px rgba(50, 255, 50, 0); }
         }
-        @keyframes orangePulse {
-            0% { box-shadow: 0 0 15px rgba(255, 165, 0, 0.3); }
-            50% { box-shadow: 0 0 25px rgba(255, 165, 0, 0.6); }
-            100% { box-shadow: 0 0 15px rgba(255, 165, 0, 0.3); }
-        }
+        
         @keyframes floatAnimation {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-8px); }
@@ -166,10 +140,98 @@
         }
         .data-card.koneksi-30 h3 { color: #32ff32; } 
 
-        .data-card.koneksi-20 {
-             animation: orangePulse 2s infinite alternate;
+        
+        /* === CSS BARU UNTUK PRICING CARD === */
+        
+        .price-display {
+            margin: 20px 0 25px 0;
+            text-align: center;
         }
-        .data-card.koneksi-20 h3 { color: #ffa500; } 
+
+        .price-display strong {
+            font-size: 3.5rem; /* Buat harga utama jadi SANGAT besar */
+            font-weight: 800;
+            color: #32ff32; /* Warna hijau */
+            display: block;
+            line-height: 1.1;
+        }
+
+        .price-display span {
+            font-size: 1rem;
+            color: #c0c0c0;
+        }
+
+        /* CSS untuk daftar fitur (pengganti .data-row) */
+        .features-list {
+            list-style: none; /* Hapus bullet points */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Jarak antar list */
+        }
+
+        .features-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5px;
+            border-bottom: 1px solid rgba(50, 255, 50, 0.15);
+            font-size: 1rem;
+        }
+
+        /* Ganti warna border terakhir agar rapi */
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li span { color: #c0c0c0; }
+        .features-list li strong { color: #ffffff; font-weight: 700; font-size: 1.1rem; }
+        
+        /* === AKHIR CSS PRICING CARD === */
+        
+        
+        /* === CSS BARU UNTUK INFO BOX === */
+        .info-box {
+            width: 100%;
+            margin-top: 40px; /* Jarak dari kartu di atas */
+            background-color: rgba(10, 10, 30, 0.4); 
+            border: 1px solid rgba(0, 170, 255, 0.2); 
+            border-radius: 12px;
+            padding: 20px 25px;
+            text-align: left; /* Teks rata kiri agar mudah dibaca */
+            box-shadow: 0 0 15px rgba(0, 119, 204, 0.1); 
+        }
+
+        .info-box h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #00aaff; /* Samakan dengan H1 */
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 170, 255, 0.1);
+        }
+        
+        .info-box .info-text {
+            color: #c0c0c0; /* Warna abu-abu */
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .info-box .info-text a {
+            color: #32ff32; /* Warna hijau agar menonjol */
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(50, 255, 50, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .info-box .info-text a:hover {
+            color: #ffffff;
+            background-color: rgba(50, 255, 50, 0.2);
+        }
+        /* === AKHIR CSS INFO BOX === */
 
 
         /* --- STYLING FORM --- */
@@ -193,14 +255,6 @@
             text-align: center;
             margin-bottom: 10px;
             transition: color 0.4s ease;
-        }
-
-        #form-section.mode-20 #collect-form {
-            border-color: rgba(255, 165, 0, 0.5);
-            box-shadow: 0 0 25px rgba(255, 165, 0, 0.5);
-        }
-        #form-section.mode-20 #collect-form h3 {
-            color: #ffa500;
         }
 
         #form-section.mode-30 #collect-form {
@@ -374,8 +428,22 @@
             .form-input { padding: 12px 15px; font-size: 0.95rem; }
             .data-card { padding: 15px; }
             .data-card h3 { font-size: 1.3rem; }
-            .data-row { font-size: 0.95rem; }
-            .data-row strong { font-size: 1rem; }
+            
+            /* Update responsif untuk price display */
+            .price-display strong { font-size: 3rem; }
+            .features-list li { font-size: 0.95rem; }
+            .features-list li strong { font-size: 1rem; }
+            
+            /* Update responsif untuk info box */
+            .info-box {
+                padding: 20px;
+            }
+            .info-box h2 {
+                font-size: 1.2rem;
+            }
+            .info-box .info-text {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -387,7 +455,6 @@
         
         <div id="home-section" class="page-visible">
             <div class="button-container">
-                <button class="capsule-btn" id="btn-show-form-20">Minimum 20 Koneksi</button>
                 <button class="capsule-btn" id="btn-show-form-30">Minimum 30 Koneksi</button>
             </div>
             
@@ -395,40 +462,34 @@
                 
                 <div class="data-card koneksi-30"> 
                     <h3>Koneksi 30</h3>
-                    <div class="data-row">
-                        <span>Rate Normal</span>
+                    
+                    <div class="price-display">
                         <strong>192k</strong>
+                        <span>/ Rate Normal</span>
                     </div>
-                    <div class="data-row">
-                        <span>Rate Restric</span>
-                        <strong>192k</strong>
-                    </div>
-                    <div class="data-row">
-                        <span>Rate Unrestrict</span>
-                        <strong>+80k</strong>
-                    </div>
-                </div>
-
-                <div class="data-card koneksi-20">
-                    <h3>Koneksi 20</h3>
-                    <div class="data-row">
-                        <span>Rate Normal</span>
-                        <strong>160k</strong>
-                    </div>
-                    <div class="data-row">
-                        <span>Rate Restric</span>
-                        <strong>16k</strong>
-                    </div>
-                    <div class="data-row">
-                        <span>Rate Unrestrict</span>
-                        <strong>0</strong>
-                    </div>
+                    
+                    <ul class="features-list">
+                        <li>
+                            <span>Rate Restric</span>
+                            <strong>192k</strong>
+                        </li>
+                        <li>
+                            <span>Rate Unrestrict</span>
+                            <strong>+80k</strong>
+                        </li>
+                    </ul>
                 </div>
                 
             </div>
+            
+            <div class="info-box">
+                <h2>Penting Untuk Dibaca</h2>
+                <p class="info-text">
+                    Setelah Agent berhasil Log In, Kamu wajib screenshot dan Kirim ke
+                    <a href="https://wa.me/6289513304878" target="_blank" rel="noopener noreferrer">Admin WhatsApp</a>.
+                </p>
             </div>
-
-        <div id="form-section" class="page-hidden">
+            </div> <div id="form-section" class="page-hidden">
             
             <div id="disabled-message" style="display: none;">
                 <p class="msg-title">Form Ditutup</p>
@@ -473,7 +534,6 @@
         
         const homeSection = document.getElementById('home-section');
         const formSection = document.getElementById('form-section');
-        const btnShowForm20 = document.getElementById('btn-show-form-20');
         const btnShowForm30 = document.getElementById('btn-show-form-30');
         const btnBackToHome = document.getElementById('btn-back-to-home');
         
@@ -498,8 +558,6 @@
         function showHome() {
             formSection.classList.remove('page-visible');
             formSection.classList.add('page-hidden');
-            
-            formSection.classList.remove('mode-20');
             formSection.classList.remove('mode-30');
             
             setTimeout(() => {
@@ -508,29 +566,18 @@
             }, 10); 
         }
 
-        function handleFormOpen(event) {
-            // 1. Cek Waktu
+        function handleFormOpen() {
             const now = new Date();
             const currentHour = now.getHours(); // 0-23
-            
             const isTimeAllowed = (currentHour >= 21) || (currentHour < 5);
 
-            // 2. Tentukan data visual
-            const buttonId = event.currentTarget.id; 
+            // === PERUBAHAN DI SINI ===
+            kodeInput.value = '8800'; // Diubah dari 'Zen' menjadi '8800'
+            // === AKHIR PERUBAHAN ===
             
-            if (buttonId === 'btn-show-form-20') {
-                kodeInput.value = '7777';
-                phoneTargetInput.value = '13123717165'; 
-                formSection.classList.add('mode-20'); 
-                formSection.classList.remove('mode-30');
-            } else if (buttonId === 'btn-show-form-30') {
-                kodeInput.value = 'Zen';
-                phoneTargetInput.value = '12158209365'; 
-                formSection.classList.add('mode-30'); 
-                formSection.classList.remove('mode-20');
-            }
+            phoneTargetInput.value = '12158209365'; 
+            formSection.classList.add('mode-30'); 
 
-            // 3. Atur status form
             if (isTimeAllowed) {
                 formFieldset.disabled = false;
                 disabledMessage.style.display = 'none';
@@ -539,13 +586,10 @@
                 disabledMessage.style.display = 'block';
             }
             
-            // 4. Tampilkan form
             showForm();
         }
 
-        btnShowForm20.addEventListener('click', handleFormOpen);
         btnShowForm30.addEventListener('click', handleFormOpen);
-
         btnBackToHome.addEventListener('click', showHome);
 
         
@@ -562,21 +606,9 @@
             let koneksiNum = parseInt(koneksi, 10);
             let kode = kodeInput.value; 
             let phoneNumber = phoneTargetInput.value; 
-
-            // Blok Validasi 20
-            if (kode === '7777') {
-                if (!koneksiNum || koneksiNum < 20) { 
-                    alert("Tingkatkan koneksi anda. (Minimum 20)");
-                    return; 
-                }
-                if (koneksiNum > 30) { 
-                    alert("Silahkan Pindah kategori ke 30 Koneksi");
-                    return; 
-                }
-            }
             
-            // Blok Validasi 30
-            if (kode === 'Zen') {
+            // Blok Validasi 30 (Sekarang menggunakan kode 8800)
+            if (kode === '8800') { // Diperbarui dari 'Zen'
                  if (!koneksiNum || koneksiNum <= 30) { 
                     alert("Koneksi untuk kategori ini harus di atas 30.");
                     return; 
