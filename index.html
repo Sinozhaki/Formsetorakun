@@ -152,6 +152,7 @@
         .btn-secondary:hover { color: white; }
         .btn-secondary:hover::before { width: 100%; }
         
+        /* Style untuk tombol tutup */
         .btn.closed-mode { filter: grayscale(1) brightness(0.5); opacity: 0.6; }
 
         @keyframes shakeEffect { 0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-6px); } 100% { transform: translateX(0); } }
@@ -292,7 +293,7 @@
                 <div class="clock-widget">
                     <div id="status-dot" class="status-dot"></div>
                     <svg class="clock-icon-svg" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                    <span class="clock-text">21:00 - 05:00 WIB</span>
+                    <span class="clock-text">Jadwal Sesuai Layanan</span>
                 </div>
 
                 <div class="separator"></div>
@@ -390,24 +391,32 @@
                 <div class="modal-icon">
                     <svg viewBox="0 0 24 24"><path d="M11.01 21.99C5.44 21.39 1.39 17.34.8 11.77.21 6.2 4.86 1.55 10.41 2c.55.05.95.54.89 1.08-.28 2.48.76 4.97 2.75 6.59 2.26 1.84 5.36 1.84 7.62 0 .47-.38 1.16-.12 1.27.48.57 3.26-1.02 6.61-3.96 8.35-2.07 1.23-4.45 1.62-6.76 1.49h-.21z"/></svg>
                 </div>
-                <h3 class="modal-title">Sewa Tutup!</h3>
-                <p class="modal-desc">Buka jam 9 malam.</p>
+                <h3 class="modal-title">Layanan Tutup!</h3>
+                <p class="modal-desc">Silakan cek jadwal.</p>
                 <button class="modal-btn" onclick="closeModal()">Oke, Mengerti</button>
             </div>
         </div>
-
-        <div id="toast" class="toast">Sewa Tutup! Buka jam 21:00 - 05:00</div>
 
     </div>
 
     <script>
         let currentFormType = 'new';
 
-        function isShopOpen() {
+        // Fungsi Cek Waktu per Layanan
+        function isServiceOpen(type) {
             const now = new Date();
             const hour = now.getHours();
-            // Buka jam 21:00 - 05:00
-            return (hour >= 21 || hour < 5);
+            
+            if (type === 'new') {
+                // New Acc: Buka 21:00 sampai 05:00
+                // Artinya jam harus >= 21 ATAU jam < 5
+                return (hour >= 21 || hour < 5);
+            } else if (type === 'unrestric') {
+                // Unrestric: Buka 05:00 sampai 10:00
+                // Artinya jam harus >= 5 DAN jam < 10
+                return (hour >= 5 && hour < 10);
+            }
+            return false;
         }
 
         window.onload = function() {
@@ -415,27 +424,63 @@
             const btnNew = document.getElementById('btn-new');
             const btnUnrestric = document.getElementById('btn-unrestric');
 
-            if (isShopOpen()) {
+            // Cek status masing-masing
+            const newOpen = isServiceOpen('new');
+            const unresOpen = isServiceOpen('unrestric');
+
+            // Status Dot di atas (nyala hijau jika salah satu ada yang buka)
+            if (newOpen || unresOpen) {
                 statusDot.classList.add('open');
                 statusDot.classList.remove('closed');
             } else {
                 statusDot.classList.add('closed');
                 statusDot.classList.remove('open');
+            }
+
+            // Visual tombol New Acc (gelap jika tutup)
+            if (!newOpen) {
                 btnNew.classList.add('closed-mode');
+            } else {
+                btnNew.classList.remove('closed-mode');
+            }
+
+            // Visual tombol Unrestric (gelap jika tutup)
+            if (!unresOpen) {
                 btnUnrestric.classList.add('closed-mode');
+            } else {
+                btnUnrestric.classList.remove('closed-mode');
             }
         };
 
         function checkTimeAndOpen(type, btnElement) {
-            if (isShopOpen()) {
+            // Cek apakah layanan tipe ini sedang buka
+            if (isServiceOpen(type)) {
                 openForm(type);
             } else {
+                // Jika tutup, efek getar tombol
                 btnElement.classList.add("btn-error-shake");
                 setTimeout(() => {
                     btnElement.classList.remove("btn-error-shake");
                 }, 400);
-                // BUKA MODAL
+                
+                // Update teks Modal biar user tau jam bukanya
+                updateModalText(type);
+                
+                // Tampilkan Modal
                 document.getElementById("closed-modal").classList.add("show");
+            }
+        }
+
+        function updateModalText(type) {
+            const modalTitle = document.querySelector(".modal-title");
+            const modalDesc = document.querySelector(".modal-desc");
+
+            if (type === 'new') {
+                modalTitle.innerText = "New Acc Tutup!";
+                modalDesc.innerText = "Buka jam 21:00 - 05:00 WIB";
+            } else {
+                modalTitle.innerText = "Unrestric Tutup!";
+                modalDesc.innerText = "Buka jam 05:00 - 10:00 WIB";
             }
         }
 
@@ -473,6 +518,7 @@
             const input = document.getElementById("connections");
             const warning = document.getElementById("conn-warning");
             const value = parseInt(input.value);
+            // Validasi koneksi hanya untuk New Acc
             if (currentFormType === 'new' && input.value !== "") {
                 if (value < 30) {
                     warning.classList.add("active");
@@ -493,6 +539,7 @@
             const form = document.getElementById("rentalForm");
             const btn = this;
             const isConnectionValid = checkConnection();
+            
             if (!isConnectionValid || !form.checkValidity()) {
                 form.reportValidity();
                 btn.classList.add("btn-error-shake");
