@@ -520,7 +520,7 @@
             const value = parseInt(input.value);
             // Validasi koneksi hanya untuk New Acc
             if (currentFormType === 'new' && input.value !== "") {
-                if (value < 30) {
+                if (value < 20) {
                     warning.classList.add("active");
                     input.classList.add("input-error");
                     return false;
