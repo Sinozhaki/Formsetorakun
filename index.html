@@ -2,570 +2,598 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collect Account By Zen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Collect Account Zen - Dragon Fire Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
     <style>
+        /* --- 1. SETTING WARNA (PALET NAGA API) --- */
         :root {
-            /* PALET WARNA DARK MODE */
-            --linkedin-blue: #0077b5;
-            --linkedin-glow: #00a0dc;
-            --bg-dark: #000000;
-            --card-bg: rgba(20, 20, 20, 0.85); /* Kaca Hitam */
-            --text-main: #ffffff;
-            --text-sub: #a0a0a0;
-            --input-bg: #1a1a1a;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --accent-list: rgba(255, 255, 255, 0.03);
+            /* Background sangat gelap dengan nuansa ungu sedikit */
+            --bg-dark: #090210; 
             
-            --border-radius: 24px;
-            --error-red: #ff5252; /* Merah lebih terang */
-            --success-green: #00e676; /* Hijau neon */
-            --shadow-soft: 0 20px 50px -10px rgba(0, 119, 181, 0.15);
+            /* Warna Teks Utama */
+            --text-main: #ffffff;
+            --text-mute: #aab2cd;
+            
+            /* AKSEN UTAMA: EMAS API (Menggantikan Hijau) */
+            --accent: #ffb700; 
+            
+            /* AKSEN KEDUA: UNGU NEON (Untuk Grid Background) */
+            --secondary-glow: #bc13fe;
+            
+            /* Warna Merah untuk Error/Warning */
+            --danger: #ff4757; 
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Sora', sans-serif; 
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-dark);
             color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- 2. BACKGROUND 3D (EFEK UNGU) --- */
+        .bg-void {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            perspective: 1000px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .void-grid {
+            position: absolute;
+            top: -100%; left: -100%; width: 300%; height: 300%;
+            background-image: 
+                /* Mengubah garis grid menjadi Ungu Pudar agar cocok dengan naga */
+                linear-gradient(rgba(188, 19, 254, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(188, 19, 254, 0.15) 1px, transparent 1px);
+            background-size: 100px 100px;
+            transform: rotateX(80deg);
+            animation: flowGrid 10s linear infinite;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 80%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 80%);
+        }
+
+        @keyframes flowGrid {
+            0% { transform: rotateX(80deg) translateY(0); }
+            100% { transform: rotateX(80deg) translateY(100px); }
+        }
+
+        /* --- 3. LAYOUT --- */
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .content-layer {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+            transition: all 0.4s ease;
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- 4. TYPOGRAPHY & GLOW --- */
+        h1, h2 {
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 10px;
+            /* Gradient Teks: Putih ke Emas */
+            background: linear-gradient(to bottom, #fff 40%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.5rem; }
+
+        /* Animasi Cahaya Judul (Breathing Glow) */
+        @keyframes fireGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 183, 0, 0.1),
+                             0 0 20px rgba(188, 19, 254, 0.1); /* Sedikit ungu */
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 183, 0, 0.6), /* Emas terang */
+                             0 0 40px rgba(255, 183, 0, 0.3);
+            }
+        }
+
+        .main-title-glow {
+            animation: fireGlow 4s ease-in-out infinite;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-mute);
+            font-size: 0.9rem;
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        .banner-minimal {
+            width: 100%;
+            margin-bottom: 30px;
+            /* Shadow disesuaikan dengan warna naga (sedikit oranye/ungu) */
+            box-shadow: 0 20px 40px -10px rgba(188, 19, 254, 0.3); 
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .banner-minimal img { width: 100%; display: block; }
+
+        /* --- 5. RULES HIGHLIGHT (BOX SYARAT) --- */
+        .rules-container {
+            margin-bottom: 35px;
+            padding: 25px 20px;
+            /* Border tipis Emas */
+            border: 1px dashed rgba(255, 183, 0, 0.3); 
+            border-radius: 12px;
+            background: rgba(15, 5, 20, 0.6); /* Lebih gelap */
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        /* Label Syarat Wajib */
+        .rules-title {
+            color: var(--danger); 
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .rules-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            line-height: 1.5;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        /* Ikon Centang: Berubah jadi Emas/Hijau Cerah */
+        .rules-list li::before {
+            content: '✓'; 
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--accent); /* Emas */
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
+        }
+
+        .rules-list li:last-child { margin-bottom: 0; }
+
+        /* --- 6. BUTTON CTA --- */
+        .cta-void {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 22px 0;
+            background: transparent;
+            border: none;
+            /* Garis bawah Emas Pudar */
+            border-bottom: 1px solid rgba(255, 183, 0, 0.2); 
+            cursor: pointer;
+            margin-bottom: 15px; 
+            transition: 0.4s;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .cta-void:hover {
+            border-bottom: 1px solid var(--accent); /* Emas Terang */
+            padding-left: 10px;
+            background: linear-gradient(to right, rgba(255, 183, 0, 0.05), transparent);
+        }
+
+        .cta-void .text-part { text-align: left; }
+        
+        .cta-void .title {
+            display: block;
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .cta-void .info {
+            font-size: 0.85rem;
+            color: var(--text-mute);
+            font-weight: 500;
+        }
+
+        .cta-void svg {
+            color: var(--text-mute);
+            transition: 0.3s;
+        }
+        /* Ikon panah jadi Emas saat hover */
+        .cta-void:hover svg { color: var(--accent); transform: translateX(5px); filter: drop-shadow(0 0 5px var(--accent)); }
+
+        /* --- 7. FOOTER INFO --- */
+        .footer-info {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .footer-info p {
+            font-size: 0.8rem;
+            color: var(--text-mute);
+            margin-bottom: 8px;
+            line-height: 1.6;
+            opacity: 0.7;
+        }
+        .footer-highlight { color: var(--accent); font-weight: 600; }
+
+        /* --- 8. MODAL POPUP --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
+            z-index: 100;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             padding: 20px;
-            line-height: 1.5;
-            -webkit-tap-highlight-color: transparent;
-            
-            /* BACKGROUND HITAM GRADASI BIRU GELAP */
-            background: linear-gradient(135deg, #000000, #050f16, #000000, #08121a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        /* Container Dark Glass */
-        .container {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-box {
+            background: #150518; /* Background modal ungu gelap */
+            border: 1px solid var(--danger);
+            padding: 35px 25px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 320px;
+            box-shadow: 0 0 50px rgba(255, 71, 87, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+
+        .modal-icon { font-size: 3.5rem; margin-bottom: 15px; display: block; }
+        .modal-title { color: var(--danger); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .modal-desc { color: var(--text-mute); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6; font-weight: 500; }
+
+        .btn-close-modal {
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--text-mute);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-close-modal:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+        /* --- 9. INPUT FORM --- */
+        .input-group { margin-bottom: 25px; position: relative; }
+
+        label {
+            display: block;
+            color: var(--text-mute);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        input {
             width: 100%;
-            max-width: 480px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Border tipis */
-            overflow: hidden;
-            position: relative;
-            padding-bottom: 20px;
-            min-height: 600px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #2e2e4d;
+            color: #fff;
+            padding: 12px 0;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 0;
+            outline: none;
+            transition: border-color 0.4s ease;
         }
 
-        /* Header */
-        .header { padding: 35px 24px 15px 24px; text-align: center; }
+        /* Saat input diklik jadi Emas */
+        input:focus { border-bottom: 1px solid var(--accent); box-shadow: 0 10px 10px -10px rgba(255, 183, 0, 0.2); }
         
-        .header h1 { 
-            font-size: 24px; font-weight: 700; color: white; 
-            letter-spacing: -0.02em; margin-bottom: 8px; text-transform: uppercase; 
+        input[readonly] { color: var(--text-mute); border-bottom: 1px dashed #2e2e4d; cursor: default; letter-spacing: 2px; }
+
+        .btn-submit-void {
+            margin-top: 30px;
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-size: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 8px;
         }
 
-        .brand-zen {
-            background: linear-gradient(90deg, var(--linkedin-blue), #00d2ff, var(--linkedin-blue));
-            background-size: 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-            filter: drop-shadow(0 0 10px rgba(0, 119, 181, 0.5)); /* Efek Neon */
-            animation: textShine 3s linear infinite;
+        /* Tombol Submit Glowing Emas */
+        .btn-submit-void:hover { 
+            background: var(--accent); 
+            color: #000; /* Teks jadi hitam biar kontras sama emas */
+            box-shadow: 0 0 25px rgba(255, 183, 0, 0.6); 
         }
-        @keyframes textShine { to { background-position: 200% center; } }
 
-        .header p { font-size: 13px; color: var(--text-sub); margin-bottom: 15px; font-weight: 500; }
-        
-        /* Widget Clock Dark */
-        .clock-widget {
-            display: inline-flex;
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--text-mute);
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            padding: 8px 18px;
-            border-radius: 50px;
-            margin-bottom: 10px;
-            gap: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
-            transition: transform 0.2s;
+            font-size: 0.9rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
         }
-        .clock-widget:active { transform: scale(0.95); }
-        .clock-icon-svg { width: 16px; height: 16px; fill: #ccc; opacity: 0.9; }
-        .clock-text { font-size: 12px; font-weight: 600; color: #ccc; font-variant-numeric: tabular-nums; letter-spacing: 0.5px; }
+        .btn-back:hover { color: var(--accent); }
 
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #555; transition: background-color 0.3s; }
-        .status-dot.open { background-color: var(--success-green); box-shadow: 0 0 10px var(--success-green); animation: pulseDot 1.5s infinite; }
-        .status-dot.closed { background-color: var(--error-red); box-shadow: 0 0 10px var(--error-red); }
-        @keyframes pulseDot { 0% { transform: scale(0.9); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.6; } 100% { transform: scale(0.9); opacity: 1; } }
-
-        .separator { height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 15px 0 25px 0; width: 100%; }
-
-        /* Banner Image */
-        .promo-banner {
-            width: 100%; height: auto; border-radius: 16px; margin-bottom: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: block; object-fit: cover;
-            opacity: 0; animation: fadeInBanner 0.8s ease forwards;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        @keyframes fadeInBanner { to { opacity: 1; } }
-
-        /* Buttons */
-        .action-area { padding: 0 24px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px; }
-        
-        .btn {
-            width: 100%; padding: 16px; border: none; border-radius: 16px;
-            font-size: 15px; font-weight: 600; cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-            text-transform: uppercase; letter-spacing: 0.5px;
-            position: relative; overflow: hidden; z-index: 1; outline: none;
-            font-family: 'Sora', sans-serif; 
-        }
-        .btn:active { transform: scale(0.97) !important; }
-
-        .btn-primary { 
-            background: linear-gradient(135deg, var(--linkedin-blue), #005a8c); 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(0, 119, 181, 0.4); /* Glow Biru */
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .btn-secondary { 
-            background-color: transparent; color: white; 
-            border: 2px solid var(--linkedin-blue); 
-            transition: all 0.3s ease; 
-        }
-        .btn-secondary::before { content: ""; position: absolute; top: 0; left: 0; width: 0%; height: 100%; background-color: var(--linkedin-blue); z-index: -1; transition: width 0.3s ease; }
-        .btn-secondary:hover { color: white; }
-        .btn-secondary:hover::before { width: 100%; }
-        
-        /* Style untuk tombol tutup */
-        .btn.closed-mode { filter: grayscale(1) brightness(0.5); opacity: 0.6; }
-
-        @keyframes shakeEffect { 0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-6px); } 100% { transform: translateX(0); } }
-        .btn-error-shake { animation: shakeEffect 0.4s ease-in-out; background: var(--error-red) !important; border-color: var(--error-red) !important; color: white !important; box-shadow: 0 0 20px rgba(255, 82, 82, 0.4) !important; }
-
-        /* Sections & List Dark */
-        .section { padding: 0 24px; margin-bottom: 24px; }
-        .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
-        
-        .info-list { list-style: none; background: var(--accent-list); border-radius: 16px; padding: 18px; border: 1px solid var(--border-color); }
-        
-        .info-list li { 
-            font-size: 13px; color: #ccc; margin-bottom: 10px; padding-left: 24px; 
-            position: relative; font-weight: 500; opacity: 0; 
-            transform: translateY(10px); animation: fadeInUp 0.5s ease forwards; 
-            transition: transform 0.2s ease, color 0.2s; 
-        }
-        .info-list li:nth-child(1) { animation-delay: 0.1s; }
-        .info-list li:nth-child(2) { animation-delay: 0.2s; }
-        .info-list li:hover { transform: translateX(5px); color: var(--linkedin-blue); }
-        .info-list li:last-child { margin-bottom: 0; }
-        
-        .info-list li::before { 
-            content: "✓"; color: #fff; font-weight: 800; font-size: 12px; 
-            position: absolute; left: 0; top: 1px; 
-            background: var(--linkedin-blue); width: 18px; height: 18px; 
-            display: flex; justify-content: center; align-items: center; border-radius: 50%;
-            box-shadow: 0 0 8px rgba(0, 119, 181, 0.6);
-        }
-        
-        .rate-list li span { font-weight: 700; color: #4db6ff; background: rgba(0, 119, 181, 0.15); padding: 2px 8px; border-radius: 6px; }
-
-        /* Special Rules Dark */
-        .special-rules { 
-            margin: 24px; 
-            background: linear-gradient(135deg, rgba(0, 119, 181, 0.05), rgba(0, 0, 0, 0.3)); 
-            border: 1px solid var(--linkedin-blue); 
-            border-radius: 16px; padding: 20px; position: relative; overflow: hidden; 
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
-        }
-        .special-rules::before { content: ""; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--linkedin-blue); box-shadow: 0 0 10px var(--linkedin-blue); }
-        .special-rules::after { content: ""; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-25deg); animation: shimmerEffect 6s infinite; pointer-events: none; }
-        @keyframes shimmerEffect { 0% { left: -150%; } 20% { left: 150%; } 100% { left: 150%; } }
-        
-        .special-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 14px; text-transform: uppercase; display: block; position: relative; z-index: 1; letter-spacing: 0.5px; }
-        .special-list { list-style: none; position: relative; z-index: 1; }
-        .special-list li { font-size: 13px; font-weight: 500; color: #ccc; margin-bottom: 10px; display: flex; align-items: start; line-height: 1.4; opacity: 0; transform: translateY(10px); animation: fadeInUp 0.5s ease forwards; }
-        .special-list li:nth-child(1) { animation-delay: 0.4s; }
-        .special-list li:nth-child(2) { animation-delay: 0.5s; }
-        .special-list li:nth-child(3) { animation-delay: 0.6s; }
-        .special-list li svg { flex-shrink: 0; margin-right: 10px; margin-top: 2px; fill: var(--linkedin-blue); filter: drop-shadow(0 0 5px var(--linkedin-blue)); }
-
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Footer */
-        .footer { text-align: center; padding: 20px 24px 15px; font-size: 11px; color: #666; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 10px; }
-        .footer span { font-weight: 700; color: var(--linkedin-blue); }
-
-        /* Form Overlay Dark */
-        .form-overlay { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #0d0d0d; /* Latar Form Hitam */
-            z-index: 100; padding: 24px; display: flex; flex-direction: column; 
-            transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); 
-            border-radius: 24px 24px 0 0; 
-        }
-        .form-overlay.active { transform: translateY(0); border-radius: 0; }
-        
-        .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .form-header h2 { font-size: 20px; font-weight: 700; color: white; }
-        
-        .close-btn { width: 40px; height: 40px; border-radius: 50%; border: none; background: #1f1f1f; color: #999; font-size: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
-        .close-btn:hover { background: #333; color: white; transform: rotate(90deg); }
-
-        .form-group { margin-bottom: 20px; transition: all 0.3s ease; }
-        .form-group.hidden { display: none; }
-        .form-label { display: block; font-size: 12px; font-weight: 700; color: #ccc; margin-bottom: 8px; }
-        
-        .input-wrapper { position: relative; }
-        .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; fill: #666; transition: fill 0.2s; pointer-events: none; }
-        
-        .form-input { 
-            width: 100%; padding: 16px 16px 16px 48px; 
-            border: 1px solid #333; border-radius: 14px; 
-            font-size: 14px; font-family: 'Sora', sans-serif; font-weight: 500; 
-            outline: none; transition: all 0.2s; 
-            color: white; background: var(--input-bg); 
-        }
-        .form-input:focus { border-color: var(--linkedin-blue); box-shadow: 0 0 0 2px rgba(0, 119, 181, 0.3); background: #252525; }
-        .form-input:focus + .input-icon, .form-input:not(:placeholder-shown) + .input-icon { fill: var(--linkedin-blue); }
-        
-        .code-badge { background-color: rgba(0, 119, 181, 0.15); border: 1px dashed var(--linkedin-blue); color: #4db6ff; font-weight: 700; text-align: center; letter-spacing: 2px; cursor: default; padding-left: 16px !important; }
-        .form-input:invalid:not(:placeholder-shown) { border-color: var(--error-red); background: rgba(255, 82, 82, 0.05); }
-        
-        .warning-msg { color: var(--error-red); font-size: 12px; font-weight: 600; margin-top: 8px; display: none; padding-left: 4px; display: flex; align-items: center; gap: 5px; animation: fadeIn 0.3s ease; }
-        .warning-msg::before { content: "⚠"; font-size: 14px; }
-        .warning-msg.active { display: flex; }
-        .input-error { border-color: var(--error-red) !important; }
-
-        /* --- MODAL POPUP DARK --- */
-        .modal-backdrop {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
-            z-index: 200; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-        }
-        .modal-backdrop.show { opacity: 1; pointer-events: auto; }
-        .modal-card {
-            background: #1a1a1a; width: 85%; max-width: 320px;
-            border-radius: 24px; padding: 30px 20px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid #333;
-            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .modal-backdrop.show .modal-card { transform: scale(1); }
-        .modal-icon { width: 60px; height: 60px; background: rgba(255, 82, 82, 0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px; color: #ff5252; }
-        .modal-icon svg { width: 30px; height: 30px; fill: currentColor; }
-        .modal-title { font-size: 18px; font-weight: 800; color: white; margin-bottom: 8px; }
-        .modal-desc { font-size: 14px; color: #aaa; margin-bottom: 20px; font-weight: 500; }
-        .modal-btn { background: white; color: black; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 700; font-family: 'Sora', sans-serif; cursor: pointer; width: 100%; font-size: 14px; transition: transform 0.2s; }
-        .modal-btn:active { transform: scale(0.95); }
-
-        /* Toast */
-        .toast { visibility: hidden; min-width: 260px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 16px 24px; position: fixed; z-index: 200; left: 50%; bottom: 40px; transform: translateX(-50%); font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.5); letter-spacing: 0.5px; border: 1px solid #444; }
-        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 40px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 40px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="main-view">
-            <div class="header">
-                <h1>Collect Account By <span class="brand-zen">Zen</span></h1>
-                <p>Isi data dengan baik dan benar, serta pastikan sesuai kriteria</p>
+    <div class="bg-void">
+        <div class="void-grid"></div>
+    </div>
+
+    <div id="modal-closed" class="modal-overlay">
+        <div class="modal-box">
+            <span class="modal-icon">🔒</span>
+            <h3 class="modal-title">FORM DITUTUP</h3>
+            <p id="modal-message" class="modal-desc">Maaf, form ini belum masuk jam operasional.</p>
+            <button class="btn-close-modal" onclick="closeModal()">SAYA MENGERTI</button>
+        </div>
+    </div>
+
+    <div class="app-wrapper">
+        
+        <div id="landing-page" class="content-layer">
+            <h1 class="main-title-glow">collect account zen</h1>
+            <p class="subtitle">isi dengan baik dan benar</p>
+
+            <div class="banner-minimal">
+                <img src="baner.gif" alt="Banner Dragon">
+            </div>
+
+            <div class="rules-container">
+                <h3 class="rules-title">⚠️ SYARAT WAJIB</h3>
+                <ul class="rules-list">
+                    <li>Bukan akun tuyulan / hasil beli</li>
+                    <li>Wajib akun Indonesia (Bukan Luar Negeri)</li>
+                    <li>1 Nomor WhatsApp = 1 Akun LinkedIn</li>
+                    <li>Tidak pernah Change Email (Indikasi Beli)</li>
+                    <li>Koneksi Organik (Bukan Bot/Koneksi Luar)</li>
+                </ul>
+            </div>
+
+            <button class="cta-void" onclick="checkTime('new')">
+                <div class="text-part">
+                    <span class="title">FORM NEW ACC</span>
+                    <span class="info">Buka Pukul 21:00 - 02:00</span>
+                </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L12 5M19 12L12 19"/></svg>
+            </button>
+
+            <button class="cta-void" onclick="checkTime('unrestrict')">
+                <div class="text-part">
+                    <span class="title">FORM UN RESTRICT</span>
+                    <span class="info">Buka Pukul 05:00 - 09:00</span>
+                </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L12 5M19 12L12 19"/></svg>
+            </button>
+
+            <div class="footer-info">
+                <p>Pilih <span class="footer-highlight">Form New Acc</span> jika kalian baru mau menyewakan akun.</p>
+                <p>Pilih <span class="footer-highlight">Form Un Restrict</span> jika kalian sudah pernah sewa dan ingin menyetorkan akun yang sudah terbuka dari restrict/banned.</p>
+            </div>
+        </div>
+
+        <div id="form-page" class="content-layer hidden">
+            
+            <button class="btn-back" onclick="backToHome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:8px;"><path d="M19 12H5M5 12L12 19M5 12L12 5"/></svg>
+                KEMBALI MENU
+            </button>
+
+            <h2 id="form-title">INPUT DATA</h2>
+            <p class="subtitle">Isi data dengan valid</p>
+
+            <form id="zenForm" onsubmit="handleSend(event)">
                 
-                <div class="clock-widget">
-                    <div id="status-dot" class="status-dot"></div>
-                    <svg class="clock-icon-svg" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                    <span class="clock-text">Jadwal Sesuai Layanan</span>
+                <div class="input-group">
+                    <input type="email" id="email" required placeholder=" " autocomplete="off">
+                    <label>Email LinkedIn</label>
                 </div>
 
-                <div class="separator"></div>
-            </div>
-
-            <div class="action-area">
-                <img src="Baner.gif" alt="Promo Banner" class="promo-banner">
-
-                <button id="btn-new" class="btn btn-primary" onclick="checkTimeAndOpen('new', this)">New Acc</button>
-                <button id="btn-unrestric" class="btn btn-secondary" onclick="checkTimeAndOpen('unrestric', this)">Unrestric</button>
-            </div>
-
-            <div class="section">
-                <div class="section-title">Kriteria</div>
-                <ul class="info-list">
-                    <li>Pembuatan Min November 2024</li>
-                    <li>Koneksi min 20</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <div class="section-title">Rate Sewa?</div>
-                <ul class="info-list rate-list">
-                    <li><span>New Acc $12 ( 192rb )</span> — restric tetap Full Payment.</li>
-                    <li><span>Unrestrict $17 ( 272rb )</span></li>
-                </ul>
-            </div>
-
-            <div class="special-rules">
-                <span class="special-title">★ Spesial Rules By Zen</span>
-                <ul class="special-list">
-                    <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg> Terkena restric pas awal sewa tetap Full payment.</li>
-                    <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg> Bisa 1 Rekening yang sama pas Payment</li>
-                    <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg> Bisa Payment via USDT kalau Bawa member diatas 15,.</li>
-                </ul>
-            </div>
-            <div class="footer">&copy; 2024 Collect Account By <span>Zen</span>. All rights reserved.</div>
-        </div>
-
-        <div id="form-overlay" class="form-overlay">
-            <div class="form-header">
-                <h2 id="form-title">Form New Acc</h2>
-                <button class="close-btn" onclick="closeForm()">&times;</button>
-            </div>
-
-            <form id="rentalForm">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <div class="input-wrapper">
-                        <input type="email" id="email" class="form-input" placeholder="Masukkan email akun" required>
-                        <svg class="input-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    </div>
+                <div class="input-group">
+                    <input type="text" id="password" required placeholder=" " autocomplete="off">
+                    <label>Password LinkedIn</label>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="password" class="form-input" placeholder="Masukkan password" required>
-                        <svg class="input-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                    </div>
+                <div class="input-group" id="box-koneksi">
+                    <input type="number" id="koneksi" placeholder=" ">
+                    <label>Jumlah Koneksi</label>
                 </div>
 
-                <div class="form-group" id="group-koneksi">
-                    <label class="form-label">Koneksi</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="connections" class="form-input" placeholder="Min 20" oninput="checkConnection()">
-                        <svg class="input-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-                    </div>
-                    <div id="conn-warning" class="warning-msg">Gb dulu Bosku min 20 koneksi</div>
+                <div class="input-group" id="box-tahun">
+                    <input type="number" id="tahun" placeholder=" " min="2000" max="2099">
+                    <label>Tahun Pembuatan</label>
                 </div>
 
-                <div class="form-group" id="group-tahun">
-                    <label class="form-label">Tahun Akun</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="year" class="form-input" placeholder="Contoh: 2024">
-                        <svg class="input-icon" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
-                    </div>
+                <div class="input-group">
+                    <input type="text" id="kodegrup" value="8800" readonly>
+                    <label>Kode Grup</label>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Kode Unik</label>
-                    <div class="input-wrapper">
-                         <input type="text" id="code" class="form-input code-badge" value="8800" readonly>
-                    </div>
-                </div>
+                <button type="submit" id="btnSubmit" class="btn-submit-void">
+                    Kirim Data
+                </button>
 
-                <div style="margin-top: 40px;">
-                    <button type="button" id="submit-btn" class="btn btn-primary">Mulai Sewa</button>
-                </div>
             </form>
-        </div>
-
-        <div id="closed-modal" class="modal-backdrop" onclick="closeModalOutside(event)">
-            <div class="modal-card">
-                <div class="modal-icon">
-                    <svg viewBox="0 0 24 24"><path d="M11.01 21.99C5.44 21.39 1.39 17.34.8 11.77.21 6.2 4.86 1.55 10.41 2c.55.05.95.54.89 1.08-.28 2.48.76 4.97 2.75 6.59 2.26 1.84 5.36 1.84 7.62 0 .47-.38 1.16-.12 1.27.48.57 3.26-1.02 6.61-3.96 8.35-2.07 1.23-4.45 1.62-6.76 1.49h-.21z"/></svg>
-                </div>
-                <h3 class="modal-title">Layanan Tutup!</h3>
-                <p class="modal-desc">Silakan cek jadwal.</p>
-                <button class="modal-btn" onclick="closeModal()">Oke, Mengerti</button>
-            </div>
         </div>
 
     </div>
 
     <script>
-        let currentFormType = 'new';
+        let currentMode = 'new';
 
-        // Fungsi Cek Waktu per Layanan
-        function isServiceOpen(type) {
+        function checkTime(mode) {
             const now = new Date();
             const hour = now.getHours();
-            
-            if (type === 'new') {
-                // New Acc: Buka 21:00 sampai 05:00
-                // Artinya jam harus >= 21 ATAU jam < 5
-                return (hour >= 21 || hour < 5);
-            } else if (type === 'unrestric') {
-                // Unrestric: Buka 05:00 sampai 10:00
-                // Artinya jam harus >= 5 DAN jam < 10
-                return (hour >= 5 && hour < 10);
-            }
-            return false;
-        }
+            // DEBUG: const hour = 22; 
 
-        window.onload = function() {
-            const statusDot = document.getElementById('status-dot');
-            const btnNew = document.getElementById('btn-new');
-            const btnUnrestric = document.getElementById('btn-unrestric');
-
-            // Cek status masing-masing
-            const newOpen = isServiceOpen('new');
-            const unresOpen = isServiceOpen('unrestric');
-
-            // Status Dot di atas (nyala hijau jika salah satu ada yang buka)
-            if (newOpen || unresOpen) {
-                statusDot.classList.add('open');
-                statusDot.classList.remove('closed');
-            } else {
-                statusDot.classList.add('closed');
-                statusDot.classList.remove('open');
-            }
-
-            // Visual tombol New Acc (gelap jika tutup)
-            if (!newOpen) {
-                btnNew.classList.add('closed-mode');
-            } else {
-                btnNew.classList.remove('closed-mode');
-            }
-
-            // Visual tombol Unrestric (gelap jika tutup)
-            if (!unresOpen) {
-                btnUnrestric.classList.add('closed-mode');
-            } else {
-                btnUnrestric.classList.remove('closed-mode');
-            }
-        };
-
-        function checkTimeAndOpen(type, btnElement) {
-            // Cek apakah layanan tipe ini sedang buka
-            if (isServiceOpen(type)) {
-                openForm(type);
-            } else {
-                // Jika tutup, efek getar tombol
-                btnElement.classList.add("btn-error-shake");
-                setTimeout(() => {
-                    btnElement.classList.remove("btn-error-shake");
-                }, 400);
-                
-                // Update teks Modal biar user tau jam bukanya
-                updateModalText(type);
-                
-                // Tampilkan Modal
-                document.getElementById("closed-modal").classList.add("show");
-            }
-        }
-
-        function updateModalText(type) {
-            const modalTitle = document.querySelector(".modal-title");
-            const modalDesc = document.querySelector(".modal-desc");
-
-            if (type === 'new') {
-                modalTitle.innerText = "New Acc Tutup!";
-                modalDesc.innerText = "Buka jam 21:00 - 05:00 WIB";
-            } else {
-                modalTitle.innerText = "Unrestric Tutup!";
-                modalDesc.innerText = "Buka jam 05:00 - 10:00 WIB";
-            }
-        }
-
-        function closeModal() { document.getElementById("closed-modal").classList.remove("show"); }
-        function closeModalOutside(event) { if (event.target.id === "closed-modal") { closeModal(); } }
-
-        function openForm(type) {
-            const overlay = document.getElementById("form-overlay");
-            const title = document.getElementById("form-title");
-            const groupKoneksi = document.getElementById("group-koneksi");
-            const groupTahun = document.getElementById("group-tahun");
-            const inputKoneksi = document.getElementById("connections");
-            
-            currentFormType = type;
-            document.getElementById("conn-warning").classList.remove("active");
-            inputKoneksi.classList.remove("input-error");
-
-            if (type === 'new') {
-                title.innerText = "Form New Acc";
-                groupKoneksi.classList.remove("hidden");
-                groupTahun.classList.remove("hidden");
-                inputKoneksi.required = true;
-            } else {
-                title.innerText = "Form Unrestric";
-                groupKoneksi.classList.add("hidden");
-                groupTahun.classList.add("hidden");
-                inputKoneksi.required = false;
-            }
-            overlay.classList.add("active");
-        }
-
-        function closeForm() { document.getElementById("form-overlay").classList.remove("active"); }
-
-        function checkConnection() {
-            const input = document.getElementById("connections");
-            const warning = document.getElementById("conn-warning");
-            const value = parseInt(input.value);
-            // Validasi koneksi hanya untuk New Acc
-            if (currentFormType === 'new' && input.value !== "") {
-                if (value < 20) {
-                    warning.classList.add("active");
-                    input.classList.add("input-error");
-                    return false;
+            if (mode === 'new') {
+                if (hour >= 21 || hour < 2) {
+                    openForm('new');
                 } else {
-                    warning.classList.remove("active");
-                    input.classList.remove("input-error");
-                    return true;
+                    showClosedModal("Form New Account hanya dapat diakses pada pukul 21:00 malam sampai 02:00 pagi.");
+                }
+            } 
+            else if (mode === 'unrestrict') {
+                if (hour >= 5 && hour < 9) {
+                    openForm('unrestrict');
+                } else {
+                    showClosedModal("Form Un Restrict hanya dapat diakses pada pukul 05:00 pagi sampai 09:00 pagi.");
                 }
             }
-            warning.classList.remove("active");
-            input.classList.remove("input-error");
-            return true;
         }
 
-        document.getElementById("submit-btn").addEventListener("click", function(e) {
-            const form = document.getElementById("rentalForm");
-            const btn = this;
-            const isConnectionValid = checkConnection();
-            
-            if (!isConnectionValid || !form.checkValidity()) {
-                form.reportValidity();
-                btn.classList.add("btn-error-shake");
-                setTimeout(() => { btn.classList.remove("btn-error-shake"); }, 400);
-            } else {
-                processSend();
-            }
-        });
+        function showClosedModal(message) {
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('modal-closed').classList.add('active');
+        }
 
-        function processSend() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const connections = document.getElementById('connections').value;
-            const year = document.getElementById('year').value;
-            const code = document.getElementById('code').value;
+        function closeModal() {
+            document.getElementById('modal-closed').classList.remove('active');
+        }
+
+        function openForm(mode) {
+            currentMode = mode;
+            const landing = document.getElementById('landing-page');
+            const formPage = document.getElementById('form-page');
+            const title = document.getElementById('form-title');
+            const boxKoneksi = document.getElementById('box-koneksi');
+            const boxTahun = document.getElementById('box-tahun');
+            const inputKoneksi = document.getElementById('koneksi');
+            const inputTahun = document.getElementById('tahun');
+
+            if (mode === 'new') {
+                title.innerText = "INPUT NEW ACC";
+                boxKoneksi.classList.remove('hidden');
+                boxTahun.classList.remove('hidden');
+                inputKoneksi.required = true;
+                inputTahun.required = true;
+            } else {
+                title.innerText = "INPUT UN RESTRICT";
+                boxKoneksi.classList.add('hidden');
+                boxTahun.classList.add('hidden');
+                inputKoneksi.required = false;
+                inputTahun.required = false;
+                inputKoneksi.value = "";
+                inputTahun.value = "";
+            }
+
+            landing.classList.add('hidden');
+            formPage.classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function backToHome() {
+            document.getElementById('form-page').classList.add('hidden');
+            document.getElementById('landing-page').classList.remove('hidden');
+        }
+
+        function handleSend(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btnSubmit');
+            const originalText = btn.innerText;
+            btn.innerText = "PROSES...";
+            btn.disabled = true;
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const kodeGrup = document.getElementById('kodegrup').value;
+            
             let message = "";
 
-            if (currentFormType === 'new') {
-                message = `*New Account Rental Request*\n---------------------------\n*Email:* ${email}\n*Password:* ${password}\n*Connections:* ${connections}\n*Account Year:* ${year}\n*Code:* ${code}`;
+            if (currentMode === 'new') {
+                const koneksi = document.getElementById('koneksi').value;
+                const tahun = document.getElementById('tahun').value;
+
+                message = `*DATA NEW ACCOUNT ZEN*\n\n` +
+                          `📧 *Email:* ${email}\n` +
+                          `🔑 *Password:* ${password}\n` +
+                          `🔗 *Koneksi:* ${koneksi}\n` +
+                          `📅 *Tahun:* ${tahun}\n` +
+                          `🆔 *Kode Grup:* ${kodeGrup}`;
             } else {
-                message = `*Unrestrict Account Rental Request*\n---------------------------\n*Email:* ${email}\n*Password:* ${password}\n*Code:* ${code}`;
+                message = `*DATA UN RESTRICT ZEN*\n\n` +
+                          `📧 *Email:* ${email}\n` +
+                          `🔑 *Password:* ${password}\n` +
+                          `🆔 *Kode Grup:* ${kodeGrup}\n` +
+                          `ℹ️ _Status: Akun Unbanned_`;
             }
+
             const encodedMessage = encodeURIComponent(message);
-            const phoneNumber = "12158209365";
-            const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-            window.open(waUrl, '_blank');
+            const phoneNumber = "12158209365"; 
+
+            setTimeout(() => {
+                window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }, 800);
         }
     </script>
 
