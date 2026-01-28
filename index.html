@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Collect Account Zen - Dragon Fire Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETTING WARNA (PALET NAGA API) --- */
+        :root {
+            /* Background sangat gelap dengan nuansa ungu sedikit */
+            --bg-dark: #090210; 
+            
+            /* Warna Teks Utama */
+            --text-main: #ffffff;
+            --text-mute: #aab2cd;
+            
+            /* AKSEN UTAMA: EMAS API (Menggantikan Hijau) */
+            --accent: #ffb700; 
+            
+            /* AKSEN KEDUA: UNGU NEON (Untuk Grid Background) */
+            --secondary-glow: #bc13fe;
+            
+            /* Warna Merah untuk Error/Warning */
+            --danger: #ff4757; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- 2. BACKGROUND 3D (EFEK UNGU) --- */
+        .bg-void {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            perspective: 1000px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .void-grid {
+            position: absolute;
+            top: -100%; left: -100%; width: 300%; height: 300%;
+            background-image: 
+                /* Mengubah garis grid menjadi Ungu Pudar agar cocok dengan naga */
+                linear-gradient(rgba(188, 19, 254, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(188, 19, 254, 0.15) 1px, transparent 1px);
+            background-size: 100px 100px;
+            transform: rotateX(80deg);
+            animation: flowGrid 10s linear infinite;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 80%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 80%);
+        }
+
+        @keyframes flowGrid {
+            0% { transform: rotateX(80deg) translateY(0); }
+            100% { transform: rotateX(80deg) translateY(100px); }
+        }
+
+        /* --- 3. LAYOUT --- */
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .content-layer {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+            transition: all 0.4s ease;
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- 4. TYPOGRAPHY & GLOW --- */
+        h1, h2 {
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 10px;
+            /* Gradient Teks: Putih ke Emas */
+            background: linear-gradient(to bottom, #fff 40%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.5rem; }
+
+        /* Animasi Cahaya Judul (Breathing Glow) */
+        @keyframes fireGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 183, 0, 0.1),
+                             0 0 20px rgba(188, 19, 254, 0.1); /* Sedikit ungu */
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 183, 0, 0.6), /* Emas terang */
+                             0 0 40px rgba(255, 183, 0, 0.3);
+            }
+        }
+
+        .main-title-glow {
+            animation: fireGlow 4s ease-in-out infinite;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-mute);
+            font-size: 0.9rem;
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        .banner-minimal {
+            width: 100%;
+            margin-bottom: 30px;
+            /* Shadow disesuaikan dengan warna naga (sedikit oranye/ungu) */
+            box-shadow: 0 20px 40px -10px rgba(188, 19, 254, 0.3); 
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .banner-minimal img { width: 100%; display: block; }
+
+        /* --- 5. RULES HIGHLIGHT (BOX SYARAT) --- */
+        .rules-container {
+            margin-bottom: 35px;
+            padding: 25px 20px;
+            /* Border tipis Emas */
+            border: 1px dashed rgba(255, 183, 0, 0.3); 
+            border-radius: 12px;
+            background: rgba(15, 5, 20, 0.6); /* Lebih gelap */
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        /* Label Syarat Wajib */
+        .rules-title {
+            color: var(--danger); 
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .rules-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            line-height: 1.5;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        /* Ikon Centang: Berubah jadi Emas/Hijau Cerah */
+        .rules-list li::before {
+            content: '✓'; 
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--accent); /* Emas */
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
+        }
+
+        .rules-list li:last-child { margin-bottom: 0; }
+
+        /* --- 6. BUTTON CTA --- */
+        .cta-void {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 22px 0;
+            background: transparent;
+            border: none;
+            /* Garis bawah Emas Pudar */
+            border-bottom: 1px solid rgba(255, 183, 0, 0.2); 
+            cursor: pointer;
+            margin-bottom: 15px; 
+            transition: 0.4s;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .cta-void:hover {
+            border-bottom: 1px solid var(--accent); /* Emas Terang */
+            padding-left: 10px;
+            background: linear-gradient(to right, rgba(255, 183, 0, 0.05), transparent);
+        }
+
+        .cta-void .text-part { text-align: left; }
+        
+        .cta-void .title {
+            display: block;
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .cta-void .info {
+            font-size: 0.85rem;
+            color: var(--text-mute);
+            font-weight: 500;
+        }
+
+        .cta-void svg {
+            color: var(--text-mute);
+            transition: 0.3s;
+        }
+        /* Ikon panah jadi Emas saat hover */
+        .cta-void:hover svg { color: var(--accent); transform: translateX(5px); filter: drop-shadow(0 0 5px var(--accent)); }
+
+        /* --- 7. FOOTER INFO --- */
+        .footer-info {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .footer-info p {
+            font-size: 0.8rem;
+            color: var(--text-mute);
+            margin-bottom: 8px;
+            line-height: 1.6;
+            opacity: 0.7;
+        }
+        .footer-highlight { color: var(--accent); font-weight: 600; }
+
+        /* --- 8. MODAL POPUP --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-box {
+            background: #150518; /* Background modal ungu gelap */
+            border: 1px solid var(--danger);
+            padding: 35px 25px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 320px;
+            box-shadow: 0 0 50px rgba(255, 71, 87, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+
+        .modal-icon { font-size: 3.5rem; margin-bottom: 15px; display: block; }
+        .modal-title { color: var(--danger); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .modal-desc { color: var(--text-mute); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6; font-weight: 500; }
+
+        .btn-close-modal {
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--text-mute);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-close-modal:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+        /* --- 9. INPUT FORM --- */
+        .input-group { margin-bottom: 25px; position: relative; }
+
+        label {
+            display: block;
+            color: var(--text-mute);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #2e2e4d;
+            color: #fff;
+            padding: 12px 0;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 0;
+            outline: none;
+            transition: border-color 0.4s ease;
+        }
+
+        /* Saat input diklik jadi Emas */
+        input:focus { border-bottom: 1px solid var(--accent); box-shadow: 0 10px 10px -10px rgba(255, 183, 0, 0.2); }
+        
+        input[readonly] { color: var(--text-mute); border-bottom: 1px dashed #2e2e4d; cursor: default; letter-spacing: 2px; }
+
+        .btn-submit-void {
+            margin-top: 30px;
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-size: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 8px;
+        }
+
+        /* Tombol Submit Glowing Emas */
+        .btn-submit-void:hover { 
+            background: var(--accent); 
+            color: #000; /* Teks jadi hitam biar kontras sama emas */
+            box-shadow: 0 0 25px rgba(255, 183, 0, 0.6); 
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--text-mute);
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+        .btn-back:hover { color: var(--accent); }
+
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-void">
+        <div class="void-grid"></div>
+    </div>
+
+    <div id="modal-closed" class="modal-overlay">
+        <div class="modal-box">
+            <span class="modal-icon">🔒</span>
+            <h3 class="modal-title">FORM DITUTUP</h3>
+            <p id="modal-message" class="modal-desc">Maaf, form ini belum masuk jam operasional.</p>
+            <button class="btn-close-modal" onclick="closeModal()">SAYA MENGERTI</button>
+        </div>
+    </div>
+
+    <div class="app-wrapper">
+        
+        <div id="landing-page" class="content-layer">
+            <h1 class="main-title-glow">collect account zen</h1>
+            <p class="subtitle">isi dengan baik dan benar</p>
+
+            <div class="banner-minimal">
+                <img src="baner.gif" alt="Banner Dragon">
+            </div>
+
+            <div class="rules-container">
+                <h3 class="rules-title">⚠️ SYARAT WAJIB</h3>
+                <ul class="rules-list">
+                    <li>Bukan akun tuyulan / hasil beli</li>
+                    <li>Wajib akun Indonesia (Bukan Luar Negeri)</li>
+                    <li>1 Nomor WhatsApp = 1 Akun LinkedIn</li>
+                    <li>Tidak pernah Change Email (Indikasi Beli)</li>
+                    <li>Koneksi Organik (Bukan Bot/Koneksi Luar)</li>
+                </ul>
+            </div>
+
+            <button class="cta-void" onclick="checkTime('new')">
+                <div class="text-part">
+                    <span class="title">FORM NEW ACC</span>
+                    <span class="info">Buka Pukul 21:00 - 02:00</span>
+                </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L12 5M19 12L12 19"/></svg>
+            </button>
+
+            <button class="cta-void" onclick="checkTime('unrestrict')">
+                <div class="text-part">
+                    <span class="title">FORM UN RESTRICT</span>
+                    <span class="info">Buka Pukul 05:00 - 09:00</span>
+                </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L12 5M19 12L12 19"/></svg>
+            </button>
+
+            <div class="footer-info">
+                <p>Pilih <span class="footer-highlight">Form New Acc</span> jika kalian baru mau menyewakan akun.</p>
+                <p>Pilih <span class="footer-highlight">Form Un Restrict</span> jika kalian sudah pernah sewa dan ingin menyetorkan akun yang sudah terbuka dari restrict/banned.</p>
+            </div>
+        </div>
+
+        <div id="form-page" class="content-layer hidden">
+            
+            <button class="btn-back" onclick="backToHome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:8px;"><path d="M19 12H5M5 12L12 19M5 12L12 5"/></svg>
+                KEMBALI MENU
+            </button>
+
+            <h2 id="form-title">INPUT DATA</h2>
+            <p class="subtitle">Isi data dengan valid</p>
+
+            <form id="zenForm" onsubmit="handleSend(event)">
+                
+                <div class="input-group">
+                    <input type="email" id="email" required placeholder=" " autocomplete="off">
+                    <label>Email LinkedIn</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="password" required placeholder=" " autocomplete="off">
+                    <label>Password LinkedIn</label>
+                </div>
+
+                <div class="input-group" id="box-koneksi">
+                    <input type="number" id="koneksi" placeholder=" ">
+                    <label>Jumlah Koneksi</label>
+                </div>
+
+                <div class="input-group" id="box-tahun">
+                    <input type="number" id="tahun" placeholder=" " min="2000" max="2099">
+                    <label>Tahun Pembuatan</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="kodegrup" value="8800" readonly>
+                    <label>Kode Grup</label>
+                </div>
+
+                <button type="submit" id="btnSubmit" class="btn-submit-void">
+                    Kirim Data
+                </button>
+
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        let currentMode = 'new';
+
+        function checkTime(mode) {
+            const now = new Date();
+            const hour = now.getHours();
+            // DEBUG: const hour = 22; 
+
+            if (mode === 'new') {
+                if (hour >= 21 || hour < 2) {
+                    openForm('new');
+                } else {
+                    showClosedModal("Form New Account hanya dapat diakses pada pukul 21:00 malam sampai 02:00 pagi.");
+                }
+            } 
+            else if (mode === 'unrestrict') {
+                if (hour >= 5 && hour < 9) {
+                    openForm('unrestrict');
+                } else {
+                    showClosedModal("Form Un Restrict hanya dapat diakses pada pukul 05:00 pagi sampai 09:00 pagi.");
+                }
+            }
+        }
+
+        function showClosedModal(message) {
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('modal-closed').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-closed').classList.remove('active');
+        }
+
+        function openForm(mode) {
+            currentMode = mode;
+            const landing = document.getElementById('landing-page');
+            const formPage = document.getElementById('form-page');
+            const title = document.getElementById('form-title');
+            const boxKoneksi = document.getElementById('box-koneksi');
+            const boxTahun = document.getElementById('box-tahun');
+            const inputKoneksi = document.getElementById('koneksi');
+            const inputTahun = document.getElementById('tahun');
+
+            if (mode === 'new') {
+                title.innerText = "INPUT NEW ACC";
+                boxKoneksi.classList.remove('hidden');
+                boxTahun.classList.remove('hidden');
+                inputKoneksi.required = true;
+                inputTahun.required = true;
+            } else {
+                title.innerText = "INPUT UN RESTRICT";
+                boxKoneksi.classList.add('hidden');
+                boxTahun.classList.add('hidden');
+                inputKoneksi.required = false;
+                inputTahun.required = false;
+                inputKoneksi.value = "";
+                inputTahun.value = "";
+            }
+
+            landing.classList.add('hidden');
+            formPage.classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function backToHome() {
+            document.getElementById('form-page').classList.add('hidden');
+            document.getElementById('landing-page').classList.remove('hidden');
+        }
+
+        function handleSend(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btnSubmit');
+            const originalText = btn.innerText;
+            btn.innerText = "PROSES...";
+            btn.disabled = true;
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const kodeGrup = document.getElementById('kodegrup').value;
+            
+            let message = "";
+
+            if (currentMode === 'new') {
+                const koneksi = document.getElementById('koneksi').value;
+                const tahun = document.getElementById('tahun').value;
+
+                message = `*DATA NEW ACCOUNT ZEN*\n\n` +
+                          `📧 *Email:* ${email}\n` +
+                          `🔑 *Password:* ${password}\n` +
+                          `🔗 *Koneksi:* ${koneksi}\n` +
+                          `📅 *Tahun:* ${tahun}\n` +
+                          `🆔 *Kode Grup:* ${kodeGrup}`;
+            } else {
+                message = `*DATA UN RESTRICT ZEN*\n\n` +
+                          `📧 *Email:* ${email}\n` +
+                          `🔑 *Password:* ${password}\n` +
+                          `🆔 *Kode Grup:* ${kodeGrup}\n` +
+                          `ℹ️ _Status: Akun Unbanned_`;
+            }
+
+            const encodedMessage = encodeURIComponent(message);
+            const phoneNumber = "12138496837"; 
+
+            setTimeout(() => {
+                window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }, 800);
+        }
+    </script>
+
+</body>
+</html>
+
