@@ -3,600 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Collect Account Zen - Dragon Fire Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Collect Account by Zen</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* --- 1. SETTING WARNA (PALET NAGA API) --- */
-        :root {
-            /* Background sangat gelap dengan nuansa ungu sedikit */
-            --bg-dark: #090210; 
-            
-            /* Warna Teks Utama */
-            --text-main: #ffffff;
-            --text-mute: #aab2cd;
-            
-            /* AKSEN UTAMA: EMAS API (Menggantikan Hijau) */
-            --accent: #ffb700; 
-            
-            /* AKSEN KEDUA: UNGU NEON (Untuk Grid Background) */
-            --secondary-glow: #bc13fe;
-            
-            /* Warna Merah untuk Error/Warning */
-            --danger: #ff4757; 
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        /* --- 1. RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        /* --- BACKGROUND & FONT --- */
         body {
-            font-family: 'Quicksand', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background-color: #000;
+            background: radial-gradient(circle at 50% 10%, #101652 0%, #000000 80%);
             min-height: 100vh;
-            overflow-x: hidden;
+            min-height: 100dvh; 
+            overflow-x: hidden; 
             position: relative;
-        }
-
-        /* --- 2. BACKGROUND 3D (EFEK UNGU) --- */
-        .bg-void {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            perspective: 1000px;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .void-grid {
-            position: absolute;
-            top: -100%; left: -100%; width: 300%; height: 300%;
-            background-image: 
-                /* Mengubah garis grid menjadi Ungu Pudar agar cocok dengan naga */
-                linear-gradient(rgba(188, 19, 254, 0.15) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(188, 19, 254, 0.15) 1px, transparent 1px);
-            background-size: 100px 100px;
-            transform: rotateX(80deg);
-            animation: flowGrid 10s linear infinite;
-            mask-image: linear-gradient(to bottom, transparent 0%, black 80%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 80%);
-        }
-
-        @keyframes flowGrid {
-            0% { transform: rotateX(80deg) translateY(0); }
-            100% { transform: rotateX(80deg) translateY(100px); }
-        }
-
-        /* --- 3. LAYOUT --- */
-        .app-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        .content-layer {
-            width: 100%;
-            max-width: 420px;
-            position: relative;
-            z-index: 10;
-            transition: all 0.4s ease;
-        }
-
-        .hidden { display: none !important; }
-
-        /* --- 4. TYPOGRAPHY & GLOW --- */
-        h1, h2 {
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 10px;
-            /* Gradient Teks: Putih ke Emas */
-            background: linear-gradient(to bottom, #fff 40%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        h1 { font-size: 2rem; }
-        h2 { font-size: 1.5rem; }
-
-        /* Animasi Cahaya Judul (Breathing Glow) */
-        @keyframes fireGlow {
-            0%, 100% {
-                text-shadow: 0 0 10px rgba(255, 183, 0, 0.1),
-                             0 0 20px rgba(188, 19, 254, 0.1); /* Sedikit ungu */
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(255, 183, 0, 0.6), /* Emas terang */
-                             0 0 40px rgba(255, 183, 0, 0.3);
-            }
-        }
-
-        .main-title-glow {
-            animation: fireGlow 4s ease-in-out infinite;
-        }
-
-        p.subtitle {
-            text-align: center;
-            color: var(--text-mute);
-            font-size: 0.9rem;
-            margin-bottom: 35px;
-            font-weight: 500;
-        }
-
-        .banner-minimal {
-            width: 100%;
-            margin-bottom: 30px;
-            /* Shadow disesuaikan dengan warna naga (sedikit oranye/ungu) */
-            box-shadow: 0 20px 40px -10px rgba(188, 19, 254, 0.3); 
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .banner-minimal img { width: 100%; display: block; }
-
-        /* --- 5. RULES HIGHLIGHT (BOX SYARAT) --- */
-        .rules-container {
-            margin-bottom: 35px;
-            padding: 25px 20px;
-            /* Border tipis Emas */
-            border: 1px dashed rgba(255, 183, 0, 0.3); 
-            border-radius: 12px;
-            background: rgba(15, 5, 20, 0.6); /* Lebih gelap */
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-
-        /* Label Syarat Wajib */
-        .rules-title {
-            color: var(--danger); 
-            font-size: 0.95rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            text-align: center;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .rules-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .rules-list li {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            color: #e0e0e0;
-            line-height: 1.5;
-            font-weight: 500;
-            text-align: left;
-        }
-
-        /* Ikon Centang: Berubah jadi Emas/Hijau Cerah */
-        .rules-list li::before {
-            content: '✓'; 
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--accent); /* Emas */
-            font-weight: 800;
-            font-size: 1.1rem;
-            text-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
-        }
-
-        .rules-list li:last-child { margin-bottom: 0; }
-
-        /* --- 6. BUTTON CTA --- */
-        .cta-void {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 22px 0;
-            background: transparent;
-            border: none;
-            /* Garis bawah Emas Pudar */
-            border-bottom: 1px solid rgba(255, 183, 0, 0.2); 
-            cursor: pointer;
-            margin-bottom: 15px; 
-            transition: 0.4s;
-            font-family: 'Quicksand', sans-serif;
-        }
-
-        .cta-void:hover {
-            border-bottom: 1px solid var(--accent); /* Emas Terang */
-            padding-left: 10px;
-            background: linear-gradient(to right, rgba(255, 183, 0, 0.05), transparent);
-        }
-
-        .cta-void .text-part { text-align: left; }
-        
-        .cta-void .title {
-            display: block;
-            font-size: 1.1rem;
+            font-family: 'Chakra Petch', sans-serif;
             color: #fff;
-            font-weight: 700;
-            margin-bottom: 4px;
+            display: flex; justify-content: center; align-items: center;
         }
+
+        /* --- OVERLAY GRID --- */
+        body::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(white, rgba(255,255,255,.15) 2px, transparent 3px), radial-gradient(white, rgba(255,255,255,.05) 1px, transparent 2px);
+            background-size: 350px 350px; background-position: center; opacity: 0.2; z-index: -1; pointer-events: none; position: fixed;
+        }
+
+        /* --- WELCOME SCREEN --- */
+        #welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 10%, #101652 0%, #000000 90%);
+            z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 30px; text-align: center; transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        #welcome-screen.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+        .welcome-title { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; background: linear-gradient(180deg, #ffffff 30%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; animation: fadeInUp 1s ease forwards; opacity: 0; transform: translateY(20px); }
+        .welcome-subtitle { font-size: 1rem; color: #00c6ff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 50px; animation: fadeInUp 1s ease 0.3s forwards; opacity: 0; transform: translateY(20px); }
+        .enter-btn { padding: 15px 40px; background: rgba(255, 255, 255, 0.05); border: 1px solid #fff; color: #fff; font-family: 'Chakra Petch', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); transition: all 0.3s; animation: fadeInUp 1s ease 0.6s forwards, pulse-btn 2s infinite; opacity: 0; transform: translateY(20px); }
+        .enter-btn:active { transform: scale(0.95); background: #fff; color: #000; }
+        .enter-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 3; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse-btn { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+
+        /* --- MAIN CONTAINER --- */
+        .container { width: 100%; max-width: 450px; padding: 10px 20px; display: none; flex-direction: column; align-items: center; gap: 20px; z-index: 10; padding-bottom: 50px; opacity: 0; transition: opacity 1s ease; }
+        .container.show { display: flex; opacity: 1; animation: fadeInMain 0.8s ease forwards; }
+        @keyframes fadeInMain { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        h1 { font-size: clamp(13px, 4vw, 28px); white-space: nowrap; font-weight: 700; text-align: center; letter-spacing: 0px; text-transform: uppercase; background: linear-gradient(180deg, #ffffff 30%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: white-pulse 3s infinite ease-in-out; margin-bottom: 5px; border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 12px; width: 100%; }
+        @keyframes white-pulse { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); } 50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.6)); } }
+        .hero-banner { width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); display: block; }
+
+        /* --- BUTTONS & SCHEDULE --- */
+        .btn-wrapper { width: 100%; display: flex; flex-direction: column; gap: 5px; } 
+        .btn-group { margin-bottom: 15px; width: 100%; }
+        .schedule-text { font-size: 0.7rem; color: #aaa; text-align: center; margin-top: 6px; font-style: italic; letter-spacing: 0.5px; }
+        .schedule-text span { color: #00c6ff; font-weight: bold; }
+
+        @keyframes pulse-zoom { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+        .cta-btn { position: relative; width: 100%; padding: 18px; border-radius: 10px; text-decoration: none; color: #fff; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); animation: pulse-zoom 2s infinite ease-in-out; cursor: pointer; transition: all 0.2s ease; }
+        .btn-icon { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: square; stroke-linejoin: miter; }
+        .cta-btn:active { animation: none; transform: scale(0.97); background: rgba(255, 255, 255, 0.1); border-color: #00c6ff; color: #00c6ff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .cta-btn:active .btn-icon { stroke: #00c6ff; }
+
+        /* --- OTHER COMPONENTS --- */
+        .info-card { background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(0, 0, 0, 0.95)); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 15px; width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .info-item { display: flex; gap: 12px; align-items: flex-start; font-size: 0.75rem; line-height: 1.5; color: #999; text-align: left; }
+        .info-icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; stroke: #fff; opacity: 0.6; }
+        .highlight { color: #fff; font-weight: 700; border-bottom: 1px dotted #666; }
         
-        .cta-void .info {
-            font-size: 0.85rem;
-            color: var(--text-mute);
-            font-weight: 500;
-        }
+        .report-section { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
+        .report-alert { background: rgba(255, 200, 0, 0.1); border: 1px dashed #ffc800; border-radius: 8px; padding: 12px; font-size: 0.75rem; color: #ffc800; text-align: left; line-height: 1.5; }
+        .report-btn { background: rgba(0, 198, 255, 0.1); border: 1px solid #00c6ff; color: #00c6ff; width: 100%; padding: 15px; border-radius: 8px; font-weight: 700; text-align: center; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; transition: 0.2s; box-shadow: 0 0 10px rgba(0, 198, 255, 0.2); }
+        .report-btn:active { transform: scale(0.97); background: rgba(0, 198, 255, 0.2); }
+        .report-warning-text { font-size: 0.7rem; color: #ff4444; margin-top: 5px; font-style: italic; text-align: center; }
 
-        .cta-void svg {
-            color: var(--text-mute);
-            transition: 0.3s;
-        }
-        /* Ikon panah jadi Emas saat hover */
-        .cta-void:hover svg { color: var(--accent); transform: translateX(5px); filter: drop-shadow(0 0 5px var(--accent)); }
+        .criteria-card { width: 100%; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 20px; margin-top: 10px; }
+        .criteria-title { text-align: center; font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; color: #ddd; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px dashed #444; padding-bottom: 8px; }
+        .criteria-list { list-style: none; padding: 0; margin: 0; text-align: left; font-size: 0.75rem; color: #aaa; line-height: 1.6; }
+        .criteria-list li { margin-bottom: 6px; display: flex; align-items: flex-start; gap: 8px; }
+        .criteria-list li::before { content: "▹"; color: #fff; font-weight: bold; }
+        .warning-box { margin-top: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #666; color: #fff; padding: 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* --- 7. FOOTER INFO --- */
-        .footer-info {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-        }
+        /* Payment Partners */
+        .payment-card { width: 100%; margin-top: 10px; text-align: center; }
+        .payment-title { font-size: 0.75rem; color: #666; margin-bottom: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+        .payment-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .payment-box { background-color: #fff; border-radius: 6px; padding: 5px; height: 35px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.5); transition: transform 0.2s; }
+        .payment-box:hover { transform: scale(1.05); }
+        .payment-logo { height: 100%; width: 100%; }
 
-        .footer-info p {
-            font-size: 0.8rem;
-            color: var(--text-mute);
-            margin-bottom: 8px;
-            line-height: 1.6;
-            opacity: 0.7;
-        }
-        .footer-highlight { color: var(--accent); font-weight: 600; }
-
-        /* --- 8. MODAL POPUP --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(8px);
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .modal-box {
-            background: #150518; /* Background modal ungu gelap */
-            border: 1px solid var(--danger);
-            padding: 35px 25px;
-            border-radius: 16px;
-            text-align: center;
-            max-width: 320px;
-            box-shadow: 0 0 50px rgba(255, 71, 87, 0.2);
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-box { transform: translateY(0); }
-
-        .modal-icon { font-size: 3.5rem; margin-bottom: 15px; display: block; }
-        .modal-title { color: var(--danger); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .modal-desc { color: var(--text-mute); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6; font-weight: 500; }
-
-        .btn-close-modal {
-            padding: 12px 30px;
-            background: transparent;
-            border: 1px solid var(--text-mute);
-            color: #fff;
-            cursor: pointer;
-            border-radius: 8px;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        .btn-close-modal:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
-
-        /* --- 9. INPUT FORM --- */
-        .input-group { margin-bottom: 25px; position: relative; }
-
-        label {
-            display: block;
-            color: var(--text-mute);
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #2e2e4d;
-            color: #fff;
-            padding: 12px 0;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 500;
-            border-radius: 0;
-            outline: none;
-            transition: border-color 0.4s ease;
-        }
-
-        /* Saat input diklik jadi Emas */
-        input:focus { border-bottom: 1px solid var(--accent); box-shadow: 0 10px 10px -10px rgba(255, 183, 0, 0.2); }
+        /* Modal Overlay & Animation */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(0px); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.4s ease, backdrop-filter 0.4s ease, visibility 0.4s; }
+        .overlay.open { opacity: 1; visibility: visible; pointer-events: auto; backdrop-filter: blur(8px); }
+        .modal-box { background: #111; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 16px; padding: 25px; width: 100%; max-width: 400px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: scale(0.92) translateY(30px); opacity: 0; transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.4s ease; }
+        .overlay.open .modal-box { transform: scale(1) translateY(0); opacity: 1; }
         
-        input[readonly] { color: var(--text-mute); border-bottom: 1px dashed #2e2e4d; cursor: default; letter-spacing: 2px; }
+        .close-btn { position: absolute; top: 15px; right: 15px; color: #ff4444; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: transform 0.2s; }
+        .close-btn:active { transform: scale(0.8); }
+        .form-title { text-align: center; font-size: 1.1rem; margin-bottom: 20px; color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px; letter-spacing: 1px; }
+        .form-group { margin-bottom: 15px; position: relative; }
+        .form-label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 5px; }
+        .form-input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: 'Chakra Petch', sans-serif; outline: none; transition: 0.3s; font-size: 0.95rem; }
+        select.form-input { appearance: none; -webkit-appearance: none; cursor: pointer; } 
+        .form-input:focus { border-color: #00c6ff; box-shadow: 0 0 12px rgba(0, 198, 255, 0.4); }
+        .form-input.error { border-color: #ff3333 !important; box-shadow: 0 0 10px rgba(255, 51, 51, 0.3) !important; color: #ff3333; }
+        .helper-text { font-size: 0.65rem; color: #555; margin-top: 4px; display: block; font-style: italic; }
+        .input-wrapper { position: relative; }
+        .eye-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; width: 20px; height: 20px; fill: #666; transition: fill 0.3s; }
+        .eye-icon:hover { fill: #fff; }
+        .code-badge { background: rgba(0, 198, 255, 0.08); border: 1px dashed #00c6ff; color: #00c6ff; font-weight: 700; text-align: center; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 1rem; letter-spacing: 2px; box-shadow: 0 0 10px rgba(0, 198, 255, 0.1); }
+        .submit-btn { width: 100%; padding: 15px; margin-top: 5px; background: #fff; color: #000; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s; }
+        .submit-btn:active { transform: scale(0.95); background: #ccc; }
+        .spinner { border: 3px solid rgba(255, 255, 255, 0.1); border-top: 3px solid #fff; border-radius: 50%; width: 18px; height: 18px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .btn-submit-void {
-            margin-top: 30px;
-            width: 100%;
-            padding: 16px;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            font-size: 1rem;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-            border-radius: 8px;
-        }
+        /* --- CUSTOM ALERT (RED THEME) --- */
+        .alert-icon { font-size: 3rem; margin-bottom: 10px; display: inline-block; animation: shake 0.5s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-5deg); } 75% { transform: translateX(5px) rotate(5deg); } }
+        
+        .alert-modal .modal-box { border-color: #ff4444; box-shadow: 0 10px 40px rgba(255, 68, 68, 0.2); }
+        .alert-modal .submit-btn { background: #ff4444; color: #fff; border: none; }
+        .alert-modal .submit-btn:active { background: #cc0000; }
 
-        /* Tombol Submit Glowing Emas */
-        .btn-submit-void:hover { 
-            background: var(--accent); 
-            color: #000; /* Teks jadi hitam biar kontras sama emas */
-            box-shadow: 0 0 25px rgba(255, 183, 0, 0.6); 
-        }
-
-        .btn-back {
-            background: none;
-            border: none;
-            color: var(--text-mute);
-            cursor: pointer;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            font-size: 0.9rem;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 600;
-        }
-        .btn-back:hover { color: var(--accent); }
-
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body>
 
-    <div class="bg-void">
-        <div class="void-grid"></div>
+    <audio id="bgMusic" src="zen.mp3" loop></audio>
+
+    <div id="welcome-screen">
+        <div class="welcome-title">SELAMAT DATANG</div>
+        <div class="welcome-subtitle">DI GRUP SEWA BY ZEN</div>
+        <button class="enter-btn" onclick="enterSite()">LANJUTKAN <svg class="enter-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
     </div>
 
-    <div id="modal-closed" class="modal-overlay">
+    <div class="container" id="main-content">
+        <h1>COLLECT ACCOUNT BY ZEN</h1>
+        <img src="baner.gif" alt="Banner" class="hero-banner">
+
+        <div class="btn-wrapper">
+            <div class="btn-group">
+                <div id="btnNew" onclick="checkTimeNewAcc()" class="cta-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                    <span>Form Sewa New Account</span>
+                </div>
+                <div class="schedule-text">Buka Jam <span>20:00 - 02:00</span> WIB</div>
+            </div>
+
+            <div class="btn-group">
+                <div id="btnUnres" onclick="checkTimeUnrestrict()" class="cta-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span>Form Sewa Unrestrict</span>
+                </div>
+                <div class="schedule-text">Buka Jam <span>05:00 - 10:00</span> WIB</div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="info-item">
+                <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <span>Pilih <span class="highlight">New Acc</span> jika kalian baru pertama kali mau sewa akun.</span>
+            </div>
+            <div class="info-item" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px;">
+                <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span>Pilih <span class="highlight">Unrestrict</span> jika akun sewa kalian kena restrict lalu sudah pulih kembali.</span>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <div class="report-alert">
+                ⚠️ <b>PENTING:</b> Wajib lapor ke admin zen setelah client konfirmasi <b>SUCCES RENTAL</b>.<br>
+                <span style="opacity:0.8; font-size:0.65rem;">(Berupa Screenshot + Email secara terpisah)</span>
+            </div>
+            <div id="btnReport" onclick="openModalReport()" class="report-btn">LAPOR SUCCESS RENTAL 🚀</div>
+        </div>
+
+        <div class="criteria-card">
+            <div class="criteria-title">KRITERIA AKUN</div>
+            <ul class="criteria-list">
+                <li>Min. pembuatan Desember 2024</li>
+                <li>Koneksi minimal 30</li>
+                <li>Bukan akun hasil nuyul atau beli</li>
+                <li>1 WhatsApp = 1 LinkedIn</li>
+                <li>Wajib akun lokal Indonesia</li>
+            </ul>
+            <div class="warning-box">⚠️ Melanggar = Auto Ditolak Client</div>
+        </div>
+
+        <div class="payment-card">
+            <div class="payment-title">PAYMENT PARTNERS</div>
+            <div class="payment-grid">
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="20" fill="#000" font-weight="900" font-family="Arial">QRIS</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="22" fill="#00529C" font-weight="bold" font-family="Arial" letter-spacing="1">BCA</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><rect x="15" y="5" width="70" height="30" rx="4" fill="#00529C"/><text x="50" y="28" text-anchor="middle" font-size="20" fill="#fff" font-weight="bold" font-family="Arial">BRI</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="26" text-anchor="middle" font-size="18" fill="#003D79" font-weight="bold" font-family="Arial">mandiri</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="20" fill="#118EEA" font-weight="900" font-family="Arial">DANA</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="20" fill="#4C3494" font-weight="900" font-family="Arial">OVO</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="18" fill="#00AEEF" font-weight="bold" font-family="Arial">gopay</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="28" text-anchor="middle" font-size="22" fill="#00665E" font-weight="bold" font-family="Arial">BNI</text></svg></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalNew" class="overlay">
         <div class="modal-box">
-            <span class="modal-icon">🔒</span>
-            <h3 class="modal-title">FORM DITUTUP</h3>
-            <p id="modal-message" class="modal-desc">Maaf, form ini belum masuk jam operasional.</p>
-            <button class="btn-close-modal" onclick="closeModal()">SAYA MENGERTI</button>
+            <div class="close-btn" onclick="closeModalNew()">✕</div>
+            <h2 class="form-title">FORM SEWA NEW ACC</h2>
+            <div class="code-badge">ACCESS CODE: 8800</div>
+            <div class="form-group"><label class="form-label">Email LinkedIn</label><input type="email" id="newEmail" class="form-input" placeholder="email@contoh.com"></div>
+            <div class="form-group"><label class="form-label">Password LinkedIn</label><div class="input-wrapper"><input type="password" id="newPass" class="form-input" placeholder="Password akun"><svg class="eye-icon" onclick="togglePassword('newPass')" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
+            <div class="form-group" style="display:flex; gap:10px;"><div style="flex:1"><label class="form-label">Tahun</label><select id="newTahun" class="form-input"><option value="" disabled selected>Pilih</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option></select><span class="helper-text">Max: 2024</span></div><div style="flex:1"><label class="form-label">Koneksi</label><input type="number" id="newKoneksi" class="form-input" placeholder="Min. 30" oninput="validateConn(this)"><span class="helper-text">Wajib 30+</span></div></div>
+            <button class="submit-btn" onclick="kirimNew()">KIRIM KE CLIENT</button>
         </div>
     </div>
 
-    <div class="app-wrapper">
-        
-        <div id="landing-page" class="content-layer">
-            <h1 class="main-title-glow">collect account zen</h1>
-            <p class="subtitle">isi dengan baik dan benar</p>
-
-            <div class="banner-minimal">
-                <img src="baner.gif" alt="Banner Dragon">
-            </div>
-
-            <div class="rules-container">
-                <h3 class="rules-title">⚠️ SYARAT WAJIB</h3>
-                <ul class="rules-list">
-                    <li>Bukan akun tuyulan / hasil beli</li>
-                    <li>Wajib akun Indonesia (Bukan Luar Negeri)</li>
-                    <li>1 Nomor WhatsApp = 1 Akun LinkedIn</li>
-                    <li>Tidak pernah Change Email (Indikasi Beli)</li>
-                    <li>Koneksi Organik (Bukan Bot/Koneksi Luar)</li>
-                </ul>
-            </div>
-
-            <button class="cta-void" onclick="checkTime('new')">
-                <div class="text-part">
-                    <span class="title">FORM NEW ACC</span>
-                    <span class="info">Buka Pukul 21:00 - 02:00</span>
-                </div>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L12 5M19 12L12 19"/></svg>
-            </button>
-
-            <button class="cta-void" onclick="checkTime('unrestrict')">
-                <div class="text-part">
-                    <span class="title">FORM UN RESTRICT</span>
-                    <span class="info">Buka Pukul 05:00 - 09:00</span>
-                </div>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L12 5M19 12L12 19"/></svg>
-            </button>
-
-            <div class="footer-info">
-                <p>Pilih <span class="footer-highlight">Form New Acc</span> jika kalian baru mau menyewakan akun.</p>
-                <p>Pilih <span class="footer-highlight">Form Un Restrict</span> jika kalian sudah pernah sewa dan ingin menyetorkan akun yang sudah terbuka dari restrict/banned.</p>
-            </div>
+    <div id="modalUnres" class="overlay">
+        <div class="modal-box">
+            <div class="close-btn" onclick="closeModalUnres()">✕</div>
+            <h2 class="form-title">FORM SEWA UNRESTRICT</h2>
+            <div class="code-badge">ACCESS CODE: 8800</div>
+            <div class="form-group"><label class="form-label">Email LinkedIn</label><input type="email" id="unEmail" class="form-input" placeholder="email@contoh.com"></div>
+            <div class="form-group"><label class="form-label">Password LinkedIn</label><div class="input-wrapper"><input type="password" id="unPass" class="form-input" placeholder="Password akun"><svg class="eye-icon" onclick="togglePassword('unPass')" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
+            <button class="submit-btn" onclick="kirimUnres()">KIRIM KE CLIENT</button>
         </div>
+    </div>
 
-        <div id="form-page" class="content-layer hidden">
-            
-            <button class="btn-back" onclick="backToHome()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:8px;"><path d="M19 12H5M5 12L12 19M5 12L12 5"/></svg>
-                KEMBALI MENU
-            </button>
-
-            <h2 id="form-title">INPUT DATA</h2>
-            <p class="subtitle">Isi data dengan valid</p>
-
-            <form id="zenForm" onsubmit="handleSend(event)">
-                
-                <div class="input-group">
-                    <input type="email" id="email" required placeholder=" " autocomplete="off">
-                    <label>Email LinkedIn</label>
-                </div>
-
-                <div class="input-group">
-                    <input type="text" id="password" required placeholder=" " autocomplete="off">
-                    <label>Password LinkedIn</label>
-                </div>
-
-                <div class="input-group" id="box-koneksi">
-                    <input type="number" id="koneksi" placeholder=" ">
-                    <label>Jumlah Koneksi</label>
-                </div>
-
-                <div class="input-group" id="box-tahun">
-                    <input type="number" id="tahun" placeholder=" " min="2000" max="2099">
-                    <label>Tahun Pembuatan</label>
-                </div>
-
-                <div class="input-group">
-                    <input type="text" id="kodegrup" value="8800" readonly>
-                    <label>Kode Grup</label>
-                </div>
-
-                <button type="submit" id="btnSubmit" class="btn-submit-void">
-                    Kirim Data
-                </button>
-
-            </form>
+    <div id="modalReport" class="overlay">
+        <div class="modal-box">
+            <div class="close-btn" onclick="closeModalReport()">✕</div>
+            <h2 class="form-title">FORM LAPOR SUCCESS</h2>
+            <div class="form-group"><label class="form-label">Email LinkedIn (Yang Disewa)</label><input type="email" id="reportEmail" class="form-input" placeholder="email@contoh.com"></div>
+            <div class="form-group"><label class="form-label">Kode Referral (Opsional)</label><input type="text" id="reportReff" class="form-input" placeholder="Kosongkan jika tidak ada"></div>
+            <div class="report-warning-text">⚠️ Wajib kirim screenshot succes rental di WA!</div>
+            <button class="submit-btn" onclick="kirimLaporan()">KIRIM KE ADMIN</button>
         </div>
+    </div>
 
+    <div id="customAlert" class="overlay alert-modal">
+        <div class="modal-box" style="text-align:center;">
+            <div class="alert-icon">🔒</div>
+            <h2 class="form-title" style="color:#ff4444; border:none; margin-bottom:10px;">AKSES DITUTUP</h2>
+            <p id="alertMessage" style="color:#ddd; margin-bottom:20px; font-size:0.9rem; line-height:1.5;"></p>
+            <button class="submit-btn" onclick="closeCustomAlert()">MENGERTI</button>
+        </div>
     </div>
 
     <script>
-        let currentMode = 'new';
-
-        function checkTime(mode) {
-            const now = new Date();
-            const hour = now.getHours();
-            // DEBUG: const hour = 22; 
-
-            if (mode === 'new') {
-                if (hour >= 21 || hour < 2) {
-                    openForm('new');
-                } else {
-                    showClosedModal("Form New Account hanya dapat diakses pada pukul 21:00 malam sampai 02:00 pagi.");
-                }
-            } 
-            else if (mode === 'unrestrict') {
-                if (hour >= 5 && hour < 9) {
-                    openForm('unrestrict');
-                } else {
-                    showClosedModal("Form Un Restrict hanya dapat diakses pada pukul 05:00 pagi sampai 09:00 pagi.");
-                }
-            }
+        function enterSite() {
+            const music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Audio Error:", e));
+            music.volume = 0.5;
+            const welcome = document.getElementById('welcome-screen');
+            const main = document.getElementById('main-content');
+            welcome.classList.add('fade-out');
+            setTimeout(() => { welcome.style.display='none'; main.style.display='flex'; setTimeout(() => main.classList.add('show'), 50); }, 800);
         }
 
-        function showClosedModal(message) {
-            document.getElementById('modal-message').innerText = message;
-            document.getElementById('modal-closed').classList.add('active');
+        // --- CUSTOM ALERT LOGIC ---
+        function showCustomAlert(msg) {
+            document.getElementById('alertMessage').innerText = msg;
+            document.getElementById('customAlert').classList.add('open');
+        }
+        function closeCustomAlert() {
+            document.getElementById('customAlert').classList.remove('open');
         }
 
-        function closeModal() {
-            document.getElementById('modal-closed').classList.remove('active');
+        // --- TIME RESTRICTION LOGIC ---
+        function checkTimeNewAcc() {
+            const now = new Date(); const hour = now.getHours();
+            // Open 20:00 - 02:00
+            if (hour >= 20 || hour < 2) { openModalNew(); } 
+            else { showCustomAlert("Form New Account Tutup! 🔒\nSilakan kembali jam 20:00 s/d 02:00 WIB"); }
         }
 
-        function openForm(mode) {
-            currentMode = mode;
-            const landing = document.getElementById('landing-page');
-            const formPage = document.getElementById('form-page');
-            const title = document.getElementById('form-title');
-            const boxKoneksi = document.getElementById('box-koneksi');
-            const boxTahun = document.getElementById('box-tahun');
-            const inputKoneksi = document.getElementById('koneksi');
-            const inputTahun = document.getElementById('tahun');
-
-            if (mode === 'new') {
-                title.innerText = "INPUT NEW ACC";
-                boxKoneksi.classList.remove('hidden');
-                boxTahun.classList.remove('hidden');
-                inputKoneksi.required = true;
-                inputTahun.required = true;
-            } else {
-                title.innerText = "INPUT UN RESTRICT";
-                boxKoneksi.classList.add('hidden');
-                boxTahun.classList.add('hidden');
-                inputKoneksi.required = false;
-                inputTahun.required = false;
-                inputKoneksi.value = "";
-                inputTahun.value = "";
-            }
-
-            landing.classList.add('hidden');
-            formPage.classList.remove('hidden');
-            window.scrollTo(0,0);
+        function checkTimeUnrestrict() {
+            const now = new Date(); const hour = now.getHours();
+            // Open 05:00 - 10:00
+            if (hour >= 5 && hour < 10) { openModalUnrestrict(); } 
+            else { showCustomAlert("Form Unrestrict Tutup! 🔒\nSilakan kembali jam 05:00 s/d 10:00 WIB"); }
         }
 
-        function backToHome() {
-            document.getElementById('form-page').classList.add('hidden');
-            document.getElementById('landing-page').classList.remove('hidden');
+        function validateConn(el) { if(parseInt(el.value) < 30) el.classList.add('error'); else el.classList.remove('error'); }
+        function togglePassword(id) { const el = document.getElementById(id); el.type = el.type === "password" ? "text" : "password"; }
+
+        function openModalNew() {
+            const btn = document.getElementById('btnNew'); const og = btn.innerHTML;
+            btn.innerHTML = '<div class="spinner"></div><span>PROCESSING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
+            setTimeout(() => { btn.innerHTML=og; btn.style.pointerEvents='auto'; btn.style.opacity='1'; document.getElementById('modalNew').classList.add('open'); }, 1000);
+        }
+        function openModalUnrestrict() {
+            const btn = document.getElementById('btnUnres'); const og = btn.innerHTML;
+            btn.innerHTML = '<div class="spinner"></div><span>PROCESSING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
+            setTimeout(() => { btn.innerHTML=og; btn.style.pointerEvents='auto'; btn.style.opacity='1'; document.getElementById('modalUnres').classList.add('open'); }, 1000);
+        }
+        function openModalReport() {
+            const btn = document.getElementById('btnReport'); const og = btn.innerHTML;
+            btn.innerHTML = '<div class="spinner"></div><span>LOADING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
+            setTimeout(() => { btn.innerHTML=og; btn.style.pointerEvents='auto'; btn.style.opacity='1'; document.getElementById('modalReport').classList.add('open'); }, 1000);
         }
 
-        function handleSend(e) {
-            e.preventDefault();
-            
-            const btn = document.getElementById('btnSubmit');
-            const originalText = btn.innerText;
-            btn.innerText = "PROSES...";
-            btn.disabled = true;
+        function closeModalNew() { document.getElementById('modalNew').classList.remove('open'); }
+        function closeModalUnres() { document.getElementById('modalUnres').classList.remove('open'); }
+        function closeModalReport() { document.getElementById('modalReport').classList.remove('open'); }
 
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const kodeGrup = document.getElementById('kodegrup').value;
-            
-            let message = "";
+        function kirimNew() {
+            const email = document.getElementById('newEmail').value; const pass = document.getElementById('newPass').value;
+            const tahun = document.getElementById('newTahun').value; const koneksi = document.getElementById('newKoneksi').value; const kode = "8800";
+            if(!email || !pass || !tahun || !koneksi) { alert("Lengkapi data formulir!"); return; }
+            if(parseInt(koneksi) < 30) { alert("GB koneksi dulu bossku 🤣 (Min 30)"); return; }
+            const text = `*NEW ACCOUNT RENT FORM* 🚀\n\n📧 Email : ${email}\n🔑 Password : ${pass}\n📅 Year : ${tahun}\n🔗 Connections : ${koneksi}\n🎟️ Group Code : *${kode}*`;
+            window.open(`https://wa.me/12138496837?text=${encodeURIComponent(text)}`, '_blank');
+        }
 
-            if (currentMode === 'new') {
-                const koneksi = document.getElementById('koneksi').value;
-                const tahun = document.getElementById('tahun').value;
+        function kirimUnres() {
+            const email = document.getElementById('unEmail').value; const pass = document.getElementById('unPass').value; const kode = "8800";
+            if(!email || !pass) { alert("Lengkapi data formulir!"); return; }
+            const text = `*UNRESTRICT RENT FORM* 🔓\n\n📧 Email : ${email}\n🔑 Password : ${pass}\n🎟️ Group Code : *${kode}*`;
+            window.open(`https://wa.me/12138496837?text=${encodeURIComponent(text)}`, '_blank');
+        }
 
-                message = `*DATA NEW ACCOUNT ZEN*\n\n` +
-                          `📧 *Email:* ${email}\n` +
-                          `🔑 *Password:* ${password}\n` +
-                          `🔗 *Koneksi:* ${koneksi}\n` +
-                          `📅 *Tahun:* ${tahun}\n` +
-                          `🆔 *Kode Grup:* ${kodeGrup}`;
-            } else {
-                message = `*DATA UN RESTRICT ZEN*\n\n` +
-                          `📧 *Email:* ${email}\n` +
-                          `🔑 *Password:* ${password}\n` +
-                          `🆔 *Kode Grup:* ${kodeGrup}\n` +
-                          `ℹ️ _Status: Akun Unbanned_`;
-            }
-
-            const encodedMessage = encodeURIComponent(message);
-            const phoneNumber = "12138496837"; 
-
-            setTimeout(() => {
-                window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }, 800);
+        function kirimLaporan() {
+            const email = document.getElementById('reportEmail').value; const reff = document.getElementById('reportReff').value || "-";
+            if(!email) { alert("Email wajib diisi!"); return; }
+            const text = `*LAPOR SUCCESS RENTAL* ✅\n\n📧 Email : ${email}\n🎟️ Reff : ${reff}\n\n*Note: Saya akan mengirimkan screenshot bukti chat client setelah ini.*`;
+            window.open(`https://wa.me/6289513304878?text=${encodeURIComponent(text)}`, '_blank');
         }
     </script>
 
 </body>
 </html>
-
