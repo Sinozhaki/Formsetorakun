@@ -76,11 +76,7 @@
         .info-icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; stroke: #fff; opacity: 0.6; }
         .highlight { color: #fff; font-weight: 700; border-bottom: 1px dotted #666; }
         
-        .report-section { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
-        .report-alert { background: rgba(255, 200, 0, 0.1); border: 1px dashed #ffc800; border-radius: 8px; padding: 12px; font-size: 0.75rem; color: #ffc800; text-align: left; line-height: 1.5; }
-        .report-btn { background: rgba(0, 198, 255, 0.1); border: 1px solid #00c6ff; color: #00c6ff; width: 100%; padding: 15px; border-radius: 8px; font-weight: 700; text-align: center; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; transition: 0.2s; box-shadow: 0 0 10px rgba(0, 198, 255, 0.2); }
-        .report-btn:active { transform: scale(0.97); background: rgba(0, 198, 255, 0.2); }
-        .report-warning-text { font-size: 0.7rem; color: #ff4444; margin-top: 5px; font-style: italic; text-align: center; }
+        /* Report Section Removed from CSS (Optional, but kept to prevent errors if referenced) */
 
         .criteria-card { width: 100%; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 20px; margin-top: 10px; }
         .criteria-title { text-align: center; font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; color: #ddd; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px dashed #444; padding-bottom: 8px; }
@@ -175,14 +171,6 @@
             </div>
         </div>
 
-        <div class="report-section">
-            <div class="report-alert">
-                ⚠️ <b>PENTING:</b> Wajib lapor ke admin zen setelah client konfirmasi <b>SUCCES RENTAL</b>.<br>
-                <span style="opacity:0.8; font-size:0.65rem;">(Berupa Screenshot + Email secara terpisah)</span>
-            </div>
-            <div id="btnReport" onclick="openModalReport()" class="report-btn">LAPOR SUCCESS RENTAL 🚀</div>
-        </div>
-
         <div class="criteria-card">
             <div class="criteria-title">KRITERIA AKUN</div>
             <ul class="criteria-list">
@@ -230,17 +218,6 @@
             <div class="form-group"><label class="form-label">Email LinkedIn</label><input type="email" id="unEmail" class="form-input" placeholder="email@contoh.com"></div>
             <div class="form-group"><label class="form-label">Password LinkedIn</label><div class="input-wrapper"><input type="password" id="unPass" class="form-input" placeholder="Password akun"><svg class="eye-icon" onclick="togglePassword('unPass')" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
             <button class="submit-btn" onclick="kirimUnres()">KIRIM KE CLIENT</button>
-        </div>
-    </div>
-
-    <div id="modalReport" class="overlay">
-        <div class="modal-box">
-            <div class="close-btn" onclick="closeModalReport()">✕</div>
-            <h2 class="form-title">FORM LAPOR SUCCESS</h2>
-            <div class="form-group"><label class="form-label">Email LinkedIn (Yang Disewa)</label><input type="email" id="reportEmail" class="form-input" placeholder="email@contoh.com"></div>
-            <div class="form-group"><label class="form-label">Kode Referral (Opsional)</label><input type="text" id="reportReff" class="form-input" placeholder="Kosongkan jika tidak ada"></div>
-            <div class="report-warning-text">⚠️ Wajib kirim screenshot succes rental di WA!</div>
-            <button class="submit-btn" onclick="kirimLaporan()">KIRIM KE ADMIN</button>
         </div>
     </div>
 
@@ -301,15 +278,12 @@
             btn.innerHTML = '<div class="spinner"></div><span>PROCESSING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
             setTimeout(() => { btn.innerHTML=og; btn.style.pointerEvents='auto'; btn.style.opacity='1'; document.getElementById('modalUnres').classList.add('open'); }, 1000);
         }
-        function openModalReport() {
-            const btn = document.getElementById('btnReport'); const og = btn.innerHTML;
-            btn.innerHTML = '<div class="spinner"></div><span>LOADING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
-            setTimeout(() => { btn.innerHTML=og; btn.style.pointerEvents='auto'; btn.style.opacity='1'; document.getElementById('modalReport').classList.add('open'); }, 1000);
-        }
+        
+        // REPORT FUNCTIONS REMOVED
 
         function closeModalNew() { document.getElementById('modalNew').classList.remove('open'); }
         function closeModalUnres() { document.getElementById('modalUnres').classList.remove('open'); }
-        function closeModalReport() { document.getElementById('modalReport').classList.remove('open'); }
+        // CLOSE REPORT MODAL REMOVED
 
         function kirimNew() {
             const email = document.getElementById('newEmail').value; const pass = document.getElementById('newPass').value;
@@ -327,12 +301,7 @@
             window.open(`https://wa.me/12138496837?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        function kirimLaporan() {
-            const email = document.getElementById('reportEmail').value; const reff = document.getElementById('reportReff').value || "-";
-            if(!email) { alert("Email wajib diisi!"); return; }
-            const text = `*LAPOR SUCCESS RENTAL* ✅\n\n📧 Email : ${email}\n🎟️ Reff : ${reff}\n\n*Note: Saya akan mengirimkan screenshot bukti chat client setelah ini.*`;
-            window.open(`https://wa.me/6289513304878?text=${encodeURIComponent(text)}`, '_blank');
-        }
+        // KIRIM LAPORAN FUNCTION REMOVED
     </script>
 
 </body>
