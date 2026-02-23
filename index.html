@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Collect Account by Zen</title>
+    <title>ZEN X 8800</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,119 +12,217 @@
     <style>
         /* --- 1. RESET --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; } 
         
-        /* --- BACKGROUND & FONT --- */
+        /* --- BACKGROUND & FONT (LIGHT THEME + ZEN RIPPLES) --- */
         body {
-            background-color: #000;
-            background: radial-gradient(circle at 50% 10%, #101652 0%, #000000 80%);
+            background-color: #f8fafc;
+            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 100%);
             min-height: 100vh;
             min-height: 100dvh; 
             overflow-x: hidden; 
             position: relative;
             font-family: 'Chakra Petch', sans-serif;
-            color: #fff;
-            display: flex; justify-content: center; align-items: center;
+            color: #1e293b;
+            display: flex; justify-content: center; align-items: flex-start;
         }
 
-        /* --- OVERLAY GRID --- */
+        /* The Zen Concentric Ripples */
         body::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(white, rgba(255,255,255,.15) 2px, transparent 3px), radial-gradient(white, rgba(255,255,255,.05) 1px, transparent 2px);
-            background-size: 350px 350px; background-position: center; opacity: 0.2; z-index: -1; pointer-events: none; position: fixed;
+            content: ""; 
+            position: fixed; 
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%);
+            width: 200vw; height: 200vw; 
+            border-radius: 50%;
+            background: repeating-radial-gradient(
+                circle at center, 
+                transparent 0, 
+                transparent 40px, 
+                rgba(2, 132, 199, 0.05) 41px, 
+                rgba(2, 132, 199, 0.05) 42px
+            );
+            z-index: -1; 
+            pointer-events: none;
+            animation: ripple-breathe 15s ease-in-out infinite;
         }
 
-        /* --- WELCOME SCREEN --- */
+        @keyframes ripple-breathe {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        }
+
+        /* --- WELCOME SCREEN (MORPH ANIMATION) --- */
         #welcome-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 10%, #101652 0%, #000000 90%);
+            /* Dibuat semi-transparan agar ripple terlihat di belakangnya */
+            background: rgba(248, 250, 252, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 30px; text-align: center; transition: opacity 0.8s ease, visibility 0.8s;
+            padding: 30px; text-align: center; transition: background 0.8s ease, opacity 0.5s ease;
         }
-        #welcome-screen.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
-        .welcome-title { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; background: linear-gradient(180deg, #ffffff 30%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; animation: fadeInUp 1s ease forwards; opacity: 0; transform: translateY(20px); }
-        .welcome-subtitle { font-size: 1rem; color: #00c6ff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 50px; animation: fadeInUp 1s ease 0.3s forwards; opacity: 0; transform: translateY(20px); }
-        .enter-btn { padding: 15px 40px; background: rgba(255, 255, 255, 0.05); border: 1px solid #fff; color: #fff; font-family: 'Chakra Petch', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); transition: all 0.3s; animation: fadeInUp 1s ease 0.6s forwards, pulse-btn 2s infinite; opacity: 0; transform: translateY(20px); }
-        .enter-btn:active { transform: scale(0.95); background: #fff; color: #000; }
-        .enter-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 3; }
+        
+        #welcome-text-container { transition: all 0.5s ease; }
+        
+        .welcome-title { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; background: linear-gradient(180deg, #0f172a 30%, #64748b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; animation: fadeInUp 1s ease forwards; opacity: 0; transform: translateY(20px); }
+        .welcome-subtitle { font-size: 1rem; color: #0284c7; letter-spacing: 4px; text-transform: uppercase; animation: fadeInUp 1s ease 0.3s forwards; opacity: 0; transform: translateY(20px); }
+        
+        /* The Morphing Banner */
+        #welcome-banner {
+            width: 160px; height: 160px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 4px solid #fff; 
+            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.3);
+            margin: 40px 0;
+            position: relative;
+            z-index: 10;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+        
+        /* Target state when morphed */
+        #welcome-banner.morph {
+            width: 100%; max-width: 410px;
+            height: 180px; 
+            border-radius: 8px; 
+            border-width: 1px;
+            border-color: rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 0;
+            transform: translateY(-20vh); 
+            animation: none; 
+        }
+
+        #welcome-btn { padding: 15px 40px; background: #fff; border: 1px solid #cbd5e1; color: #0f172a; font-family: 'Chakra Petch', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); transition: all 0.5s; animation: fadeInUp 1s ease 0.6s forwards, pulse-btn-light 2s infinite; opacity: 0; transform: translateY(20px); }
+        #welcome-btn:hover { transform: scale(0.95); background: #0f172a; color: #fff; }
+        #welcome-btn:hover .enter-icon { stroke: #fff; }
+        .enter-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 3; transition: stroke 0.3s; }
+        
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse-btn { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+        @keyframes pulse-btn-light { 0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.2); } 70% { box-shadow: 0 0 0 15px rgba(2, 132, 199, 0); } 100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); } }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 10px 30px rgba(2, 132, 199, 0.3); } 50% { box-shadow: 0 10px 50px rgba(2, 132, 199, 0.6); } }
 
         /* --- MAIN CONTAINER --- */
-        .container { width: 100%; max-width: 450px; padding: 10px 20px; display: none; flex-direction: column; align-items: center; gap: 20px; z-index: 10; padding-bottom: 50px; opacity: 0; transition: opacity 1s ease; }
+        .container { width: 100%; max-width: 450px; padding: 20px 20px; display: none; flex-direction: column; align-items: center; gap: 20px; z-index: 10; padding-bottom: 50px; opacity: 0; transition: opacity 0.8s ease; margin-top: 10px; }
         .container.show { display: flex; opacity: 1; animation: fadeInMain 0.8s ease forwards; }
         @keyframes fadeInMain { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        h1 { font-size: clamp(13px, 4vw, 28px); white-space: nowrap; font-weight: 700; text-align: center; letter-spacing: 0px; text-transform: uppercase; background: linear-gradient(180deg, #ffffff 30%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: white-pulse 3s infinite ease-in-out; margin-bottom: 5px; border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 12px; width: 100%; }
-        @keyframes white-pulse { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); } 50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.6)); } }
-        .hero-banner { width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); display: block; }
+        h1 { font-size: clamp(13px, 4vw, 28px); white-space: nowrap; font-weight: 700; text-align: center; letter-spacing: 0px; text-transform: uppercase; background: linear-gradient(180deg, #0f172a 30%, #64748b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; border-bottom: 1px solid rgba(0, 0, 0, 0.1); padding-bottom: 12px; width: 100%; }
+        
+        .detail-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #0284c7; text-decoration: none; border: 1px solid rgba(2, 132, 199, 0.3); padding: 6px 18px; border-radius: 20px; transition: all 0.3s; margin-bottom: -5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(2, 132, 199, 0.05); }
+        .detail-link:hover, .detail-link:active { background: #0284c7; color: #fff; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2); }
+        .detail-icon { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+        .hero-banner { width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); display: block; opacity: 0; transition: opacity 0.5s; }
 
         /* --- BUTTONS & SCHEDULE --- */
         .btn-wrapper { width: 100%; display: flex; flex-direction: column; gap: 5px; } 
         .btn-group { margin-bottom: 15px; width: 100%; }
-        .schedule-text { font-size: 0.7rem; color: #aaa; text-align: center; margin-top: 6px; font-style: italic; letter-spacing: 0.5px; }
-        .schedule-text span { color: #00c6ff; font-weight: bold; }
+        .schedule-text { font-size: 0.7rem; color: #64748b; text-align: center; margin-top: 6px; font-style: italic; letter-spacing: 0.5px; }
+        .schedule-text span { color: #0284c7; font-weight: bold; }
 
-        @keyframes pulse-zoom { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
-        .cta-btn { position: relative; width: 100%; padding: 18px; border-radius: 10px; text-decoration: none; color: #fff; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); animation: pulse-zoom 2s infinite ease-in-out; cursor: pointer; transition: all 0.2s ease; }
-        .btn-icon { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: square; stroke-linejoin: miter; }
-        .cta-btn:active { animation: none; transform: scale(0.97); background: rgba(255, 255, 255, 0.1); border-color: #00c6ff; color: #00c6ff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .cta-btn:active .btn-icon { stroke: #00c6ff; }
+        @keyframes pulse-zoom { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .cta-btn { position: relative; width: 100%; padding: 18px; border-radius: 10px; text-decoration: none; color: #0f172a; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #fff; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); animation: pulse-zoom 2.5s infinite ease-in-out; cursor: pointer; transition: all 0.2s ease; }
+        .btn-icon { width: 20px; height: 20px; fill: none; stroke: #0f172a; stroke-width: 2.5; stroke-linecap: square; stroke-linejoin: miter; }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); }
+        .cta-btn:active { animation: none; transform: scale(0.97); background: #f8fafc; border-color: #0284c7; color: #0284c7; }
+        .cta-btn:active .btn-icon { stroke: #0284c7; }
 
         /* --- OTHER COMPONENTS --- */
-        .info-card { background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(0, 0, 0, 0.95)); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 15px; width: 100%; display: flex; flex-direction: column; gap: 12px; }
-        .info-item { display: flex; gap: 12px; align-items: flex-start; font-size: 0.75rem; line-height: 1.5; color: #999; text-align: left; }
-        .info-icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; stroke: #fff; opacity: 0.6; }
-        .highlight { color: #fff; font-weight: 700; border-bottom: 1px dotted #666; }
+        .info-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; width: 100%; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .info-item { display: flex; gap: 12px; align-items: flex-start; font-size: 0.75rem; line-height: 1.5; color: #475569; text-align: left; }
+        .info-icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; stroke: #0284c7; }
+        .highlight { color: #0f172a; font-weight: 700; border-bottom: 1px dotted #94a3b8; }
         
-        /* Report Section Removed from CSS (Optional, but kept to prevent errors if referenced) */
+        .purpose-card { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .purpose-title { font-size: 0.85rem; font-weight: 700; color: #0284c7; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #e2e8f0; padding-bottom: 6px; width: 100%; }
+        .purpose-text { font-size: 0.75rem; color: #475569; line-height: 1.6; }
+        .purpose-img { width: 100%; max-width: 150px; height: auto; border-radius: 6px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
 
-        .criteria-card { width: 100%; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 20px; margin-top: 10px; }
-        .criteria-title { text-align: center; font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; color: #ddd; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px dashed #444; padding-bottom: 8px; }
-        .criteria-list { list-style: none; padding: 0; margin: 0; text-align: left; font-size: 0.75rem; color: #aaa; line-height: 1.6; }
-        .criteria-list li { margin-bottom: 6px; display: flex; align-items: flex-start; gap: 8px; }
-        .criteria-list li::before { content: "▹"; color: #fff; font-weight: bold; }
-        .warning-box { margin-top: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid #666; color: #fff; padding: 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
+        .rate-card { width: 100%; background: linear-gradient(135deg, #fff, #f0f9ff); border: 1px solid rgba(2, 132, 199, 0.2); border-radius: 8px; padding: 20px 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.05); scroll-margin-top: 20px; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+        .rate-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15); border-color: #0284c7; }
+        .rate-title { font-size: 0.9rem; font-weight: 700; color: #0f172a; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #0284c7; padding-bottom: 8px; width: 100%; }
+        .rate-price { font-size: 1.8rem; font-weight: 700; color: #16a34a; margin: 5px 0; }
+        .rate-desc { font-size: 0.75rem; color: #64748b; line-height: 1.6; margin-bottom: 5px; }
+        .rate-bonus { font-size: 0.75rem; font-weight: 600; color: #0f172a; background: linear-gradient(90deg, rgba(22, 163, 74, 0.1) 0%, rgba(255,255,255,0) 100%); border-left: 4px solid #16a34a; padding: 12px 15px; border-radius: 4px; margin-top: 8px; width: 100%; text-align: left; display: flex; align-items: center; gap: 10px; }
 
-        /* Payment Partners */
+        /* --- KRITERIA AKUN --- */
+        .criteria-card { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-top: 10px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .criteria-main-title { text-align: center; font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; color: #0f172a; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px; }
+        .criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .criteria-item { background: rgba(22, 163, 74, 0.05); border: 1px solid rgba(22, 163, 74, 0.2); border-radius: 6px; padding: 10px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.7rem; color: #334155; line-height: 1.4; transition: transform 0.2s, border-color 0.2s; }
+        .criteria-item:hover { transform: translateY(-2px); border-color: #16a34a; background: rgba(22, 163, 74, 0.1); }
+        .criteria-icon-wrapper { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; margin-top: 2px; }
+        .c-icon { width: 16px; height: 16px; fill: none; stroke: #16a34a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .c-check { width: 12px; height: 12px; fill: none; stroke: #16a34a; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+        .criteria-item.full-width { grid-column: span 2; justify-content: center; text-align: center; }
+        .criteria-item.full-width .criteria-icon-wrapper { align-items: center; flex-direction: row; }
+        
+        @keyframes pulse-red-border-light { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); } 70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        .warning-box { margin-top: 15px; border: 1px solid #ef4444; color: #ef4444; padding: 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; background: repeating-linear-gradient(45deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.05) 10px, transparent 10px, transparent 20px); animation: pulse-red-border-light 2s infinite; }
+
+        /* --- REFFERAL EVENT CARD --- */
+        .referral-card { width: 100%; background: #fff; border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 20px 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1); transition: transform 0.3s ease; }
+        .referral-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2); border-color: #b45309; }
+        .referral-title { font-size: 0.9rem; font-weight: 700; color: #b45309; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #b45309; padding-bottom: 8px; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .referral-list { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+        .referral-item { display: flex; justify-content: space-between; align-items: center; background: #fdfae8; border: 1px solid rgba(212, 175, 55, 0.3); padding: 10px 15px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: #334155; transition: background 0.2s; }
+        .referral-item:hover { background: #fef3c7; border-color: rgba(212, 175, 55, 0.6); }
+        .referral-item .reward { color: #16a34a; font-size: 0.95rem; font-weight: 700; }
+        .referral-btn { margin-top: 5px; padding: 14px 20px; width: 100%; background: linear-gradient(90deg, #d97706, #f59e0b); color: #fff; font-family: 'Chakra Petch', sans-serif; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); transition: all 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; border: none; cursor: pointer; }
+        .referral-btn:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(245, 158, 11, 0.2); }
+        .referral-btn:hover { box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4); filter: brightness(1.05); }
+        .ref-icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+        /* --- PAYMENT PARTNERS --- */
         .payment-card { width: 100%; margin-top: 10px; text-align: center; }
-        .payment-title { font-size: 0.75rem; color: #666; margin-bottom: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+        @keyframes pulse-shield-light { 0%, 100% { filter: drop-shadow(0 0 2px rgba(22,163,74,0.4)); } 50% { filter: drop-shadow(0 0 6px rgba(22,163,74,0.8)); } }
+        .payment-title { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.8rem; color: #475569; margin-bottom: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; border-bottom: 1px dashed #e2e8f0; padding-bottom: 6px; }
+        .secure-icon { width: 16px; height: 16px; fill: none; stroke: #16a34a; stroke-width: 2; animation: pulse-shield-light 2s infinite; }
         .payment-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .payment-box { background-color: #fff; border-radius: 6px; padding: 5px; height: 35px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.5); transition: transform 0.2s; }
-        .payment-box:hover { transform: scale(1.05); }
+        .payment-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 50px; padding: 5px 10px; height: 38px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .payment-box:hover { transform: translateY(-3px) scale(1.05); background: #f8fafc; border-color: #0284c7; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.15); }
         .payment-logo { height: 100%; width: 100%; }
 
         /* Modal Overlay & Animation */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(0px); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.4s ease, backdrop-filter 0.4s ease, visibility 0.4s; }
-        .overlay.open { opacity: 1; visibility: visible; pointer-events: auto; backdrop-filter: blur(8px); }
-        .modal-box { background: #111; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 16px; padding: 25px; width: 100%; max-width: 400px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: scale(0.92) translateY(30px); opacity: 0; transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.4s ease; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.4s ease, backdrop-filter 0.4s ease, visibility 0.4s; }
+        .overlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
+        .modal-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 25px; width: 100%; max-width: 400px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.1); transform: scale(0.92) translateY(30px); opacity: 0; transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.4s ease; }
         .overlay.open .modal-box { transform: scale(1) translateY(0); opacity: 1; }
         
-        .close-btn { position: absolute; top: 15px; right: 15px; color: #ff4444; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: transform 0.2s; }
+        .close-btn { position: absolute; top: 15px; right: 15px; color: #ef4444; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: transform 0.2s; }
         .close-btn:active { transform: scale(0.8); }
-        .form-title { text-align: center; font-size: 1.1rem; margin-bottom: 20px; color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px; letter-spacing: 1px; }
+        .form-title { text-align: center; font-size: 1.1rem; margin-bottom: 20px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; letter-spacing: 1px; }
         .form-group { margin-bottom: 15px; position: relative; }
-        .form-label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 5px; }
-        .form-input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: 'Chakra Petch', sans-serif; outline: none; transition: 0.3s; font-size: 0.95rem; }
+        .form-label { display: block; font-size: 0.75rem; color: #64748b; margin-bottom: 5px; font-weight: 600; }
+        .form-input { width: 100%; padding: 12px; background: #fff; border: 1px solid #cbd5e1; color: #0f172a; border-radius: 8px; font-family: 'Chakra Petch', sans-serif; outline: none; transition: 0.3s; font-size: 0.95rem; }
         select.form-input { appearance: none; -webkit-appearance: none; cursor: pointer; } 
-        .form-input:focus { border-color: #00c6ff; box-shadow: 0 0 12px rgba(0, 198, 255, 0.4); }
-        .form-input.error { border-color: #ff3333 !important; box-shadow: 0 0 10px rgba(255, 51, 51, 0.3) !important; color: #ff3333; }
-        .helper-text { font-size: 0.65rem; color: #555; margin-top: 4px; display: block; font-style: italic; }
+        .form-input:focus { border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
+        .form-input.error { border-color: #ef4444 !important; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important; color: #ef4444; }
+        .helper-text { font-size: 0.65rem; color: #64748b; margin-top: 4px; display: block; font-style: italic; }
         .input-wrapper { position: relative; }
-        .eye-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; width: 20px; height: 20px; fill: #666; transition: fill 0.3s; }
-        .eye-icon:hover { fill: #fff; }
-        .code-badge { background: rgba(0, 198, 255, 0.08); border: 1px dashed #00c6ff; color: #00c6ff; font-weight: 700; text-align: center; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 1rem; letter-spacing: 2px; box-shadow: 0 0 10px rgba(0, 198, 255, 0.1); }
-        .submit-btn { width: 100%; padding: 15px; margin-top: 5px; background: #fff; color: #000; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s; }
-        .submit-btn:active { transform: scale(0.95); background: #ccc; }
-        .spinner { border: 3px solid rgba(255, 255, 255, 0.1); border-top: 3px solid #fff; border-radius: 50%; width: 18px; height: 18px; animation: spin 1s linear infinite; display: inline-block; }
+        .eye-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; width: 20px; height: 20px; fill: #94a3b8; transition: fill 0.3s; }
+        .eye-icon:hover { fill: #0f172a; }
+        .code-badge { background: #f0f9ff; border: 1px dashed #0284c7; color: #0284c7; font-weight: 700; text-align: center; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 1rem; letter-spacing: 2px; }
+        .submit-btn { width: 100%; padding: 15px; margin-top: 5px; background: #0f172a; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2); }
+        .submit-btn:hover { background: #1e293b; }
+        .submit-btn:active { transform: scale(0.95); box-shadow: 0 2px 5px rgba(15, 23, 42, 0.2); }
+        .spinner { border: 3px solid rgba(0, 0, 0, 0.1); border-top: 3px solid #0f172a; border-radius: 50%; width: 18px; height: 18px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* --- CUSTOM ALERT (RED THEME) --- */
         .alert-icon { font-size: 3rem; margin-bottom: 10px; display: inline-block; animation: shake 0.5s ease-in-out; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-5deg); } 75% { transform: translateX(5px) rotate(5deg); } }
         
-        .alert-modal .modal-box { border-color: #ff4444; box-shadow: 0 10px 40px rgba(255, 68, 68, 0.2); }
-        .alert-modal .submit-btn { background: #ff4444; color: #fff; border: none; }
-        .alert-modal .submit-btn:active { background: #cc0000; }
+        .alert-modal .modal-box { border-color: #ef4444; box-shadow: 0 10px 40px rgba(239, 68, 68, 0.15); }
+        .alert-modal .form-title { color: #ef4444; border: none; }
+        .alert-modal p { color: #334155 !important; }
+        .alert-modal .submit-btn { background: #ef4444; color: #fff; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
+        .alert-modal .submit-btn:hover { background: #dc2626; }
+        .alert-modal .submit-btn:active { background: #b91c1c; }
 
     </style>
 </head>
@@ -133,14 +231,27 @@
     <audio id="bgMusic" src="zen.mp3" loop></audio>
 
     <div id="welcome-screen">
-        <div class="welcome-title">SELAMAT DATANG</div>
-        <div class="welcome-subtitle">DI GRUP SEWA BY ZEN</div>
-        <button class="enter-btn" onclick="enterSite()">LANJUTKAN <svg class="enter-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+        <div id="welcome-text-container">
+            <div class="welcome-title">SELAMAT DATANG</div>
+            <div class="welcome-subtitle">DI GRUP SEWA ZEN X 8800</div>
+        </div>
+        
+        <img id="welcome-banner" src="baner.gif" alt="Zen Banner">
+        
+        <button id="welcome-btn" onclick="enterSite()">
+            LANJUTKAN <svg class="enter-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
     </div>
 
     <div class="container" id="main-content">
-        <h1>COLLECT ACCOUNT BY ZEN</h1>
-        <img src="baner.gif" alt="Banner" class="hero-banner">
+        <h1>ZEN X 8800</h1>
+        
+        <a href="#rate-sewa" class="detail-link">
+            Cek Detail Rate
+            <svg class="detail-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+
+        <img src="baner.gif" alt="Banner" id="main-banner" class="hero-banner">
 
         <div class="btn-wrapper">
             <div class="btn-group">
@@ -165,35 +276,104 @@
                 <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                 <span>Pilih <span class="highlight">New Acc</span> jika kalian baru pertama kali mau sewa akun.</span>
             </div>
-            <div class="info-item" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top:12px;">
+            <div class="info-item" style="border-top: 1px solid rgba(0,0,0,0.05); padding-top:12px;">
                 <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                 <span>Pilih <span class="highlight">Unrestrict</span> jika akun sewa kalian kena restrict lalu sudah pulih kembali.</span>
             </div>
         </div>
 
+        <div class="purpose-card">
+            <div class="purpose-title">BUAT APA AKUNYA?</div>
+            <p class="purpose-text">Akun digunakan client untuk promosi digital dan boost engagement di negara luar, profil akan disesuaikan dengan negara client.</p>
+            <img src="promosi.png" alt="Promosi" class="purpose-img">
+        </div>
+
+        <div id="rate-sewa" class="rate-card">
+            <div class="rate-title">RATE SEWA</div>
+            <div class="rate-price">Rp 190.000<span style="font-size:0.8rem; color:#64748b;"> / week</span></div>
+            <div class="rate-desc">Harga di atas untuk penyewaan akun normal.</div>
+            <div class="rate-bonus">
+                <svg viewBox="0 0 24 24" fill="#FFD700" stroke="#000" stroke-width="1" style="width: 24px; height: 24px; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));">
+                    <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"></path>
+                </svg>
+                <span>+ Tambahan Rp 80.000 jika bisa mengangkat baned dari akun (Berlaku 1x saja)</span>
+            </div>
+        </div>
+
         <div class="criteria-card">
-            <div class="criteria-title">KRITERIA AKUN</div>
-            <ul class="criteria-list">
-                <li>Min. pembuatan Desember 2024</li>
-                <li>Koneksi minimal 30</li>
-                <li>Bukan akun hasil nuyul atau beli</li>
-                <li>1 WhatsApp = 1 LinkedIn</li>
-                <li>Wajib akun lokal Indonesia</li>
-            </ul>
+            <div class="criteria-main-title">KRITERIA AKUN</div>
+            <div class="criteria-grid">
+                <div class="criteria-item">
+                    <div class="criteria-icon-wrapper">
+                        <svg class="c-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <svg class="c-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>
+                    </div>
+                    <span>Min. pembuatan Desember 2024</span>
+                </div>
+                <div class="criteria-item">
+                    <div class="criteria-icon-wrapper">
+                        <svg class="c-icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        <svg class="c-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>
+                    </div>
+                    <span>Koneksi minimal 30</span>
+                </div>
+                <div class="criteria-item">
+                    <div class="criteria-icon-wrapper">
+                        <svg class="c-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
+                        <svg class="c-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>
+                    </div>
+                    <span>Bukan akun hasil nuyul / beli</span>
+                </div>
+                <div class="criteria-item">
+                    <div class="criteria-icon-wrapper">
+                        <svg class="c-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        <svg class="c-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>
+                    </div>
+                    <span>1 WhatsApp = 1 LinkedIn</span>
+                </div>
+                <div class="criteria-item full-width">
+                    <div class="criteria-icon-wrapper">
+                        <svg class="c-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <svg class="c-check" viewBox="0 0 24 24" style="margin-left:4px;"><path d="M20 6L9 17l-5-5"></path></svg>
+                    </div>
+                    <span>Wajib akun lokal Indonesia</span>
+                </div>
+            </div>
             <div class="warning-box">⚠️ Melanggar = Auto Ditolak Client</div>
         </div>
 
+        <div class="referral-card">
+            <div class="referral-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                REFFERAL EVENT
+            </div>
+            <div class="referral-list">
+                <div class="referral-item"><span>Invite 1 Orang</span> <span class="reward">Rp 48.000</span></div>
+                <div class="referral-item"><span>Invite 2 Orang</span> <span class="reward">Rp 112.000</span></div>
+                <div class="referral-item"><span>Invite 3 Orang</span> <span class="reward">Rp 160.000</span></div>
+                <div class="referral-item"><span>Invite 4 Orang</span> <span class="reward">Rp 224.000</span></div>
+                <div class="referral-item"><span>Invite 5 Orang</span> <span class="reward">Rp 272.000</span></div>
+            </div>
+            <a href="https://bonusrefferalbyzen.vercel.app/" target="_blank" class="referral-btn">
+                GABUNG JADI PENGUNDANG
+                <svg class="ref-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+        </div>
+
         <div class="payment-card">
-            <div class="payment-title">PAYMENT PARTNERS</div>
+            <div class="payment-title">
+                <svg class="secure-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>SECURE PAYMENT PARTNERS</span>
+            </div>
             <div class="payment-grid">
                 <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="20" fill="#000" font-weight="900" font-family="Arial">QRIS</text></svg></div>
                 <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="22" fill="#00529C" font-weight="bold" font-family="Arial" letter-spacing="1">BCA</text></svg></div>
-                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><rect x="15" y="5" width="70" height="30" rx="4" fill="#00529C"/><text x="50" y="28" text-anchor="middle" font-size="20" fill="#fff" font-weight="bold" font-family="Arial">BRI</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><rect x="15" y="5" width="70" height="30" rx="15" fill="#00529C"/><text x="50" y="27" text-anchor="middle" font-size="18" fill="#fff" font-weight="bold" font-family="Arial">BRI</text></svg></div>
                 <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="26" text-anchor="middle" font-size="18" fill="#003D79" font-weight="bold" font-family="Arial">mandiri</text></svg></div>
                 <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="20" fill="#118EEA" font-weight="900" font-family="Arial">DANA</text></svg></div>
                 <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="20" fill="#4C3494" font-weight="900" font-family="Arial">OVO</text></svg></div>
                 <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="27" text-anchor="middle" font-size="18" fill="#00AEEF" font-weight="bold" font-family="Arial">gopay</text></svg></div>
-                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="28" text-anchor="middle" font-size="22" fill="#00665E" font-weight="bold" font-family="Arial">BNI</text></svg></div>
+                <div class="payment-box"><svg class="payment-logo" viewBox="0 0 100 40"><text x="50" y="28" text-anchor="middle" font-size="22" fill="#F26522" font-weight="bold" font-family="Arial">BNI</text></svg></div>
             </div>
         </div>
     </div>
@@ -224,21 +404,54 @@
     <div id="customAlert" class="overlay alert-modal">
         <div class="modal-box" style="text-align:center;">
             <div class="alert-icon">🔒</div>
-            <h2 class="form-title" style="color:#ff4444; border:none; margin-bottom:10px;">AKSES DITUTUP</h2>
-            <p id="alertMessage" style="color:#ddd; margin-bottom:20px; font-size:0.9rem; line-height:1.5;"></p>
+            <h2 class="form-title" style="color:#ef4444; border:none; margin-bottom:10px;">AKSES DITUTUP</h2>
+            <p id="alertMessage" style="color:#334155; margin-bottom:20px; font-size:0.9rem; line-height:1.5;"></p>
             <button class="submit-btn" onclick="closeCustomAlert()">MENGERTI</button>
         </div>
     </div>
 
     <script>
         function enterSite() {
+            // Audio setup
             const music = document.getElementById('bgMusic');
             music.play().catch(e => console.log("Audio Error:", e));
             music.volume = 0.5;
-            const welcome = document.getElementById('welcome-screen');
-            const main = document.getElementById('main-content');
-            welcome.classList.add('fade-out');
-            setTimeout(() => { welcome.style.display='none'; main.style.display='flex'; setTimeout(() => main.classList.add('show'), 50); }, 800);
+
+            // DOM Elements
+            const welcomeOverlay = document.getElementById('welcome-screen');
+            const welcomeText = document.getElementById('welcome-text-container');
+            const welcomeBtn = document.getElementById('welcome-btn');
+            const welcomeBanner = document.getElementById('welcome-banner');
+            const mainContent = document.getElementById('main-content');
+            const mainBanner = document.getElementById('main-banner');
+
+            // 1. Fade out texts and button smoothly
+            welcomeText.style.opacity = '0';
+            welcomeText.style.transform = 'translateY(-20px)';
+            welcomeBtn.style.opacity = '0';
+            welcomeBtn.style.transform = 'translateY(20px)';
+            
+            // 2. Start Morph Animation
+            setTimeout(() => {
+                welcomeBanner.classList.add('morph');
+                welcomeOverlay.style.background = 'transparent'; 
+                welcomeOverlay.style.backdropFilter = 'blur(0px)';
+                
+                // Pre-render main content invisibly to make transition seamless
+                mainContent.style.display = 'flex';
+            }, 300);
+
+            // 3. Crossfade and Swap Banners
+            setTimeout(() => {
+                mainContent.classList.add('show');
+                mainBanner.style.opacity = '1'; 
+                welcomeOverlay.style.opacity = '0'; 
+                
+                // Cleanup
+                setTimeout(() => {
+                    welcomeOverlay.style.display = 'none';
+                }, 500);
+            }, 1000);
         }
 
         // --- CUSTOM ALERT LOGIC ---
@@ -270,20 +483,17 @@
 
         function openModalNew() {
             const btn = document.getElementById('btnNew'); const og = btn.innerHTML;
-            btn.innerHTML = '<div class="spinner"></div><span>PROCESSING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
+            btn.innerHTML = '<div class="spinner"></div><span style="color:#0f172a;">PROCESSING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
             setTimeout(() => { btn.innerHTML=og; btn.style.pointerEvents='auto'; btn.style.opacity='1'; document.getElementById('modalNew').classList.add('open'); }, 1000);
         }
         function openModalUnrestrict() {
             const btn = document.getElementById('btnUnres'); const og = btn.innerHTML;
-            btn.innerHTML = '<div class="spinner"></div><span>PROCESSING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
+            btn.innerHTML = '<div class="spinner"></div><span style="color:#0f172a;">PROCESSING...</span>'; btn.style.pointerEvents='none'; btn.style.opacity='0.8';
             setTimeout(() => { btn.innerHTML=og; btn.style.pointerEvents='auto'; btn.style.opacity='1'; document.getElementById('modalUnres').classList.add('open'); }, 1000);
         }
-        
-        // REPORT FUNCTIONS REMOVED
 
         function closeModalNew() { document.getElementById('modalNew').classList.remove('open'); }
         function closeModalUnres() { document.getElementById('modalUnres').classList.remove('open'); }
-        // CLOSE REPORT MODAL REMOVED
 
         function kirimNew() {
             const email = document.getElementById('newEmail').value; const pass = document.getElementById('newPass').value;
@@ -300,8 +510,6 @@
             const text = `*UNRESTRICT RENT FORM* 🔓\n\n📧 Email : ${email}\n🔑 Password : ${pass}\n🎟️ Group Code : *${kode}*`;
             window.open(`https://wa.me/12138496837?text=${encodeURIComponent(text)}`, '_blank');
         }
-
-        // KIRIM LAPORAN FUNCTION REMOVED
     </script>
 
 </body>
